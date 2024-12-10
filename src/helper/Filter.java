@@ -6,6 +6,7 @@ import java.util.Set;
 import java.util.StringTokenizer;
 
 import helper.classes.Warrior;
+import helper.classes.utils.General;
 
 public class Filter {
 	public static HashMap<String, Integer> sundermap = null;
@@ -36,6 +37,15 @@ public class Filter {
 		int i=cntList.size()-1;
 		while(internalTime==null && i>0) {
 			internalTime = getTime(cntList.get(i--));			
+		}
+		return internalTime;
+	}
+	
+	public static String getDate(ArrayList<String> cntList) {
+		String internalTime = null;
+		int i=0;
+		while(internalTime==null && i<=cntList.size()-1) {
+			internalTime = General.getEntryAtPosition(cntList.get(i++), 0);
 		}
 		return internalTime;
 	}

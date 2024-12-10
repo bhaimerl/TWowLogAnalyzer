@@ -19,9 +19,12 @@ import helper.FileUtils;
 import helper.Filter;
 import helper.HTMLUtils;
 import helper.classes.utils.General;
+import helper.classes.utils.Raid;
 import helper.classes.utils.RogueUtils;
 import helper.classes.utils.WarlockUtils;
 import helper.classes.utils.WarriorUtils;
+import helper.classes.utils.besonderes.BarovUtils;
+
 import org.eclipse.wb.swt.SWTResourceManager;
 
 public class MainGui {
@@ -32,6 +35,13 @@ public class MainGui {
 	private Text toTime;
 	private Text bossByNameText;
 	private ArrayList<String> fileAsArrayList = null;
+	private String raidName = "";
+	private boolean isAq40Raid = false;
+	String playersHtml ="";
+	String startTime = "";
+	String endTime = "";
+	String date = "";
+
 	private boolean validTimes = false;
 
 	Button btnWarrior = null;
@@ -119,8 +129,12 @@ public class MainGui {
 		        File f = new File(choosenFileInclPath);
 		        if(f.isFile()) {
 					fileAsArrayList = FileUtils.getFileAsArrayList(choosenFileInclPath);
-					String startTime = Filter.getStartTime(fileAsArrayList);
-					String endTime = Filter.getEndTime(fileAsArrayList);
+					playersHtml = HTMLUtils.getAllPlayers(fileAsArrayList);
+					raidName = Raid.getRaid(fileAsArrayList);
+					isAq40Raid = Raid.isAQ40Raid(raidName);
+					startTime = Filter.getStartTime(fileAsArrayList);
+					endTime = Filter.getEndTime(fileAsArrayList);
+					date = Filter.getDate(fileAsArrayList);
 					if(startTime!=null && endTime!=null) {
 						validTimes = true;
 						fromTime.setText(startTime);
@@ -258,7 +272,7 @@ public class MainGui {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 				if(allowCalculation()==false) {
-					lblInvalidInputData.setVisible(true);
+					lblInvalidInputData.setVisible(true); 
 					return;
 				}
 				General.flushAllClasses();
@@ -267,9 +281,14 @@ public class MainGui {
 				String warriors = ""; 
 				String warlocks = "";
 				String rogues = ""; 
+				String aq40Stuff = "";
 				int i = 0;
 				int j=1;
 				String processBar = "";
+				if(isAq40Raid) {
+					aq40Stuff+=BarovUtils.doAQChecksTogether(fileAsArrayList);
+				}
+				
 				int tenPercentLogLines = (fileAsArrayList.size() / 100) *11;
 				for (String string : fileAsArrayList) {
 					if(btnWarrior.getSelection()) {
@@ -283,7 +302,7 @@ public class MainGui {
 					if(btnRogue.getSelection()) {
 						RogueUtils.findEntryForRogue(string);
 						rogues = RogueUtils.getRogues(); 
-					}
+					}										
 					if(i%tenPercentLogLines==0) {
 						processBar="..."+j+"0%...";
 						lblInvalidInputData.setText(processBar);
@@ -291,7 +310,7 @@ public class MainGui {
 					}
 					i++;
 				}
-				HTMLUtils.writeFile(HTMLUtils.getAsHTMLString(warriors+warlocks+rogues), true);
+				HTMLUtils.writeFile(HTMLUtils.getAsHTMLString(playersHtml+warriors+warlocks+rogues+aq40Stuff, raidName, date, startTime, endTime), true);
 				try {
 					lblInvalidInputData.setText("...i will open your browser...");
 					FileUtils.openWebpage(new URI("file:///"+HTMLUtils.getTmpFileNameInclPath()));

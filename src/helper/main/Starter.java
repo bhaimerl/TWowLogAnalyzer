@@ -17,7 +17,7 @@ public class Starter {
 			WarriorUtils.findEntryForWarrior(string);
 		}
 		String warriors = WarriorUtils.getWarriors(); 
-		HTMLUtils.writeFile(HTMLUtils.getAsHTMLString(warriors), true);
+		//HTMLUtils.writeFile(HTMLUtils.getAsHTMLString(warriors), true);
 		
 		
 		//BarovUtils.countBarovCallsOnHuhuran(fileAsArrayList);
