@@ -20,5 +20,6 @@
 	<classpathentry kind="lib" path="C:/Users/b-ski/.p2/pool/plugins/org.eclipse.ui.forms_3.11.500.v20221024-2137.jar" sourcepath="C:/Users/b-ski/.p2/pool/plugins/org.eclipse.ui.forms_3.11.500.v20221024-2137.jar"/>
 	<classpathentry kind="var" path="JRE_LIB"/>
 	<classpathentry kind="lib" path="C:/development/libs/commons-lang3-3.17.0.jar"/>
+	<classpathentry kind="lib" path="C:/development/libs/commons-net-3.11.1.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

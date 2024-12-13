@@ -37,8 +37,8 @@ public class BarovUtils {
 		}
 		
 		strBuf.append("<br>");				
-		strBuf.append("<table align=\"center\" style=\"margin: 0px auto;\">");
-		strBuf.append("<tr style='background-color: gray;'><td colspan='2'>"+bossname+" ("+entry.size()+") BarovCaller used</td></tr>");
+		strBuf.append("<table align=\"left\"");
+		strBuf.append("<tr><td colspan='2'>"+bossname+" ("+entry.size()+") BarovCaller used</td></tr>");
 		strBuf.append("<tr>");
 		strBuf.append("<th>Nr</th>");
 		strBuf.append("<th>Name</th>");
@@ -74,17 +74,20 @@ public class BarovUtils {
 			}
 		}
 		strBuf.append("<br>");				
-		strBuf.append("<table align=\"center\" style=\"margin: 0px auto;\">");
-		strBuf.append("<tr style='background-color: gray;'><td colspan='2'>FrostOil Users("+frostOilUsers.size()+")</td></tr>");
+		strBuf.append("<table align=\"left\" >");
+		strBuf.append("<tr'><td colspan='3'>Viscidus FrostOil Users("+frostOilUsers.size()+")</td></tr>");
 		strBuf.append("<tr>");
+		strBuf.append("<th>Nr</th>");
 		strBuf.append("<th>Name</th>");
 		strBuf.append("<th>FrostOil applied</th>");
 		strBuf.append("<tr>");
 
 		Iterator<String> iterator = frostOilUsers.keySet().iterator();
+		int i=1;
 		while(iterator.hasNext()) {
 			strBuf.append("<tr>");
 			String currentName=iterator.next();
+			strBuf.append("<td>"+i+++"</td>");
 			strBuf.append("<td>"+currentName+"</td>");
 			strBuf.append("<td>"+frostOilUsers.get(currentName)+"</td>");
 			strBuf.append("<tr>");
@@ -101,9 +104,9 @@ public class BarovUtils {
 		String frostOilCheck = countFrostOilUse(allData);
 		
 		if(barovCheck!=null && barovCheck.length()>200 && frostOilCheck!=null && frostOilCheck.length()>200) {
-			strBuf.append("<br>");				
-			strBuf.append("<table align=\"center\" style=\"margin: 0px auto;\">");
-			strBuf.append("<tr style='background-color: gray;'><td colspan='2'>AQ Specific Checks</td></tr>");
+			strBuf.append("<br><br><div style='font-size: 20; font-weight: bold;' >Spezific AQ40 checks</div><br>");
+			strBuf.append("<table class='classTable' align=\"left\"");
+			strBuf.append("<tr><td colspan='2'></td></tr>");
 			strBuf.append("<tr>");
 			strBuf.append("<th></th>");
 			strBuf.append("<th></th>");

@@ -60,7 +60,7 @@ public class SpecialUtils {
 			strBuf.append("<br>ROGUES");				
 			strBuf.append("<br>");				
 			strBuf.append("<body>");				
-			strBuf.append("<table align=\"center\" style=\"margin: 0px auto;\">");
+			strBuf.append("<table align=\"left\" style=\"margin: 0px auto;\">");
 			strBuf.append("<tr>");
 			strBuf.append("<th>Name</th>");
 			strBuf.append("<th>HolyChampion proccs</th>");

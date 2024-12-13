@@ -132,8 +132,8 @@ public class RogueUtils {
 			Set<String> rogues =  rogueMap.keySet();
 			strBuf.append("<br>");				
 			strBuf.append("<body>");				
-			strBuf.append("<table align=\"center\" style=\"margin: 0px auto;\">");
-			strBuf.append("<tr style='background-color: yellow;'><td colspan='12'>ROGUE</td></tr>");
+			strBuf.append("<table class='classTable' align=\"left\" width='100%'>");
+			strBuf.append("<tr style='background-color: "+Constants.ROGUECOLOR+";'><td colspan='12'>ROGUE</td></tr>");
 			strBuf.append("<tr>");
 			strBuf.append("<th>Name</th>");
 			strBuf.append("<th>Windfury Procs</th>");

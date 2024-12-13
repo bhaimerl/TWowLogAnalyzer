@@ -4,6 +4,7 @@ import java.io.File;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
+import java.util.UUID;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
@@ -17,6 +18,7 @@ import org.eclipse.swt.widgets.Text;
 
 import helper.FileUtils;
 import helper.Filter;
+import helper.FtpUpload;
 import helper.HTMLUtils;
 import helper.classes.utils.General;
 import helper.classes.utils.Raid;
@@ -53,6 +55,7 @@ public class MainGui {
 	Button btnShaman = null;
 	Button btnPriest = null;
 	Button btnHunter = null;
+	private Text passwordField;
 
 	
 	/**
@@ -90,8 +93,8 @@ public class MainGui {
 		
 		Display display = Display.getDefault();
 		shlTwowLoganalyzer = new Shell();
-		shlTwowLoganalyzer.setSize(492, 390);
-		shlTwowLoganalyzer.setText("TWOW LogAnalyzer v0.0.2 (by Klarasprudel)");
+		shlTwowLoganalyzer.setSize(492, 431);
+		shlTwowLoganalyzer.setText("TWOW LogAnalyzer v0.0.5 (by Klarasprudel)");
 		
 
 		btnWarrior = new Button(shlTwowLoganalyzer, SWT.CHECK);
@@ -266,7 +269,8 @@ public class MainGui {
 		bossByNameText.setEditable(false);
 		bossByNameText.setBounds(263, 237, 144, 21);
 		
-		
+		Button btnGeneratePublicLink = new Button(shlTwowLoganalyzer, SWT.CHECK);
+
 		Button btnStartAnalyze = new Button(shlTwowLoganalyzer, SWT.NONE);
 		btnStartAnalyze.addSelectionListener(new SelectionAdapter() {
 			@Override
@@ -310,10 +314,29 @@ public class MainGui {
 					}
 					i++;
 				}
-				HTMLUtils.writeFile(HTMLUtils.getAsHTMLString(playersHtml+warriors+warlocks+rogues+aq40Stuff, raidName, date, startTime, endTime), true);
+				String classAbs = "<div style='font-size: 20; font-weight: bold;' >=> Class specific analyze</div>";
+				String br = "<br><br>";
+				HTMLUtils.writeFile(HTMLUtils.getAsHTMLString(playersHtml+classAbs+warriors+br+warlocks+br+rogues+br+aq40Stuff, raidName, date, startTime, endTime), true);
+				boolean ftpLognSuccess = false;
 				try {
-					lblInvalidInputData.setText("...i will open your browser...");
-					FileUtils.openWebpage(new URI("file:///"+HTMLUtils.getTmpFileNameInclPath()));
+					if(btnGeneratePublicLink.getSelection()) {
+						lblInvalidInputData.setText("...i will open your browser...to public url");
+						String uniqueFileName = UUID.randomUUID().toString()+".html";
+						ftpLognSuccess = FtpUpload.fileUpload(passwordField.getText(), HTMLUtils.getTmpFileNameInclPath(),uniqueFileName);
+						if(ftpLognSuccess) {
+							String resulturl = "https://klarasprudel.atwebpages.com/"+uniqueFileName;
+							FileUtils.openWebpage(new URI(resulturl));
+							//lblInvalidInputData.setText("URL: "+resulturl);
+						} else {
+							lblInvalidInputData.setText("..password incorrect, will open local");
+							FileUtils.openWebpage(new URI("file:///"+HTMLUtils.getTmpFileNameInclPath()));
+							//klarasprudel.atwebpages.com/"+fileName						
+						}
+					} else {
+						lblInvalidInputData.setText("...i will open your browser...to local url");
+						FileUtils.openWebpage(new URI("file:///"+HTMLUtils.getTmpFileNameInclPath()));
+						//klarasprudel.atwebpages.com/"+fileName						
+					}
 				} catch (URISyntaxException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
@@ -322,6 +345,41 @@ public class MainGui {
 		});
 		btnStartAnalyze.setBounds(10, 319, 75, 25);
 		btnStartAnalyze.setText("Start");
+		
+		Label lblGenerateLink = new Label(shlTwowLoganalyzer, SWT.NONE);
+		lblGenerateLink.setText("Generate public link");
+		lblGenerateLink.setBounds(10, 282, 116, 15);
+		Label lblGivenPassword = new Label(shlTwowLoganalyzer, SWT.NONE);
+		lblGivenPassword.setVisible(false);
+
+		btnGeneratePublicLink.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				if(btnGeneratePublicLink.getSelection()) {
+					lblGivenPassword.setVisible(true);
+					passwordField.setVisible(true);
+					passwordField.setEnabled(true);
+					passwordField.setEditable(true);
+				} else {
+					lblGivenPassword.setVisible(false);
+					passwordField.setVisible(false);
+					passwordField.setEnabled(false);
+					passwordField.setEditable(false);
+					
+				}
+			}
+		});
+		btnGeneratePublicLink.setBounds(128, 281, 38, 16);
+		btnGeneratePublicLink.setText("Yes");
+		
+		lblGivenPassword.setText("Password");
+		lblGivenPassword.setBounds(186, 282, 58, 15);
+		
+		passwordField = new Text(shlTwowLoganalyzer, SWT.BORDER);
+		passwordField.setVisible(false);
+		passwordField.setEnabled(false);
+		passwordField.setEditable(false);
+		passwordField.setBounds(263, 276, 144, 21);
 		
 
 	}

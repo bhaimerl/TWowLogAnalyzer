@@ -131,9 +131,8 @@ public class WarriorUtils {
 		if(warriorMap!=null) {
 			Set<String> warriors =  warriorMap.keySet();
 			strBuf.append("<br>");				
-			strBuf.append("<body>");				
-			strBuf.append("<table align=\"center\" style=\"margin: 0px auto;\">");
-			strBuf.append("<tr style='background-color: brown;'><td colspan='13'>WARRIOR</td></tr>");
+			strBuf.append("<table class='classTable' align=\"left\" width='100%'>");
+			strBuf.append("<tr style='background-color: "+Constants.WARRIORCOLOR+";'><td colspan='13'>WARRIOR</td></tr>");
 			strBuf.append("<tr>");
 			strBuf.append("<th>Name</th>");
 			strBuf.append("<th>Sunder Armor</th>");
