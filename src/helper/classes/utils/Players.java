@@ -43,11 +43,32 @@ public class Players {
 		Set<String> names = nameClassMap.keySet();
 		Iterator<String> iterator = names.iterator();
 		while(iterator.hasNext()) {
-			uniqueList.add(nameClassMap.get(iterator.next()));
+			NameClassWrapper nameClassWrapper = nameClassMap.get(iterator.next());
+			if(isThisPlayerValid(nameClassWrapper.getName(), completeLog)) {
+				uniqueList.add(nameClassWrapper);
+			}
 		}
 		Collections.sort(uniqueList);
 		return uniqueList;
 	}
+	
+	private static boolean isThisPlayerValid(String name, ArrayList<String> completeLog) {
+		//Player nur valid, wenn er mehrfach im Log auftaucht
+		boolean valid = false;
+		//mind 10mal;
+		int cnt = 0;
+		for (String logLine : completeLog) {
+			if(logLine.indexOf(name+" gains")>=0) {
+				cnt++;
+			}
+			if(cnt==3) {
+				return true;
+			}
+		}
+		System.out.println("Player: "+name+" will be removed from list, seems to be invalid");
+		return valid;
+	}
+	
 	
 	public static HashMap<String, ArrayList<NameClassWrapper>> getAllPlayersSortedByClass(ArrayList<String> completeLog) {
 		HashMap<String, ArrayList<NameClassWrapper>> resultMap = new HashMap<>();			
