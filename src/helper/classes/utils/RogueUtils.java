@@ -67,8 +67,6 @@ public class RogueUtils {
                 		General.getTarget(Constants.sinisterStrikeHits, Constants.sinisterStrikeCrits, logline))
         );
 	}
-
-
 	
 	
 	public static String getRogues() {

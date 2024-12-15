@@ -2,6 +2,9 @@ package helper.classes.utils;
 
 public class Constants {
 	
+	public static final String VERSION = "v0.0.6";
+	
+	
 	public static final String DRUIDCOLOR = "#FF7D0A";
 	public static final String HUNTERCOLOR = "#A9D271";
 	public static final String PALADINCOLOR = "#F58CBA";
@@ -87,6 +90,22 @@ public class Constants {
 	public static final String eviscerateCrits="Eviscerate crits";
 	public static final String sinisterStrikeHits="Sinister Strike hits";
 	public static final String sinisterStrikeCrits="Sinister Strike crits";
+	
+	//Hunter
+	public static final String autoShotHit="'s Auto Shot hits";
+	public static final String autoShotCrit="'s Auto Shot crits";
+	public static final String steadyShotHits="'s Steady Shot hits";
+	public static final String steadyShotCrits="'s Steady Shot crits";
+	public static final String multiShotHits="'s Multi-Shot hits";
+	public static final String multiSHotCrits="'s Multi-Shot crits";
+	public static final String arcaneShotHits="'s Arcane Shot hits";
+	public static final String arcaneShotCrits="'s Arcane Shot crits"; 
+	public static final String extraShotHits="'s Extra Shot hits";
+	public static final String extraShotCrits="'s Extra Shot crits";
+	public static final String aimedShotHits="'s Aimed Shot hits"; 
+	public static final String aimedShotCrtis="'s Aimed Shot crits"; 
+	public static final String serpentStringGains="gains Serpent Sting";
+	public static final String serpentStringAfflicted="afflicted by Serpent Sting";
 	
 	
 }

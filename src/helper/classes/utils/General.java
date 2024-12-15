@@ -199,6 +199,7 @@ public class General {
 			RogueUtils.rogueMap = new HashMap<>();
 			WarlockUtils.warlockMap = new HashMap<>(); 
 			MageUtils.mageMap = new HashMap<>();
+			HunterUtils.hunterMap = new HashMap<>();
 		}
 		
 		

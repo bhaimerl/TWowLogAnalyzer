@@ -49,7 +49,7 @@ public class HTMLUtils {
 	public static String getAsHTMLString(String given, String raidName, String date, String start, String end) {
 		StringBuffer strBuf = new StringBuffer();
 	 	strBuf.append("<html>");
-		strBuf.append("<head>");
+		strBuf.append("<head><title>Klarasprudels TWOWLogAnalyzer "+Constants.VERSION+"</title>");
 		strBuf.append("<style>");
 		strBuf.append(".classTable {");
 		strBuf.append("  border-collapse: collapse;");

@@ -22,7 +22,9 @@ import helper.Filter;
 import helper.FtpUpload;
 import helper.HTMLUtils;
 import helper.classes.NameClassWrapper;
+import helper.classes.utils.Constants;
 import helper.classes.utils.General;
+import helper.classes.utils.HunterUtils;
 import helper.classes.utils.MageUtils;
 import helper.classes.utils.Players;
 import helper.classes.utils.Raid;
@@ -99,7 +101,7 @@ public class MainGui {
 		Display display = Display.getDefault();
 		shlTwowLoganalyzer = new Shell();
 		shlTwowLoganalyzer.setSize(492, 431);
-		shlTwowLoganalyzer.setText("TWOW LogAnalyzer v0.0.5 (by Klarasprudel)");
+		shlTwowLoganalyzer.setText("TWOW LogAnalyzer "+Constants.VERSION+" (by Klarasprudel)");
 		
 
 		btnWarrior = new Button(shlTwowLoganalyzer, SWT.CHECK);
@@ -230,7 +232,7 @@ public class MainGui {
 		btnPriest.setText("Priest");
 		btnPriest.setBounds(263, 168, 64, 16);
 		
-		btnHunter.setEnabled(false);
+		btnHunter.setSelection(true);
 		btnHunter.setText("Hunter");
 		btnHunter.setBounds(263, 190, 64, 16);
 		
@@ -294,6 +296,7 @@ public class MainGui {
 				String rogues = ""; 
 				String mages = "";
 				String aq40Stuff = "";
+				String hunters = "";
 				int i = 0;
 				int j=1;
 				String processBar = "";
@@ -314,11 +317,16 @@ public class MainGui {
 					if(btnRogue.getSelection()) {
 						RogueUtils.findEntryForRogue(string, allPlayers);
 						rogues = RogueUtils.getRogues(); 
-					}										
+					}
 					if(btnMage.getSelection()) {
 						MageUtils.findEntryForMage(string, allPlayers);
 						mages = MageUtils.getMagesHTML(); 
+					}
+					if(btnHunter.getSelection()) {
+						HunterUtils.findEntryForHunter(string, allPlayers);
+						hunters = HunterUtils.getHunterHTML(); 
 					}										
+					
 					if(i%tenPercentLogLines==0) {
 						processBar="..."+j+"0%...";
 						lblInvalidInputData.setText(processBar);
@@ -328,7 +336,7 @@ public class MainGui {
 				}
 				String classAbs = "<div style='font-size: 20; font-weight: bold;' >=> Class specific analyze</div>";
 				String br = "<br><br>";
-				HTMLUtils.writeFile(HTMLUtils.getAsHTMLString(playersHtml+classAbs+warriors+mages+warlocks+rogues+aq40Stuff, raidName, date, startTime, endTime), true);
+				HTMLUtils.writeFile(HTMLUtils.getAsHTMLString(playersHtml+classAbs+warriors+mages+hunters+warlocks+rogues+aq40Stuff, raidName, date, startTime, endTime), true);
 				boolean ftpLognSuccess = false;
 				try {
 					if(btnGeneratePublicLink.getSelection()) {
@@ -399,7 +407,7 @@ public class MainGui {
 	private boolean allowCalculation() {
 		//at least one class selected?
 		boolean classValid = false;
-		if(btnWarrior.getSelection() || btnRogue.getSelection() || btnWarlock.getSelection() || btnMage.getSelection()) {
+		if(btnWarrior.getSelection() || btnRogue.getSelection() || btnWarlock.getSelection() || btnMage.getSelection() || btnHunter.getSelection()) {
 			classValid = true;
 		}
 		if(classValid && validTimes) {
