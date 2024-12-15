@@ -1,138 +1,81 @@
 package helper.classes.utils;
 
+import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Set;
-import java.util.StringTokenizer;
+import java.util.SortedSet;
+import java.util.TreeSet;
+import java.util.function.Consumer;
 
+import helper.classes.NameClassWrapper;
 import helper.classes.Warrior;
 
 public class WarriorUtils {
 	
-	public static HashMap<String, Warrior> warriorMap = null;
+    public static HashMap<String, Warrior> warriorMap = new HashMap<>(); 
 
-	private static Warrior getWarriorByName(String name) {
-		Warrior current = null;
-		if(warriorMap==null) {
-			warriorMap = new HashMap<>();
-		}
-		if(warriorMap.get(name)==null) {
-			current = new Warrior();
-			warriorMap.put(name, current);
-		} else {
-			current = warriorMap.get(name);
-		}
-		return current;
-	}	
+    private static Warrior getWarriorByName(String name) {
+        return warriorMap.computeIfAbsent(name, k -> new Warrior());
+    }
+
+    private static void updateWarriorStats(String logline, String playerName, String keyword, Consumer<Warrior> action) {
+        if (logline.contains(keyword)) {
+            Warrior warrior = getWarriorByName(playerName);
+            action.accept(warrior);
+        }
+    }
+
+    private static void processAbility(String logline, String playerName, String hitKeyword, String critKeyword,
+                                       Consumer<Warrior> hitAction, Consumer<Warrior> critAction,
+                                       Consumer<Warrior> highestAmountAction) {
+    	updateWarriorStats(logline, playerName, hitKeyword, hitAction);
+    	updateWarriorStats(logline, playerName, critKeyword, critAction);
+
+        if (logline.contains(hitKeyword) || logline.contains(critKeyword)) {
+        	Warrior warrior = getWarriorByName(playerName);
+            highestAmountAction.accept(warrior);
+        }
+    }
 	
-	public static int getWrathAmount(String logline) {
-		int rageAmount = 0;
-		if(logline!=null) {
-			String name;
-			if(logline.indexOf("Unbridled Wrath")>=0) {
-				StringTokenizer strTok = new StringTokenizer(logline, " ");
-				strTok.nextElement();
-				strTok.nextElement();
-				//Name
-				name = strTok.nextElement()+"";
-				//gains
-				strTok.nextElement();
-				//rage amount
-				try {
-					rageAmount+=Integer.parseInt(strTok.nextElement()+"");
-				} catch(Exception e) {System.out.println("Problem bei: "+name);}
-			}
-		}
-		return rageAmount;
-	}		
-	
-	public static void findEntryForWarrior(String logline) {
-		String sunder= "casts Sunder";
-		String deathWish="is afflicted by Death Wish";
-		String windfury="gains 1 extra attack through Windfury";
-		String crusader= "gains Holy Strength";
-		String wrath= "Unbridled Wrath";
-		String flametongue="Flametongue Attack";
-		String flurry= "gains Flurry";
-		String enrage="gains Enrage";
-		
-		String execute1="'s Execute hits ";
-		String execute2="'s Execute crits ";
-		String bloodthirst1 = "'s Bloodthirst crits ";
-		String bloodthirst2 = "'s Bloodthirst hits ";
+	public static void findEntryForWarrior(String logline, HashMap<String, ArrayList<NameClassWrapper>>  allValidPLayers) {
+    	String currentPlayer = General.getPlayerName(logline);
+    	if(!General.isPlayerInClassList(allValidPLayers, currentPlayer, Constants.WARRIOR)) {
+    		return;
+    	}
+    	updateWarriorStats(logline, currentPlayer, Constants.sunder, Warrior::incrementSunders);
+    	updateWarriorStats(logline, currentPlayer, Constants.deathWish, Warrior::incrementDeathWish);
+    	updateWarriorStats(logline, currentPlayer, Constants.windfury, Warrior::incrementWindFury);
+    	updateWarriorStats(logline, currentPlayer, Constants.crusader, Warrior::incrementCrusader);
+    	updateWarriorStats(logline, currentPlayer, Constants.flametongue, Warrior::incrementFlameTongue);
+    	updateWarriorStats(logline, currentPlayer, Constants.flurry, Warrior::incrementFlurry);
+    	updateWarriorStats(logline, currentPlayer, Constants.enrage, Warrior::incrementEnrage);
 
-		if(logline.indexOf(sunder)>=0) {
-			Warrior war = getWarriorByName(General.getPlayerName(logline));
-			war.setSunders(war.getSunders()+1);
-		}
-		if(logline.indexOf(deathWish)>=0) {
-			Warrior war = getWarriorByName(General.getPlayerName(logline));
-			war.setDeathWish(war.getDeathWish()+1);
-		}
-		if(logline.indexOf(windfury)>=0) {
-			Warrior war = getWarriorByName(General.getPlayerName(logline));
-			war.setWindFury(war.getWindFury()+1);
-		}
-		if(logline.indexOf(crusader)>=0) {
-			Warrior war = getWarriorByName(General.getPlayerName(logline));
-			war.setCrusader(war.getCrusader()+1);
-		}
-		if(logline.indexOf(wrath)>=0) {
-			Warrior war = getWarriorByName(General.getPlayerName(logline));
-			war.setWrath(war.getWrath()+General.getAmountGains("Unbridled Wrath", logline));
-		}
-		if(logline.indexOf(flametongue)>=0) {
-			Warrior war = getWarriorByName(General.getPlayerName(logline));
-			war.setFlametongue(war.getFlametongue()+1);
-		}
-		if(logline.indexOf(flurry)>=0) {
-			Warrior war = getWarriorByName(General.getPlayerName(logline));
-			war.setFlurry(war.getFlurry()+1);
-		}
-		if(logline.indexOf(enrage)>=0) {
-			Warrior war = getWarriorByName(General.getPlayerName(logline));
-			war.setEnrage(war.getEnrage()+1);
-		}		
-		if(logline.indexOf(execute1)>=0 || logline.indexOf(execute2)>=0) {
-			Warrior war = getWarriorByName(General.getPlayerName(logline));
-			war.setExecuteAmount(war.getExecuteAmount()+1);
-		}
-		if(logline.indexOf(execute1)>=0 || logline.indexOf(execute2)>=0) {
-			Warrior war = getWarriorByName(General.getPlayerName(logline));
-			int currentExecute = General.getAmountAtEnd(execute1, execute2, logline);
-			if(currentExecute>=war.getHighestExecute()) {
-				war.setHighestExecute(currentExecute);
-				String target = General.getTarget(execute1, execute2, logline);
-				war.setHighestExecuteTarget(target);
-			}
-		}
-		
-		if(logline.indexOf(bloodthirst1)>=0 || logline.indexOf(bloodthirst2)>=0) {
-			Warrior war = getWarriorByName(General.getPlayerName(logline));
-			war.setBloodThirstAmount(war.getBloodThirstAmount()+1);
-		}
-		if(logline.indexOf(bloodthirst1)>=0 || logline.indexOf(bloodthirst2)>=0) {
-			Warrior war = getWarriorByName(General.getPlayerName(logline));
-			int currentBloodthirst = General.getAmountAtEnd(bloodthirst1, bloodthirst2, logline);
-			if(currentBloodthirst>=war.getHighestBloodthirst()) {
-				war.setHighestBloodthirst(currentBloodthirst);
-				String target = General.getTarget(bloodthirst1, bloodthirst2, logline);
-				war.setHighestBloodthirstTarget(target);
-			}
-		}
-		
-		
-		//special.setIncomingDmgAmountKranette(special.getIncomingDmgAmountKranette()+General.getAmountAtEnd(incomingDamageAmountOnKranette, logline));
-
+    	updateWarriorStats(logline, currentPlayer, Constants.wrath, warrior -> {
+            if (logline.contains(Constants.gains)) {
+                warrior.addWrath(General.getAmountGains(Constants.wrath, logline));
+            }
+        });    	
+    	
+        processAbility(logline, currentPlayer, Constants.executeHit, Constants.executeCrit, 
+            Warrior::incrementExecute, Warrior::incrementExecute,
+            warrior -> warrior.updateHighestExecuteAmount(General.getAmountAtEnd(Constants.executeHit, Constants.executeCrit, logline),
+                        General.getTarget(Constants.executeHit, Constants.executeCrit, logline))
+        );
+    	
+        processAbility(logline, currentPlayer, Constants.bloodthirstHit, Constants.bloodthirstCrit, 
+                Warrior::incrementBloodThirstAmount, Warrior::incrementBloodThirstAmount,
+                warrior -> warrior.updateHighestBloodthirst(General.getAmountAtEnd(Constants.bloodthirstHit, Constants.bloodthirstCrit, logline),
+                		General.getTarget(Constants.bloodthirstHit, Constants.bloodthirstCrit, logline))
+        );
 	}
 	
 	public static String getWarriors() {
 		//clean all first
 		StringBuffer strBuf = new StringBuffer();
 		if(warriorMap!=null) {
-			Set<String> warriors =  warriorMap.keySet();
+			SortedSet<String> warriors =  new TreeSet<>(warriorMap.keySet());
 			strBuf.append("<br>");				
 			strBuf.append("<table class='classTable' align=\"left\" width='100%'>");
-			strBuf.append("<tr style='background-color: "+Constants.WARRIORCOLOR+";'><td colspan='13'>WARRIOR</td></tr>");
+			strBuf.append("<tr style='background-color: "+Constants.WARRIORCOLOR+";'><td colspan='13'>"+Constants.WARRIOR+"</td></tr>");
 			strBuf.append("<tr>");
 			strBuf.append("<th>Name</th>");
 			strBuf.append("<th>Sunder Armor</th>");
@@ -152,7 +95,6 @@ public class WarriorUtils {
 			//System.out.println("Name | Sunders | Deathwish | WindfuryProcs | CrusaderProcs | extra rage from unbridled wrath | FlametongueProcs | Flurry | Enrage");
 			for (String warriorName : warriors) {
 				Warrior warri = warriorMap.get(warriorName);
-				if(warri.getSunders()>0) {
 					strBuf.append("<tr>");
 					strBuf.append("<td>"+warriorName+"</td>");
 					strBuf.append("<td>"+warri.getSunders()+"</td>");
@@ -168,7 +110,6 @@ public class WarriorUtils {
 					strBuf.append("<td>"+warri.getBloodThirstAmount()+"</td>");
 					strBuf.append("<td>"+warri.getHighestBloodthirst()+"=> "+warri.getHighestBloodthirstTarget()+"</td>");
 					strBuf.append("</tr>");
-				}
 			}
 			strBuf.append("</table>");
 		}

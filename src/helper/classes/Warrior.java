@@ -1,108 +1,110 @@
 package helper.classes;
 
-public class Warrior {
+public class Warrior{
 	
 	public int sunders=0;
+    public void incrementSunders() {
+        this.sunders++;
+    }	
 	public int deathWish=0;
+    public void incrementDeathWish() {
+        this.deathWish++;
+    }
 	public int windFury=0;
+    public void incrementWindFury() {
+        this.windFury++;
+    }
 	public int crusader=0;
-	public int wrath=0;
+    public void incrementCrusader() {
+        this.crusader++;
+    }    
 	public int flametongue=0;
+    public void incrementFlameTongue() {
+        this.flametongue++;
+    }
 	public int flurry=0;
+    public void incrementFlurry() {
+        this.flurry++;
+    }
 	public int enrage=0;
-	public int executeAmount=0;	
-	public int highestExecute=0;
-	public int bloodThirstAmount=0;
-	public int highestBloodthirst=0;	
-	public String highestExecuteTarget = "";
-	public String highestBloodthirstTarget = "";	
+    public void incrementEnrage() {
+        this.enrage++;
+    }
+
+	public int wrath=0;
 	
-	public String getHighestExecuteTarget() {
-		return highestExecuteTarget;
-	}
-	public void setHighestExecuteTarget(String highestExecuteTarget) {
-		this.highestExecuteTarget = highestExecuteTarget;
-	}
-	public String getHighestBloodthirstTarget() {
-		return highestBloodthirstTarget;
-	}
-	public void setHighestBloodthirstTarget(String highestBloodthirstTarget) {
-		this.highestBloodthirstTarget = highestBloodthirstTarget;
-	}
+    public int getWrath() {
+        return wrath;
+    }
+    public void addWrath(int amount) {
+        this.wrath += amount;
+    }
+	
+	public int executeAmount=0;	
+    public void incrementExecute() {
+        this.executeAmount++;
+    }
+	public int highestExecute=0;
+	public String highestExecuteTarget = "";
+    public void updateHighestExecuteAmount(int amount, String target) {
+        if (amount > this.highestExecute) {
+            this.highestExecute = amount;
+            this.highestExecuteTarget = target;
+        }
+    }	
+	
+	public int bloodThirstAmount=0;
+    public void incrementBloodThirstAmount() {
+        this.bloodThirstAmount++;
+    }
+	public int highestBloodthirst=0;	
+	public String highestBloodthirstTarget = "";
+    public void updateHighestBloodthirst(int amount, String target) {
+        if (amount > this.highestBloodthirst) {
+            this.highestBloodthirst = amount;
+            this.highestBloodthirstTarget = target;
+        }
+    }	
+	
+	
 	public int getSunders() {
 		return sunders;
-	}
-	public void setSunders(int sunders) {
-		this.sunders = sunders;
 	}
 	public int getDeathWish() {
 		return deathWish;
 	}
-	public void setDeathWish(int deathWish) {
-		this.deathWish = deathWish;
-	}
 	public int getWindFury() {
 		return windFury;
-	}
-	public void setWindFury(int windFury) {
-		this.windFury = windFury;
 	}
 	public int getCrusader() {
 		return crusader;
 	}
-	public void setCrusader(int crusader) {
-		this.crusader = crusader;
-	}
-	public int getWrath() {
-		return wrath;
-	}
-	public void setWrath(int wrath) {
-		this.wrath = wrath;
-	}
 	public int getFlametongue() {
 		return flametongue;
-	}
-	public void setFlametongue(int flametongue) {
-		this.flametongue = flametongue;
 	}
 	public int getFlurry() {
 		return flurry;
 	}
-	public void setFlurry(int flurry) {
-		this.flurry = flurry;
-	}
 	public int getEnrage() {
 		return enrage;
-	}
-	public void setEnrage(int enrage) {
-		this.enrage = enrage;
-	}
-	
-	
-	
+	}	
 	public int getExecuteAmount() {
 		return executeAmount;
-	}
-	public void setExecuteAmount(int executeAmount) {
-		this.executeAmount = executeAmount;
 	}
 	public int getHighestExecute() {
 		return highestExecute;
 	}
-	public void setHighestExecute(int highestExecute) {
-		this.highestExecute = highestExecute;
+	public String getHighestExecuteTarget() {
+		return highestExecuteTarget;
 	}
 	public int getBloodThirstAmount() {
 		return bloodThirstAmount;
 	}
-	public void setBloodThirstAmount(int bloodThirstAmount) {
-		this.bloodThirstAmount = bloodThirstAmount;
-	}
 	public int getHighestBloodthirst() {
 		return highestBloodthirst;
 	}
-	public void setHighestBloodthirst(int highestBloodthirst) {
-		this.highestBloodthirst = highestBloodthirst;
+	public String getHighestBloodthirstTarget() {
+		return highestBloodthirstTarget;
 	}
 	@Override
 	public String toString() {

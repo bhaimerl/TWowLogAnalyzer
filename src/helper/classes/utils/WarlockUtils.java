@@ -1,8 +1,12 @@
 package helper.classes.utils;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.SortedSet;
+import java.util.TreeSet;
 import java.util.function.Consumer;
 
+import helper.classes.NameClassWrapper;
 import helper.classes.Warlock;
 
 public class WarlockUtils {
@@ -13,97 +17,104 @@ public class WarlockUtils {
         return warlockMap.computeIfAbsent(name, k -> new Warlock());
     }
 
-    private static void updateWarlockStats(String logline, String keyword, Consumer<Warlock> action) {
+    private static void updateWarlockStats(String logline, String playerName, String keyword, Consumer<Warlock> action) {
         if (logline.contains(keyword)) {
-            Warlock warlock = getWarlockByName(General.getPlayerName(logline));
+            Warlock warlock = getWarlockByName(playerName);
             action.accept(warlock);
         }
     }
 
-    private static void processAbility(String logline, String hitKeyword, String critKeyword,
+    private static void processAbility(String logline, String playerName, String hitKeyword, String critKeyword,
                                        Consumer<Warlock> hitAction, Consumer<Warlock> critAction,
                                        Consumer<Warlock> highestAmountAction) {
-        updateWarlockStats(logline, hitKeyword, hitAction);
-        updateWarlockStats(logline, critKeyword, critAction);
+        updateWarlockStats(logline, playerName, hitKeyword, hitAction);
+        updateWarlockStats(logline, playerName, critKeyword, critAction);
 
         if (logline.contains(hitKeyword) || logline.contains(critKeyword)) {
-            Warlock warlock = getWarlockByName(General.getPlayerName(logline));
+            Warlock warlock = getWarlockByName(playerName);
             highestAmountAction.accept(warlock);
         }
     }
 
-    public static void findEntryForWarlock(String logline) {
-        updateWarlockStats(logline, "gains Shadow Trance", Warlock::incrementShadowtrance);
+    public static void findEntryForWarlock(String logline, HashMap<String, ArrayList<NameClassWrapper>>  allValidPLayers) {
+    	
+    	//bezieht sich die aktuelle Zeile auf einen Warlock?
+    	String currentPlayer = General.getPlayerName(logline);
+    	if(!General.isPlayerInClassList(allValidPLayers, currentPlayer, Constants.WARLOCK)) {
+    		return;
+    	}
+        updateWarlockStats(logline, currentPlayer, "gains Shadow Trance", Warlock::incrementShadowtrance);
 
-        updateWarlockStats(logline, "Life Tap.", warlock -> {
+        updateWarlockStats(logline, currentPlayer, "Life Tap.", warlock -> {
             warlock.incrementLifeTaps();
             warlock.addLifeTapMana(General.getAmountGains("Life Tap.", logline));
         });
 
-        updateWarlockStats(logline, Constants.manFromVampirismTouch, warlock -> 
+        updateWarlockStats(logline, currentPlayer, Constants.manFromVampirismTouch, warlock -> 
             warlock.addManaFromVampiricTouch(General.getAmountGains(Constants.manFromVampirismTouch, logline))
         );
 
-        updateWarlockStats(logline, Constants.manaFromJudgement, warlock -> {
+        updateWarlockStats(logline, currentPlayer, Constants.manaFromJudgement, warlock -> {
             if (logline.contains("Mana")) {
                 warlock.addManaFromJudgementOfWisdom(General.getAmountGains(Constants.manaFromJudgement, logline));
             }
         });
 
-        updateWarlockStats(logline, Constants.manaFromBOW, warlock -> {
+        updateWarlockStats(logline, currentPlayer, Constants.manaFromBOW, warlock -> {
             if (logline.contains("gains")) {
                 warlock.addManaFromBow(General.getAmountGains(Constants.manaFromBOW, logline));
             }
         });
 
         // Shadow Bolt
-        processAbility(logline, Constants.shadowBoltHit, Constants.shadowBoltCrit, 
+        processAbility(logline, currentPlayer, Constants.shadowBoltHit, Constants.shadowBoltCrit, 
             Warlock::incrementShadowBoltHits, Warlock::incrementShadowBoltCrits,
             warlock -> warlock.updateHighestSBAmount(General.getAmountAtEnd(Constants.shadowBoltHit, Constants.shadowBoltCrit, logline),
                                                      General.getTarget(Constants.shadowBoltHit, Constants.shadowBoltCrit, logline))
         );
 
         // Soul Fire
-        processAbility(logline, Constants.soulFirehit, Constants.soulFireCrit, 
+        processAbility(logline, currentPlayer, Constants.soulFirehit, Constants.soulFireCrit, 
             Warlock::incrementSoulFireHits, Warlock::incrementSoulFireCrits,
             warlock -> warlock.updateHighestSFAmount(General.getAmountAtEnd(Constants.soulFirehit, Constants.soulFireCrit, logline),
                                                      General.getTarget(Constants.soulFirehit, Constants.soulFireCrit, logline))
         );
 
         // Searing Pain
-        processAbility(logline, Constants.searingPainhit, Constants.searingPainCrit, 
+        processAbility(logline, currentPlayer, Constants.searingPainhit, Constants.searingPainCrit, 
             Warlock::incrementSearingPainHits, Warlock::incrementSearingPainCrits,
             warlock -> warlock.updateHighestSPAmount(General.getAmountAtEnd(Constants.searingPainhit, Constants.searingPainCrit, logline),
                                                      General.getTarget(Constants.searingPainhit, Constants.searingPainCrit, logline))
         );
 
         // Immolate
-        updateWarlockStats(logline, Constants.immolateHit, Warlock::incrementImmolateHits);
-        updateWarlockStats(logline, Constants.immolateCrit, Warlock::incrementImmolateCrits);
+        updateWarlockStats(logline, currentPlayer, Constants.immolateHit, Warlock::incrementImmolateHits);
+        updateWarlockStats(logline, currentPlayer, Constants.immolateCrit, Warlock::incrementImmolateCrits);
 
         // Conflagrate
-        processAbility(logline, Constants.conflagrateHit, Constants.conflagrateCrit, 
+        processAbility(logline, currentPlayer, Constants.conflagrateHit, Constants.conflagrateCrit, 
             Warlock::incrementConflagrateHits, Warlock::incrementConflagrateCrits,
             warlock -> warlock.updateHighestCflgrAmount(General.getAmountAtEnd(Constants.conflagrateHit, Constants.conflagrateCrit, logline),
                                                      General.getTarget(Constants.conflagrateHit, Constants.conflagrateCrit, logline))
         );
     }
 
-    public static String getWarlocks() {
+    public static String getWarlocksHTML() {
         StringBuilder strBuf = new StringBuilder();
         if (!warlockMap.isEmpty()) {
+			SortedSet<String> warlocks =  new TreeSet<>(warlockMap.keySet());
+
             strBuf.append("<br><body><table class='classTable' align=\"left\" width='100%'>")
                   .append("<tr style='background-color: ").append(Constants.WARLOCKCOLOR).append(";'>")
-                  .append("<td colspan='16'>WARLOCK</td></tr><tr>")
+                  .append("<td colspan='16'>"+Constants.WARLOCK+"</td></tr><tr>")
                   .append("<th>Name</th><th>Shadowtrance</th><th>LifeTaps</th><th>Mana LifeTap</th>")
                   .append("<th>Mana VampiricTouch</th><th>Mana Judgement</th><th>Mana BOW</th>")
                   .append("<th>ShadowBolt Hit/Crit</th><th>Highest SB</th><th>SoulFire Hit/Crit</th>")
                   .append("<th>Highest SF</th><th>SearingPain Hit/Crit</th><th>Highest SP</th>")
                   .append("<th>Immolate Hit/Crit</th><th>Conflagrate Hit/Crit</th><th>Highest Cflgrt</th></tr>");
 
-            for (String warlockName : warlockMap.keySet()) {
+            for (String warlockName : warlocks) {
                 Warlock warlock = warlockMap.get(warlockName);
-                if (warlock.getLifeTaps() > 0) {
                     strBuf.append("<tr>")
                           .append("<td>").append(warlockName).append("</td>")
                           .append("<td>").append(warlock.getShadowtrance()).append("</td>")
@@ -122,7 +133,6 @@ public class WarlockUtils {
                           .append("<td>").append(warlock.getConflagrateHits()).append(" / ").append(warlock.getConflagrateCrits()).append("</td>")
                           .append("<td>").append(warlock.getHighestCflgrAmount()).append(" => ").append(warlock.getHighestCflgrTarget()).append("</td>")
                           .append("</tr>");
-                }
             }
             strBuf.append("</table>");
         }

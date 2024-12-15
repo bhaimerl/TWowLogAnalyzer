@@ -1,139 +1,84 @@
 package helper.classes.utils;
 
+import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Set;
+import java.util.SortedSet;
+import java.util.TreeSet;
+import java.util.function.Consumer;
 
+import helper.classes.NameClassWrapper;
 import helper.classes.Rogue;
-import helper.classes.Warlock;
 
 public class RogueUtils {
-	
-	public static HashMap<String, Rogue> rogueMap = null;
-	
-	private static Rogue getRogueByName(String name) {
-		Rogue current = null;
-		if(rogueMap==null) {
-			rogueMap = new HashMap<>();
-		}
-		if(rogueMap.get(name)==null) {
-			current = new Rogue();
-			rogueMap.put(name, current);
-		} else {
-			current = rogueMap.get(name);
-		}
-		return current;
-	}	
-	
-	
-	public static void findEntryForRogue(String logline) {
-		
-		String windfury="gains 1 extra attack through Windfury";
-		String crusader= "gains Holy Strength";
-		String flametongue="Flametongue Attack";
-		String sliceAndDice="gains Slice and Dice";
-		String bladeFlurry="gains Blade Flurry";
-		String backStabHits="Backstab hits";
-		String backStabcrits="Backstab crits";
-		String eviscerateHits="Eviscerate hits";
-		String eviscerateCrits="Eviscerate crits";
-		String sinisterStrikeHits="Sinister Strike hits";
-		String sinisterStrikeCrits="Sinister Strike crits";
-				
-		
-		if(logline.indexOf(sliceAndDice)>=0) {
-			Rogue rog = getRogueByName(General.getPlayerName(logline));
-			rog.setSliceAndDice(rog.getSliceAndDice()+1);
-		}
-		if(logline.indexOf(bladeFlurry)>=0) {
-			Rogue rog = getRogueByName(General.getPlayerName(logline));
-			rog.setBladeFlurry(rog.getBladeFlurry()+1);
-		}
-		if(logline.indexOf(windfury)>=0) {
-			Rogue rog = getRogueByName(General.getPlayerName(logline));
-			rog.setWindFury(rog.getWindFury()+1);
-		}
-		if(logline.indexOf(crusader)>=0) {
-			Rogue rog = getRogueByName(General.getPlayerName(logline));
-			rog.setCrusader(rog.getCrusader()+1);
-		}
-		if(logline.indexOf(flametongue)>=0) {
-			Rogue rog = getRogueByName(General.getPlayerName(logline));
-			rog.setFlametongue(rog.getFlametongue()+1);
-		}
-		if(logline.indexOf(backStabHits)>=0) {
-			Rogue rog = getRogueByName(General.getPlayerName(logline));
-			rog.setBackStabHits(rog.getBackStabHits()+1);
-		}
-		if(logline.indexOf(backStabcrits)>=0) {
-			Rogue rog = getRogueByName(General.getPlayerName(logline));
-			rog.setBackStabCrits(rog.getBackStabCrits()+1);
-		}
-		if(logline.indexOf(backStabHits)>=0 || logline.indexOf(backStabcrits)>=0) {
-			Rogue rogue = getRogueByName(General.getPlayerName(logline));
-			int currentAmount = General.getAmountAtEnd(backStabHits, backStabcrits, logline);
-			if(currentAmount>=rogue.getHighestBackStabAmount()) {
-				rogue.setHighestBackStabAmount(currentAmount);
-				rogue.setHighestBackStabTarget(General.getTarget(backStabHits, backStabcrits, logline));
-			}
-		}
-		if(logline.indexOf(eviscerateHits)>=0) {
-			Rogue rog = getRogueByName(General.getPlayerName(logline));
-			rog.setEviscerateHit(rog.getEviscerateHit()+1);
-		}
-		if(logline.indexOf(eviscerateCrits)>=0) {
-			Rogue rog = getRogueByName(General.getPlayerName(logline));
-			rog.setEviscerateCrit(rog.getEviscerateCrit()+1);
-		}
-		if(logline.indexOf(eviscerateHits)>=0 || logline.indexOf(eviscerateCrits)>=0) {
-			Rogue rogue = getRogueByName(General.getPlayerName(logline));
-			int currentAmount = General.getAmountAtEnd(eviscerateHits, eviscerateCrits, logline);
-			if(currentAmount>=rogue.getHighestEviscerateAmount()) {
-				rogue.setHighestEviscerateAmount(currentAmount);
-				rogue.setHighestEviscerateTarget(General.getTarget(eviscerateHits, eviscerateCrits, logline));
-			}
-		}
-		if(logline.indexOf(sinisterStrikeHits)>=0) {
-			Rogue rog = getRogueByName(General.getPlayerName(logline));
-			rog.setSinisterStrikeHit(rog.getSinisterStrikeHit()+1);
-		}
-		if(logline.indexOf(sinisterStrikeCrits)>=0) {
-			Rogue rog = getRogueByName(General.getPlayerName(logline));
-			rog.setSinisterStrikeCrit(rog.getSinisterStrikeCrit()+1);
-		}
-		if(logline.indexOf(sinisterStrikeHits)>=0 || logline.indexOf(sinisterStrikeCrits)>=0) {
-			Rogue rogue = getRogueByName(General.getPlayerName(logline));
-			int currentAmount = General.getAmountAtEnd(sinisterStrikeHits, sinisterStrikeCrits, logline);
-			if(currentAmount>=rogue.getHighestSinisterStrikeAmount()) {
-				rogue.setHighestSinisterStrikeAmount(currentAmount);
-				rogue.setHighestSinisterStrikeTarget(General.getTarget(sinisterStrikeHits, sinisterStrikeCrits, logline));
-			}
-		}
-		
-	}
-	
-	/*
-	 * 			strBuf.append("<html>");
-			strBuf.append("<head>");
-			strBuf.append("<style>");
-			strBuf.append("table, th, td {");
-			strBuf.append("  border: 1px solid black;");
-			strBuf.append("}");
-			strBuf.append("</style>");
-			strBuf.append("</head>");
-			strBuf.append("<body>");	
+    public static HashMap<String, Rogue> rogueMap = new HashMap<>(); 
 
-	 */
+    private static Rogue getRogueByName(String name) {
+        return rogueMap.computeIfAbsent(name, k -> new Rogue());
+    }
+
+    private static void updateRogueStats(String logline, String playerName, String keyword, Consumer<Rogue> action) {
+        if (logline.contains(keyword)) {
+        	Rogue rogue = getRogueByName(playerName);
+            action.accept(rogue);
+        }
+    }
+
+    private static void processAbility(String logline, String playerName, String hitKeyword, String critKeyword,
+                                       Consumer<Rogue> hitAction, Consumer<Rogue> critAction,
+                                       Consumer<Rogue> highestAmountAction) {
+    	updateRogueStats(logline, playerName, hitKeyword, hitAction);
+    	updateRogueStats(logline, playerName, critKeyword, critAction);
+
+        if (logline.contains(hitKeyword) || logline.contains(critKeyword)) {
+        	Rogue rogue = getRogueByName(playerName);
+            highestAmountAction.accept(rogue);
+        }
+    }
+
+	
+	
+	public static void findEntryForRogue(String logline, HashMap<String, ArrayList<NameClassWrapper>>  allValidPLayers) {
+    	String currentPlayer = General.getPlayerName(logline);
+    	if(!General.isPlayerInClassList(allValidPLayers, currentPlayer, Constants.ROGUE)) {
+    		return;
+    	}
+    	updateRogueStats(logline, currentPlayer, Constants.sliceAndDice, Rogue::incrementSliceAndDice);
+    	updateRogueStats(logline, currentPlayer, Constants.bladeFlurry, Rogue::incrementBladeFlurry);
+    	updateRogueStats(logline, currentPlayer, Constants.windfury, Rogue::incrementWindFury);
+    	updateRogueStats(logline, currentPlayer, Constants.crusader, Rogue::incrementCrusader);
+    	updateRogueStats(logline, currentPlayer, Constants.flametongue, Rogue::incrementFlameTongue);
+
+        processAbility(logline, currentPlayer, Constants.backStabHits, Constants.backStabcrits, 
+                Rogue::incrementBackStabHits, Rogue::incrementBackStabCrits,
+                warrior -> warrior.updateHighestBackstabAmount(General.getAmountAtEnd(Constants.backStabHits, Constants.backStabcrits, logline),
+                		General.getTarget(Constants.backStabHits, Constants.backStabcrits, logline))
+        );
+        
+        
+        processAbility(logline, currentPlayer, Constants.eviscerateHits, Constants.eviscerateCrits, 
+                Rogue::incrementEviscerateHit, Rogue::incrementEviscerateCrit,
+                warrior -> warrior.updateHighestEviscerateAmount(General.getAmountAtEnd(Constants.eviscerateHits, Constants.eviscerateCrits, logline),
+                		General.getTarget(Constants.eviscerateHits, Constants.eviscerateCrits, logline))
+        );
+
+        processAbility(logline, currentPlayer, Constants.sinisterStrikeHits, Constants.sinisterStrikeCrits, 
+                Rogue::incrementSinisterStrikeHit, Rogue::incrementSinisterStrikeCrit,
+                warrior -> warrior.updateHighestSinisterStrikeAmount(General.getAmountAtEnd(Constants.sinisterStrikeHits, Constants.sinisterStrikeCrits, logline),
+                		General.getTarget(Constants.sinisterStrikeHits, Constants.sinisterStrikeCrits, logline))
+        );
+	}
+
 
 	
 	
 	public static String getRogues() {
 		StringBuffer strBuf = new StringBuffer();
 		if(rogueMap!=null) {
-			Set<String> rogues =  rogueMap.keySet();
+			SortedSet<String> rogues =  new TreeSet<>(rogueMap.keySet());			
 			strBuf.append("<br>");				
 			strBuf.append("<body>");				
 			strBuf.append("<table class='classTable' align=\"left\" width='100%'>");
-			strBuf.append("<tr style='background-color: "+Constants.ROGUECOLOR+";'><td colspan='12'>ROGUE</td></tr>");
+			strBuf.append("<tr style='background-color: "+Constants.ROGUECOLOR+";'><td colspan='12'>"+Constants.ROGUE+"</td></tr>");
 			strBuf.append("<tr>");
 			strBuf.append("<th>Name</th>");
 			strBuf.append("<th>Windfury Procs</th>");
@@ -152,7 +97,6 @@ public class RogueUtils {
 			//System.out.println("Name | Sunders | Deathwish | WindfuryProcs | CrusaderProcs | extra rage from unbridled wrath | FlametongueProcs | Flurry | Enrage");
 			for (String rogueName : rogues) {
 				Rogue rogue = rogueMap.get(rogueName);
-				if(rogue.getSliceAndDice()>0 || rogue.getBladeFlurry()>0) {
 					strBuf.append("<tr>");
 					strBuf.append("<td>"+rogueName+"</td>");
 					strBuf.append("<td>"+rogue.getWindFury()+"</td>");
@@ -167,7 +111,6 @@ public class RogueUtils {
 					strBuf.append("<td>"+rogue.getSinisterStrikeHit()+" / "+rogue.getSinisterStrikeCrit()+"</td>");
 					strBuf.append("<td>"+rogue.getHighestSinisterStrikeAmount()+"=> "+rogue.getHighestSinisterStrikeTarget()+"</td>");					
 					strBuf.append("</tr>");
-				}
 			}
 			strBuf.append("</table>");
 		}

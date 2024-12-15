@@ -113,6 +113,16 @@ public class Players {
 				warriors.add(currentPlayer);
 			}
 		}
+		Collections.sort(druids);
+		Collections.sort(hunters);
+		Collections.sort(mages);
+		Collections.sort(paladins);
+		Collections.sort(priests);
+		Collections.sort(rogues);
+		Collections.sort(shamans);
+		Collections.sort(warlocks);
+		Collections.sort(warriors);
+		
 		resultMap.put("DRUID", druids);
 		resultMap.put("HUNTER", hunters);
 		resultMap.put("MAGE", mages);

@@ -4,6 +4,7 @@ import java.io.File;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.UUID;
 
 import org.eclipse.swt.SWT;
@@ -20,7 +21,10 @@ import helper.FileUtils;
 import helper.Filter;
 import helper.FtpUpload;
 import helper.HTMLUtils;
+import helper.classes.NameClassWrapper;
 import helper.classes.utils.General;
+import helper.classes.utils.MageUtils;
+import helper.classes.utils.Players;
 import helper.classes.utils.Raid;
 import helper.classes.utils.RogueUtils;
 import helper.classes.utils.WarlockUtils;
@@ -56,6 +60,7 @@ public class MainGui {
 	Button btnPriest = null;
 	Button btnHunter = null;
 	private Text passwordField;
+	HashMap<String, ArrayList<NameClassWrapper>> allPlayers = new HashMap<>();
 
 	
 	/**
@@ -132,7 +137,9 @@ public class MainGui {
 		        File f = new File(choosenFileInclPath);
 		        if(f.isFile()) {
 					fileAsArrayList = FileUtils.getFileAsArrayList(choosenFileInclPath);
-					playersHtml = HTMLUtils.getAllPlayers(fileAsArrayList);
+					allPlayers = new HashMap<>();
+					allPlayers = Players.getAllPlayersSortedByClass(fileAsArrayList);					
+					playersHtml = HTMLUtils.getAllPlayers(allPlayers);
 					raidName = Raid.getRaid(fileAsArrayList);
 					isAq40Raid = Raid.isAQ40Raid(raidName);
 					startTime = Filter.getStartTime(fileAsArrayList);
@@ -211,7 +218,7 @@ public class MainGui {
 		brnPaladin.setText("Paladin");
 		brnPaladin.setBounds(198, 168, 58, 16);
 		
-		btnMage.setEnabled(false);
+		btnMage.setSelection(true);
 		btnMage.setText("Mage");
 		btnMage.setBounds(198, 190, 58, 16);
 		
@@ -285,6 +292,7 @@ public class MainGui {
 				String warriors = ""; 
 				String warlocks = "";
 				String rogues = ""; 
+				String mages = "";
 				String aq40Stuff = "";
 				int i = 0;
 				int j=1;
@@ -296,16 +304,20 @@ public class MainGui {
 				int tenPercentLogLines = (fileAsArrayList.size() / 100) *11;
 				for (String string : fileAsArrayList) {
 					if(btnWarrior.getSelection()) {
-						WarriorUtils.findEntryForWarrior(string);
+						WarriorUtils.findEntryForWarrior(string, allPlayers);
 						warriors = WarriorUtils.getWarriors(); 
 					}
 					if(btnWarlock.getSelection()) {
-						WarlockUtils.findEntryForWarlock(string);						
-						warlocks = WarlockUtils.getWarlocks(); 
+						WarlockUtils.findEntryForWarlock(string, allPlayers);						
+						warlocks = WarlockUtils.getWarlocksHTML(); 
 					}
 					if(btnRogue.getSelection()) {
-						RogueUtils.findEntryForRogue(string);
+						RogueUtils.findEntryForRogue(string, allPlayers);
 						rogues = RogueUtils.getRogues(); 
+					}										
+					if(btnMage.getSelection()) {
+						MageUtils.findEntryForMage(string, allPlayers);
+						mages = MageUtils.getMagesHTML(); 
 					}										
 					if(i%tenPercentLogLines==0) {
 						processBar="..."+j+"0%...";
@@ -316,7 +328,7 @@ public class MainGui {
 				}
 				String classAbs = "<div style='font-size: 20; font-weight: bold;' >=> Class specific analyze</div>";
 				String br = "<br><br>";
-				HTMLUtils.writeFile(HTMLUtils.getAsHTMLString(playersHtml+classAbs+warriors+br+warlocks+br+rogues+br+aq40Stuff, raidName, date, startTime, endTime), true);
+				HTMLUtils.writeFile(HTMLUtils.getAsHTMLString(playersHtml+classAbs+warriors+mages+warlocks+rogues+aq40Stuff, raidName, date, startTime, endTime), true);
 				boolean ftpLognSuccess = false;
 				try {
 					if(btnGeneratePublicLink.getSelection()) {
@@ -387,7 +399,7 @@ public class MainGui {
 	private boolean allowCalculation() {
 		//at least one class selected?
 		boolean classValid = false;
-		if(btnWarrior.getSelection() || btnRogue.getSelection() || btnWarlock.getSelection()) {
+		if(btnWarrior.getSelection() || btnRogue.getSelection() || btnWarlock.getSelection() || btnMage.getSelection()) {
 			classValid = true;
 		}
 		if(classValid && validTimes) {

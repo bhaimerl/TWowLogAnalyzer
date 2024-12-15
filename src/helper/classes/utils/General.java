@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.StringTokenizer;
 
+import helper.classes.NameClassWrapper;
+
 public class General {
 
 	
@@ -196,8 +198,22 @@ public class General {
 			WarriorUtils.warriorMap = new HashMap<>();
 			RogueUtils.rogueMap = new HashMap<>();
 			WarlockUtils.warlockMap = new HashMap<>(); 
+			MageUtils.mageMap = new HashMap<>();
 		}
 		
+		
+		public static boolean isPlayerInClassList(HashMap<String, ArrayList<NameClassWrapper>> allPlayers, String playerName, String className) {
+			boolean isThere = false;
+			ArrayList<NameClassWrapper> allPlayersOfThisClass = allPlayers.get(className);
+			if(allPlayersOfThisClass!=null && allPlayersOfThisClass.size()>0) {
+				for (NameClassWrapper nameClassWrapper : allPlayersOfThisClass) {
+					if(nameClassWrapper!=null && nameClassWrapper.getName().equals(playerName)) {
+						return true;
+					}
+				}
+			}
+			return isThere;
+		}
 
 	
 }

@@ -79,8 +79,7 @@ public class HTMLUtils {
 		return strBuf.toString();
 	}
 	
-	public static String getAllPlayers(ArrayList<String> allCnt) {
-		HashMap<String, ArrayList<NameClassWrapper>> allPlayers = Players.getAllPlayersSortedByClass(allCnt);
+	public static String getAllPlayers(HashMap<String, ArrayList<NameClassWrapper>> allPlayers) {
 		StringBuffer strBuf = new StringBuffer();
 		strBuf.append("<div style='font-size: 20; font-weight: bold;' >=>Players in raid</div><br>");
 		strBuf.append("<table>");		

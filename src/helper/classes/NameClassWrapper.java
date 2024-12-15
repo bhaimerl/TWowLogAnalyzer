@@ -39,7 +39,9 @@ public class NameClassWrapper implements Comparable<NameClassWrapper>{
 	}
 	@Override
 	public int compareTo(NameClassWrapper o) {
-		return this.playerClass.compareTo(o.getPlayerClass());
+		int classCompare = this.playerClass.compareTo(o.getPlayerClass());
+		if(classCompare!=0) { return classCompare; }
+		return this.name.compareTo(o.getName());
 	}
 	
 	

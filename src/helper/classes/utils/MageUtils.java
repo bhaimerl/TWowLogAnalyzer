@@ -1,85 +1,160 @@
 package helper.classes.utils;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.SortedSet;
+import java.util.TreeSet;
+import java.util.function.Consumer;
 
 import helper.classes.Mage;
-import helper.classes.Warlock;
+import helper.classes.NameClassWrapper;
 
 public class MageUtils {
 	
-	public static HashMap<String, Mage> magemap = null;
+	public static HashMap<String, Mage> mageMap = new HashMap<>();;
+
+    private static Mage getMageByName(String name) {
+        return mageMap.computeIfAbsent(name, k -> new Mage());
+    }
+
+    private static void updateMageStats(String logline, String playerName, String keyword, Consumer<Mage> action) {
+        if (logline.contains(keyword)) {
+            Mage mage = getMageByName(playerName);
+            action.accept(mage);
+        }
+    }
+
+    private static void processAbility(String logline, String playerName, String hitKeyword, String critKeyword,
+                                       Consumer<Mage> hitAction, Consumer<Mage> critAction,
+                                       Consumer<Mage> highestAmountAction) {
+    	updateMageStats(logline, playerName, hitKeyword, hitAction);
+    	updateMageStats(logline, playerName, critKeyword, critAction);
+
+        if (logline.contains(hitKeyword) || logline.contains(critKeyword)) {
+            Mage mage = getMageByName(playerName);
+            highestAmountAction.accept(mage);
+        }
+    }
 
 	
-	private static Mage getMageByName(String name) {
-		Mage current = null;
-		if(magemap==null) {
-			magemap = new HashMap<>();
-		}
-		if(magemap.get(name)==null) {
-			current = new Mage();
-			magemap.put(name, current);
-		} else {
-			current = magemap.get(name);
-		}
-		return current;
-	}	
+	public static void findEntryForMage(String logline, HashMap<String, ArrayList<NameClassWrapper>>  allValidPLayers) {
+    	//bezieht sich die aktuelle Zeile auf einen Warlock?
+    	String currentPlayer = General.getPlayerName(logline);
+    	if(!General.isPlayerInClassList(allValidPLayers, currentPlayer, Constants.MAGE)) {
+    		return;
+    	}
+		
+        processAbility(logline, currentPlayer, Constants.fireBlastHits, Constants.fireBlastCrits, 
+                Mage::incrementFireBlastHits, Mage::incrementFireBlastCrits,
+                mage -> mage.updateHighestFireBlastAmount(General.getAmountAtEnd(Constants.fireBlastHits, Constants.fireBlastCrits, logline),
+                									General.getTarget(Constants.fireBlastHits, Constants.fireBlastCrits, logline))
+        );
+        processAbility(logline, currentPlayer, Constants.fireBallHits, Constants.fireBallCrits, 
+            Mage::incrementFireBallHits, Mage::incrementFireBallCrits,
+            mage -> mage.updateHighestFireBallAmount(General.getAmountAtEnd(Constants.fireBallHits, Constants.fireBallCrits, logline),
+                                                     General.getTarget(Constants.fireBallHits, Constants.fireBallCrits, logline))
+        );
+        processAbility(logline, currentPlayer, Constants.arcaneRuptureHits, Constants.arcaneRuptureCrits, 
+                Mage::incrementArcaneRuptureHits, Mage::incrementArcaneRuptureCrits,
+                mage -> mage.updateHighestArcaneRuptureAmount(General.getAmountAtEnd(Constants.arcaneRuptureHits, Constants.arcaneRuptureCrits, logline),
+                                                    General.getTarget(Constants.arcaneRuptureHits, Constants.arcaneRuptureCrits, logline))
+        );
+        processAbility(logline, currentPlayer, Constants.arcaneSurgeHits, Constants.arcaneSurgeCrits, 
+                Mage::incrementArcaneSurgeHits, Mage::incrementArcaneSurgeCrits,
+                mage -> mage.updateHighestArcaneSurgeAmount(General.getAmountAtEnd(Constants.arcaneSurgeHits, Constants.arcaneSurgeCrits, logline),
+                                                    General.getTarget(Constants.arcaneSurgeHits, Constants.arcaneSurgeCrits, logline))
+        );
+        processAbility(logline, currentPlayer, Constants.arcaneMissleHits, Constants.arcaneMissleCrits, 
+                Mage::incrementArcaneMisslesHits, Mage::incrementArcaneMisslesCrits,
+                mage -> mage.updateHighestArcaneMissleAmount(General.getAmountAtEnd(Constants.arcaneMissleHits, Constants.arcaneMissleCrits, logline),
+                                                    General.getTarget(Constants.arcaneMissleHits, Constants.arcaneMissleCrits, logline))
+        );
+        processAbility(logline, currentPlayer, Constants.pyroBlastHits, Constants.pyroBlastCrits, 
+                Mage::incrementPyroBlastHits, Mage::incrementPyroBlastCrits,
+                mage -> mage.updateHighestPyroBlastAmount(General.getAmountAtEnd(Constants.pyroBlastHits, Constants.pyroBlastCrits, logline),
+                                                    General.getTarget(Constants.pyroBlastHits, Constants.pyroBlastCrits, logline))
+        );
 
-	
-	public static void findEntryForMage(String logline) {
-		
-		
-		
-		String fireBlastCrits = "Fire Blast crits";
-		String fireBlastHits = "Fire Blast hits";
-		
-		String arcaneRuptureCrits = "Arcane Rupture crits";
-		String arcaneRuptureHits = "Arcane Rupture hits";
-		
-		String fireBallCrits = "Fireball crits";
-		String fireBallHits = "Fireball hits";
-		
-		String arcaneSurgeCrits = "Arcane Surge crits";
-		String arcaneSurgeHits = "Arcane Surge hits";	
-
-		String arcaneMissleCrits = "Arcane Missiles crits";
-		String arcaneMissleHits = "Arcane Missiles hits";
-		
-		String pyroBlastCrits = "Pyroblast crits";
-		String pyroBlastHits = "Pyroblast hits";
-		
-		String scorchCrits = "Scorch crits";
-		String scorchHits = "Scorch hits";
-		
-
-		String shadowtrance="gains Shadow Trance";
-		String lifetaps="Life Tap.";
-		String manaFromLifeTaps="Life Tap.";
-		String shadowBolthit="Shadow Bolt hits";
-		String shadowBoltCrit="Shadow Bolt crits ";
-		String soulFirehit="Soul Fire hits ";
-		String soulFireCrit="Soul Fire crits ";
-		String searingPainhit="Searing Pain hits ";
-		String searingPainCrit="Searing Pain crits ";
-		String immolateHit="Immolate hits ";
-		String immolateCrit="Immolate crits ";
-		String conflagrateHit="Conflagrate hits ";
-		String conflagrateCrit="Conflagrate crits ";
-		
-		
+        processAbility(logline, currentPlayer, Constants.scorchHits, Constants.scorchCrits, 
+                Mage::incrementScorchHits, Mage::incrementScorchCrits,
+                mage -> mage.updateHighestScorchAmount(General.getAmountAtEnd(Constants.scorchHits, Constants.scorchCrits, logline),
+                                                    General.getTarget(Constants.scorchHits, Constants.scorchCrits, logline))
+        );
+        
+        //CasterCommon
 		//Mana gains
-		if(logline.indexOf(Constants.manFromVampirismTouch)>=0) {
-			Mage mage = getMageByName(General.getPlayerName(logline));
-			mage.setManaFromVampiricTouch(mage.getManaFromVampiricTouch()+General.getAmountGains(Constants.manFromVampirismTouch, logline));
-		}
-		if(logline.indexOf(Constants.manaFromJudgement)>=0 && logline.indexOf("Mana")>=0) {
-			Mage mage = getMageByName(General.getPlayerName(logline));
-			mage.setManaFromJudgementOfWisdom(mage.getManaFromJudgementOfWisdom()+General.getAmountGains(Constants.manaFromJudgement, logline));
-		}
-		if(logline.indexOf(Constants.manaFromBOW)>=0 && logline.indexOf("gains")>=0) {
-			Mage mage = getMageByName(General.getPlayerName(logline));
-			mage.setManFrombow(mage.getManFrombow()+General.getAmountGains(Constants.manaFromBOW, logline));
-		}
-		
+        updateMageStats(logline, currentPlayer, Constants.manFromVampirismTouch, mage -> 
+        	mage.addManaFromVampiricTouch(General.getAmountGains(Constants.manFromVampirismTouch, logline))
+        );
+
+        updateMageStats(logline, currentPlayer, Constants.manaFromJudgement, mage -> {
+        if (logline.contains("Mana")) {
+        	mage.addManaFromJudgementOfWisdom(General.getAmountGains(Constants.manaFromJudgement, logline));
+        }
+        });
+
+        updateMageStats(logline, currentPlayer, Constants.manaFromBOW, mage -> {
+        if (logline.contains("gains")) {
+        	mage.addManaFromBow(General.getAmountGains(Constants.manaFromBOW, logline));
+        }
+        });
 	}
+	
+	
+	//	int highestFireBlast = 0; / highestFireBall / highestArcaneRupture / highestArcaneSurge / highestArcaneMissle / highestPyroBlast / highestScorch
+
+    public static String getMagesHTML() {
+        StringBuilder strBuf = new StringBuilder();
+        if (!mageMap.isEmpty()) {
+			SortedSet<String> mages =  new TreeSet<>(mageMap.keySet());			
+            strBuf.append("<br><body><table class='classTable' align=\"left\" width='100%'>")
+                  .append("<tr style='background-color: ").append(Constants.MAGECOLOR).append(";'>")
+                  .append("<td colspan='18'>"+Constants.MAGE+"</td></tr><tr>")
+                  .append("<th>Name</th>")
+                  .append("<th>Mana VampiricTouch</th><th>Mana Judgement</th><th>Mana BOW</th>")
+                  .append("<th>FireBlast Hit/Crit</th><th>Highest FBlast</th>")
+            	  .append("<th>FireBall Hit/Crit</th><th>Highest FBall</th>")
+            	  .append("<th>ArcaneRupture Hit/Crit</th><th>Highest Rupture</th>")
+            	  .append("<th>ArcaneSurge Hit/Crit</th><th>Highest Surge</th>")
+            	  .append("<th>ArcaneMissles Hit/Crit</th><th>Highest Missle</th>")
+            	  .append("<th>PyroBlast Hit/Crit</th><th>Highest PBlast</th>")
+            	  .append("<th>Scorch Hit/Crit</th><th>Highest Scorch</th>")
+                  .append("</tr>");
+
+            for (String mageName : mages) {
+                Mage mage= mageMap.get(mageName);
+                    strBuf.append("<tr>")
+                          .append("<td>").append(mageName).append("</td>")
+                          .append("<td>").append(mage.getManaFromVampiricTouch()).append("</td>")
+                          .append("<td>").append(mage.getManaFromJudgementOfWisdom()).append("</td>")
+                          .append("<td>").append(mage.getManFrombow()).append("</td>")
+                          .append("<td>").append(mage.getFireBlastHits()).append(" / ").append(mage.getFireBlastCrits()).append("</td>")
+                          .append("<td>").append(mage.getHighestFireBlast()).append(" => ").append(mage.getHighestFireBlastTarget()).append("</td>")
+
+                          .append("<td>").append(mage.getFireBallHits()).append(" / ").append(mage.getFireBallCrits()).append("</td>")
+                          .append("<td>").append(mage.getHighestFireBall()).append(" => ").append(mage.getHighestFireBallTarget()).append("</td>")
+                          
+                          .append("<td>").append(mage.getArcaneRuptureHits()).append(" / ").append(mage.getArcaneRuptureCrits()).append("</td>")
+                          .append("<td>").append(mage.getHighestArcaneRupture()).append(" => ").append(mage.getHighestArcaneRuptureTarget()).append("</td>")
+
+                          .append("<td>").append(mage.getArcaneSurgeHits()).append(" / ").append(mage.getArcaneSurgeCrits()).append("</td>")
+                          .append("<td>").append(mage.getHighestArcaneSurge()).append(" => ").append(mage.getHighestArcaneSurgeTarget()).append("</td>")
+
+                          .append("<td>").append(mage.getArcaneMissleHits()).append(" / ").append(mage.getArcaneMissleCrits()).append("</td>")
+                          .append("<td>").append(mage.getHighestArcaneMissle()).append(" => ").append(mage.getHighestArcaneMissleTarget()).append("</td>")
+
+                          .append("<td>").append(mage.getPyroBlastHits()).append(" / ").append(mage.getPyroBlastCrits()).append("</td>")
+                          .append("<td>").append(mage.getHighestPyroBlast()).append(" => ").append(mage.getHighestPyroBlastTarget()).append("</td>")
+
+                          .append("<td>").append(mage.getScorchHits()).append(" / ").append(mage.getScorchCrits()).append("</td>")
+                          .append("<td>").append(mage.getHighestScorch()).append(" => ").append(mage.getHigehstScorchTarget()).append("</td>")
+
+                          .append("</tr>");
+            }
+            strBuf.append("</table>");
+        }
+        return strBuf.toString();
+    }
+	
 
 }
