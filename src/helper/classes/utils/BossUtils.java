@@ -21,14 +21,17 @@ public class BossUtils {
     }
 
     
-	private static void getBossStats(ArrayList<String> completeLog, String bossName) {
+	private static void getBossStats(ArrayList<String> completeLog, String bossName) { 
 		ArrayList<String> bossLogs = General.getLogsFromBossByName(bossName, completeLog);
 		ArrayList<String> sunderlogs = General.getOnlySunderLogs(bossLogs);
 		Boss boss = new Boss();
 		for (int i=0;i<sunderlogs.size();i++) {
 			String string = sunderlogs.get(i);
 			if(string.contains("casts Sunder Armor")) {
-				boss.setHelpedToSunderUntil5((boss.getHelpedToSunderUntil5()+" "+General.getPlayerName(string)).trim());
+				String playerWhoSundered = General.getPlayerName(string);
+				if(!boss.getHelpedToSunderUntil5().contains(playerWhoSundered)) {
+					boss.setHelpedToSunderUntil5((boss.getHelpedToSunderUntil5()+" "+General.getPlayerName(string)).trim());
+				}
 			}
 			if(string.contains("is afflicted by Sunder Armor (5).")) {
 				//sunderLogsAppliersUntil5.add(string);
@@ -48,29 +51,36 @@ public class BossUtils {
 		}
 		
 		for (String string : bossLogs) {
-			//crits Anub'Rekhan
-			if(string.contains("hits "+bossName) || string.contains("crits "+bossName)) {
+			//crits mit Cthun sonderlocke
+			if(string.contains("hits "+bossName) || string.contains("crits "+bossName) || string.contains("crits Eye of "+bossName) || string.contains("hits Eye of "+bossName)) {
 				boss.setFirstHitTime(General.getEntryAtPosition(string, 1).substring(0,8));
 				break;
 			}
-		}
+		} 
 
 		for (int a=bossLogs.size()-1;a>0;a--) {
 			String currentLine = bossLogs.get(a);
 			if(currentLine.contains(boss.getName()+" dies")) {
 				boss.setDiedTime(General.getEntryAtPosition(currentLine, 1).substring(0,8));
+				break;
 			}
 		}
+		boolean reckApplied = false;
+		boolean shadowsApplied = false;
+		boolean elementsApplied = false;
 		for (String string : bossLogs) {
-			if(string.contains("is afflicted by Curse")) {
-				if(string.contains("is afflicted by Curse of Recklessness")) {
+			if(string.contains("is afflicted by Curse") || string.contains("gains Curse")) {
+				if(reckApplied==false && string.contains("is afflicted by Curse of Recklessness") || string.contains("gains Curse of Recklessness")) {
 					boss.setCurseOfRecklessness(General.getEntryAtPosition(string, 1).substring(0,8));
+					reckApplied = true;
 				}
-				if(string.contains("is afflicted by Curse of Shadow")) {
+				if(shadowsApplied==false && string.contains("is afflicted by Curse of Shadow") || string.contains("gains Curse of Shadow")) {
 					boss.setCurseOfShadow(General.getEntryAtPosition(string, 1).substring(0,8));
+					shadowsApplied = true;
 				}
-				if(string.contains("is afflicted by Curse of the Elements")) {
+				if(elementsApplied==false && string.contains("is afflicted by Curse of the Elements") || string.contains("gains Curse of the Elements")) {
 					boss.setCurseOfElements(General.getEntryAtPosition(string, 1).substring(0,8));
+					elementsApplied = true;
 				}
 			}
 		}
@@ -91,11 +101,12 @@ public class BossUtils {
 			strBuf.append("<br>");				
 			strBuf.append("<body>");				
 			strBuf.append("<table class='classTable' align=\"left\" width='100%'>");
-			strBuf.append("<tr style='background-color: gray;'><td colspan='7'>BossStats</td></tr>");
+			strBuf.append("<tr style='background-color: gray;'><td colspan='8'>BossStats</td></tr>");
 			strBuf.append("<tr>");
 			strBuf.append("<th>Name</th>");
 			strBuf.append("<th>FirstHit</th>");
 			strBuf.append("<th>First 5 Sunders</th>");
+			strBuf.append("<th>First Sunders Appliers</th>");
 			strBuf.append("<th>Curse of Elements</th>");
 			strBuf.append("<th>Curse of Shadows</th>");
 			strBuf.append("<th>Curse of Recklessness</th>");
@@ -112,6 +123,7 @@ public class BossUtils {
 					strBuf.append("<td>"+boss.getName()+"</td>");
 					strBuf.append("<td>"+boss.getFirstHitTime()+"</td>");
 					strBuf.append("<td>"+boss.getSunderTimes()+"</td>");
+					strBuf.append("<td>"+boss.getHelpedToSunderUntil5()+"</td>");
 					strBuf.append("<td>"+boss.getCurseOfElements()+"</td>");
 					strBuf.append("<td>"+boss.getCurseOfShadow()+"</td>");
 					strBuf.append("<td>"+boss.getCurseOfRecklessness()+"</td>");

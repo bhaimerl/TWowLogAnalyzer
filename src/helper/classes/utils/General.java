@@ -147,8 +147,12 @@ public class General {
 			strTok.nextElement(); //Uhrzeit
 			strTok.nextElement(); //Name
 			strTok.nextElement();//suffers			
-			String amount = strTok.nextElement()+"";//suffers
-			//System.out.println(amount);
+			if(bossname.contains(" ")) {
+				while(!strTok.nextToken().contains("suffers")) {
+					continue;
+				}
+			}
+			String amount = strTok.nextElement()+"";//amount
 			result = Integer.parseInt(amount); //suffersAmount
 		}
 		return result;

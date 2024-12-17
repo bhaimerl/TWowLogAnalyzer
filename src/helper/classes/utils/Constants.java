@@ -2,7 +2,7 @@ package helper.classes.utils;
 
 public class Constants {
 	
-	public static final String VERSION = "v0.0.8";
+	public static final String VERSION = "v0.0.9";
 	
 	
 	public static final String DRUIDCOLOR = "#FF7D0A";

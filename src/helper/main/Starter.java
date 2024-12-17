@@ -9,22 +9,24 @@ import helper.Raids.RaidBossMapping;
 import helper.classes.utils.General;
 import helper.classes.utils.WarriorUtils;
 import helper.classes.utils.besonderes.BarovUtils;
+import helper.classes.utils.besonderes.NightFallUtils;
 
 public class Starter {
 	
 	public static void main(String[] args) { 
-		ArrayList<String> fileAsArrayList = FileUtils.getFileAsArrayList("C:\\WoWCombatLogBWLMC.txt");
-		RaidBossMapping.getBossesFromLog(fileAsArrayList);
-		ArrayList<String> logsFromBossByName = General.getLogsFromBossByName(RaidBossMapping.heiganTheUnclean, fileAsArrayList);
+		ArrayList<String> fileAsArrayList = FileUtils.getFileAsArrayList("C:\\WoWCombatLogAQAQ.txt");
+		ArrayList<String> bossesFromLog = RaidBossMapping.getBossesFromLog(fileAsArrayList);
+		NightFallUtils.calculateBossStats(fileAsArrayList);
+//		ArrayList<String> logsFromBossByName = General.getLogsFromBossByName(RaidBossMapping.heiganTheUnclean, fileAsArrayList);
 //		Boss boss = General.getBossStats(logsFromBossByName, RaidBossMapping.heiganTheUnclean);
 //		System.out.println(boss);
 //		for (String string : sunderlogsUntil5) {
 //			//System.out.println(string);
 //		}
-		ArrayList<String> cursesOnBoss = General.getCursesOnBoss(logsFromBossByName);
-		for (String string : cursesOnBoss) {
-			//System.out.println(string);
-		}
+//		ArrayList<String> cursesOnBoss = General.getCursesOnBoss(logsFromBossByName);
+//		for (String string : cursesOnBoss) {
+//			//System.out.println(string);
+//		}
 		//HTMLUtils.writeFile(HTMLUtils.getAsHTMLString(warriors), true);
 //		
 //		

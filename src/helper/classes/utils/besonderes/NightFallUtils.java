@@ -2,10 +2,22 @@ package helper.classes.utils.besonderes;
 
 import java.util.ArrayList;
 
+import helper.Raids.RaidBossMapping;
 import helper.classes.besonderes.SpellVulnerability;
+import helper.classes.utils.BossUtils;
+import helper.classes.utils.General;
 
 public class NightFallUtils {
 
+	
+    public static void calculateBossStats(ArrayList<String> completeLog) {
+    	ArrayList<String> bossesFromLog = RaidBossMapping.getBossesFromLog(completeLog);
+    	for (String currentBoss : bossesFromLog) {
+    		ArrayList<String> bossLogs = General.getLogsFromBossByName(currentBoss, completeLog);
+    		calcDamage(bossLogs, currentBoss);
+    	}
+    }
+	
 	
 	
 	public static ArrayList<ArrayList<String>> getAllLogsWithinElementalVulnerability(ArrayList<String> bossLogs) {
@@ -20,12 +32,16 @@ public class NightFallUtils {
 				boolean addNext = true;
 				while(addNext) {
 					i+=1;
-					if(bossLogs.get(i).indexOf("Spell Vulnerability fades from ")>=0) {
-						addNext = false;						
-						dmgIntervallWIthingSpellVulnera.add(bossLogs.get(i));
+					if(bossLogs.size()>i) {
+						if(bossLogs.get(i).indexOf("Spell Vulnerability fades from ")>=0) {
+							addNext = false;						
+							dmgIntervallWIthingSpellVulnera.add(bossLogs.get(i));
+						} else {
+							addNext = true;
+							dmgIntervallWIthingSpellVulnera.add(bossLogs.get(i));
+						}
 					} else {
-						addNext = true;
-						dmgIntervallWIthingSpellVulnera.add(bossLogs.get(i));
+						addNext = false;
 					}
 				}
 				resultComplete.add(dmgIntervallWIthingSpellVulnera);
@@ -37,11 +53,11 @@ public class NightFallUtils {
 	
 	
 
-	public static void calcDamage(ArrayList<String> logsFromBossByName) {		
+	public static void calcDamage(ArrayList<String> logsFromBossByName,String bossName) {		
 		ArrayList<ArrayList<String>> allLogsWithinElementalVulnerability = NightFallUtils.getAllLogsWithinElementalVulnerability(logsFromBossByName);
 
 		SpellVulnerability sv = new SpellVulnerability();
-		sv.fillData(allLogsWithinElementalVulnerability);
+		sv.fillData(allLogsWithinElementalVulnerability, bossName);
 		
 		
 //		int amountBlock = 0;
@@ -52,8 +68,8 @@ public class NightFallUtils {
 //			amountBlock = 0;
 //			for (String currentLine : dmGBlockList) {
 //				if(currentLine.indexOf("Fire damage")>=0 || currentLine.indexOf("Arcane damage")>=0 || currentLine.indexOf("Nature damage")>=0 ||
-//						currentLine.indexOf("Holy damage")>=0 || currentLine.indexOf("Shadow damage")>=0) {
-//					amountBlock += General.getDmgAmountForNightFall("Thaddius", currentLine);
+//						currentLine.indexOf("Holy damage")>=0 || currentLine.indexOf("Shadow damage")>=0 || currentLine.indexOf("Frost damage")>=0) {
+//					amountBlock += General.getDmgAmountForNightFall(bossName, currentLine);
 //				}
 //					
 //				//hier schauen, aller magischer schaden
@@ -69,7 +85,6 @@ public class NightFallUtils {
 //		}		
 //		System.out.println("Gesamter magischer Schaden waehrend Nightfall (Spell Vulnerability): " + amountComplete + " fuer insgesamt "+allLogsWithinElementalVulnerability.size()+" procs");
 //		System.out.println("Davon 10% sind: "+((amountComplete/100) * 10));
-//	}
+	}
 	
-}
 }
