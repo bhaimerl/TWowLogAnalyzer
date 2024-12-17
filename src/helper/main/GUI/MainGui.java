@@ -5,6 +5,7 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Set;
 import java.util.UUID;
 
 import org.eclipse.swt.SWT;
@@ -21,7 +22,9 @@ import helper.FileUtils;
 import helper.Filter;
 import helper.FtpUpload;
 import helper.HTMLUtils;
+import helper.Raids.RaidBossMapping;
 import helper.classes.NameClassWrapper;
+import helper.classes.utils.BossUtils;
 import helper.classes.utils.Constants;
 import helper.classes.utils.General;
 import helper.classes.utils.HunterUtils;
@@ -44,7 +47,6 @@ public class MainGui {
 	private Text bossByNameText;
 	private ArrayList<String> fileAsArrayList = null;
 	private String raidName = "";
-	private boolean isAq40Raid = false;
 	String playersHtml ="";
 	String startTime = "";
 	String endTime = "";
@@ -142,8 +144,6 @@ public class MainGui {
 					allPlayers = new HashMap<>();
 					allPlayers = Players.getAllPlayersSortedByClass(fileAsArrayList);					
 					playersHtml = HTMLUtils.getAllPlayers(allPlayers);
-					raidName = Raid.getRaid(fileAsArrayList);
-					isAq40Raid = Raid.isAQ40Raid(raidName);
 					startTime = Filter.getStartTime(fileAsArrayList);
 					endTime = Filter.getEndTime(fileAsArrayList);
 					date = Filter.getDate(fileAsArrayList);
@@ -297,10 +297,20 @@ public class MainGui {
 				String mages = "";
 				String aq40Stuff = "";
 				String hunters = "";
+				String boss = "";
+				String raids = "";
 				int i = 0;
 				int j=1;
 				String processBar = "";
-				if(isAq40Raid) {
+		    	ArrayList<String> bossesFromLog = RaidBossMapping.getBossesFromLog(fileAsArrayList);
+				BossUtils.calculateBossStats(fileAsArrayList, bossesFromLog);
+				boss = BossUtils.getBossStatsHTML();
+				Set<String> raidFromBosses = RaidBossMapping.getRaidFromBosses(bossesFromLog);
+				for (String string : raidFromBosses) {
+					raids+=string+" ";
+				}
+				raids = raids.trim();
+				if(raids.contains("AQ40")) {
 					aq40Stuff+=BarovUtils.doAQChecksTogether(fileAsArrayList);
 				}
 				
@@ -325,8 +335,7 @@ public class MainGui {
 					if(btnHunter.getSelection()) {
 						HunterUtils.findEntryForHunter(string, allPlayers);
 						hunters = HunterUtils.getHunterHTML(); 
-					}										
-					
+					}						
 					if(i%tenPercentLogLines==0) {
 						processBar="..."+j+"0%...";
 						lblInvalidInputData.setText(processBar);
@@ -336,7 +345,7 @@ public class MainGui {
 				}
 				String classAbs = "<div style='font-size: 20; font-weight: bold;' >=> Class specific analyze</div>";
 				String br = "<br><br>";
-				HTMLUtils.writeFile(HTMLUtils.getAsHTMLString(playersHtml+classAbs+warriors+mages+hunters+warlocks+rogues+aq40Stuff, raidName, date, startTime, endTime), true);
+				HTMLUtils.writeFile(HTMLUtils.getAsHTMLString(playersHtml+boss+aq40Stuff+classAbs+warriors+mages+hunters+warlocks+rogues, raidName, date, startTime, endTime, raids), true);
 				boolean ftpLognSuccess = false;
 				try {
 					if(btnGeneratePublicLink.getSelection()) {

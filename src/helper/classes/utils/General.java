@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.StringTokenizer;
 
+import helper.Raids.Boss;
 import helper.classes.NameClassWrapper;
 
 public class General {
@@ -13,14 +14,61 @@ public class General {
 		ArrayList<String> result = new ArrayList<>();
 		int i=1;
 		for (String currentLine : completeLog) {
-			if(currentLine.indexOf(bossname)>=0) {
-				//System.out.println(i+++" :" +currentLine);
-				result.add(currentLine);
+			if(currentLine.contains(bossname)) {
+				if(!currentLine.contains("Hunter's Mark")) {
+					result.add(currentLine);
+				}
 			}
 		}
 		return result;
 	}
 	
+	public static ArrayList<String> getOnlySunderLogs(ArrayList<String> logList) {
+		ArrayList<String> sunderLogs = new ArrayList<>();
+		for (String string : logList) {
+			if(string.contains("Sunder Armor")) {
+				sunderLogs.add(string);
+			}
+		}
+		return sunderLogs;
+	}
+	
+
+	
+	
+	
+	public static ArrayList<String> getCursesOnBoss(ArrayList<String> logList) {
+		ArrayList<String> sunderLogs = new ArrayList<>();
+		for (String string : logList) {
+			if(string.contains("is afflicted by Curse")) {
+				if(string.contains("Recklessness") || string.contains("Shadow") || string.contains("Elements")) {
+					sunderLogs.add(string);
+				}
+			}
+		}
+		return sunderLogs;
+	}
+	
+	
+	
+	//is afflicted by Sunder Armor (5).
+	public static String getSunderArmorStack(String logline) {
+		String stack="0";
+		String saStr = "is afflicted by Sunder Armor (";
+		int hit = logline.indexOf(saStr);
+		if(logline.contains(saStr)) {
+			stack= logline.substring(hit+saStr.length());
+			stack = stack.replace(").", "");
+//			String name = getPlayerName(logline);
+//			String time = getTimeFromLog(logline);
+//			stack = time+" "+name+" Sunder Armor Nr: "+stack;
+		}
+		return stack;
+	}
+
+	public static String getTimeFromLog(String logline) {
+		return getEntryAtPosition(logline,1);
+	}
 
 	public static String getPlayerName(String logline) {
 		String playerName = "";
@@ -200,6 +248,7 @@ public class General {
 			WarlockUtils.warlockMap = new HashMap<>(); 
 			MageUtils.mageMap = new HashMap<>();
 			HunterUtils.hunterMap = new HashMap<>();
+			BossUtils.bossMap = new HashMap<>();
 		}
 		
 		

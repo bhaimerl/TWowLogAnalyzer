@@ -46,7 +46,7 @@ public class HTMLUtils {
 		}
 	}
 	
-	public static String getAsHTMLString(String given, String raidName, String date, String start, String end) {
+	public static String getAsHTMLString(String given, String raidName, String date, String start, String end, String raids) {
 		StringBuffer strBuf = new StringBuffer();
 	 	strBuf.append("<html>");
 		strBuf.append("<head><title>Klarasprudels TWOWLogAnalyzer "+Constants.VERSION+"</title>");
@@ -65,7 +65,7 @@ public class HTMLUtils {
 
 		strBuf.append("</style>");
 		strBuf.append("</head>");
-		strBuf.append("Raid from: "+date+" "+start+" to: "+end);		
+		strBuf.append("Raid/s("+raids+") from: "+date+" "+start+" to: "+end);		
 		strBuf.append("<body>");		
 		strBuf.append("<table class='borderTable'>");		
 		strBuf.append("<tr>");		
