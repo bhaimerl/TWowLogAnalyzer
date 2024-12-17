@@ -1,6 +1,8 @@
 package helper.classes.utils;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Set;
 
@@ -79,7 +81,12 @@ public class BossUtils {
 	public static String getBossStatsHTML() {
 		StringBuffer strBuf = new StringBuffer();
 		if(bossMap!=null) {
-			Set<String> bosses =  bossMap.keySet();			
+			Set<String> bosses =  bossMap.keySet();		
+			ArrayList<Boss> sortedBosses = new ArrayList<>();
+			for (String bossName : bosses) {
+				Boss boss = bossMap.get(bossName);
+				sortedBosses.add(boss);
+			}
 			strBuf.append("<br><br><div style='font-size: 20; font-weight: bold;' >Boss Stats </div><br>");			
 			strBuf.append("<br>");				
 			strBuf.append("<body>");				
@@ -96,8 +103,8 @@ public class BossUtils {
 			strBuf.append("</tr>");
 			//Ballertony: [sunders=122, deathWish=18, windFury=236, crusader=74, wrath=264, flametongue=314, flurry=313, enrage=161]
 			//System.out.println("Name | Sunders | Deathwish | WindfuryProcs | CrusaderProcs | extra rage from unbridled wrath | FlametongueProcs | Flurry | Enrage");
-			for (String bossName : bosses) {
-				Boss boss = bossMap.get(bossName);
+			Collections.sort(sortedBosses);
+			for (Boss boss : sortedBosses) {
 				if(boss.getName()==null) {
 					continue;
 				}

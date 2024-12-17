@@ -1,7 +1,13 @@
 package helper.Raids;
 
-public class Boss {
-	
+
+import java.text.ParseException;
+import java.util.Date;
+
+import com.ibm.icu.text.SimpleDateFormat;
+
+public class Boss implements Comparable<Boss> {
+	SimpleDateFormat formatter = new SimpleDateFormat("HH:mm:ss");		
 	public String name;
 	public String firstHitTime;
 	public String diedTime;
@@ -10,6 +16,8 @@ public class Boss {
 	public String curseOfShadow="";
 	public String curseOfRecklessness="";
 	public String curseOfElements="";
+	public java.util.Date firstHitDate = null;
+	
 	public String getName() {
 		return name;
 	}
@@ -30,6 +38,11 @@ public class Boss {
 	}
 	public void setFirstHitTime(String firstHitTime) {
 		this.firstHitTime = firstHitTime;
+		try {
+			java.util.Date parse = formatter.parse(firstHitTime);
+			this.setFirstHitDate(parse);
+		} catch (ParseException e) {}
+		
 	}
 	public void setDiedTime(String diedTime) {
 		this.diedTime = diedTime;
@@ -60,12 +73,33 @@ public class Boss {
 	public void setCurseOfElements(String curseOfElements) {
 		this.curseOfElements = curseOfElements;
 	}
+	
+	
+	public SimpleDateFormat getFormatter() {
+		return formatter;
+	}
+	public java.util.Date getFirstHitDate() {
+		return firstHitDate;
+	}
+	public void setFormatter(SimpleDateFormat formatter) {
+		this.formatter = formatter;
+	}
+	public void setFirstHitDate(java.util.Date firstHitDate) {
+		this.firstHitDate = firstHitDate;
+	}
 	@Override
 	public String toString() {
 		return "Boss [name=" + name + ", firstHitTime=" + firstHitTime + ", diedTime=" + diedTime
 				+ ", helpedToSunderUntil5=" + helpedToSunderUntil5 + ", sunderTimes=" + sunderTimes + ", curseOfShadow="
 				+ curseOfShadow + ", curseOfRecklessness=" + curseOfRecklessness + ", curseOfElements="
 				+ curseOfElements + "]";
+	}
+	@Override
+	public int compareTo(Boss o) {
+		if(this.firstHitDate!=null && o.getFirstHitDate()!=null) {
+		return this.firstHitDate.compareTo(o.getFirstHitDate());
+		}
+		return 0;
 	}
 	
 	
