@@ -82,7 +82,7 @@ public class HTMLUtils {
 	public static String getAllPlayers(HashMap<String, ArrayList<NameClassWrapper>> allPlayers) {
 		StringBuffer strBuf = new StringBuffer();
 		strBuf.append("<div style='font-size: 20; font-weight: bold;' >=>Players in raid</div><br>");
-		strBuf.append("<table>");		
+		strBuf.append("<table align=\"left\" width='100%'>");
 		strBuf.append("<tr>");		
 		strBuf.append("<td style='background-color: "+Constants.DRUIDCOLOR+";'><b>DRUID</b></td>");		
 		strBuf.append("<td style='background-color: "+Constants.HUNTERCOLOR+";'><b>HUNTER</b></td>");		
@@ -120,7 +120,7 @@ public class HTMLUtils {
 		for (NameClassWrapper nameClassWrapper : ncw) {
 			String guild = "";
 			if(!nameClassWrapper.getGuild().equals("nil")) {
-				guild = "("+nameClassWrapper.getGuild()+")";
+				guild = "<br>("+nameClassWrapper.getGuild()+")";
 			}
 			strBuf.append("<tr><td><b>"+nameClassWrapper.getName()+"</b> "+guild+"</td></tr>");		
 		}

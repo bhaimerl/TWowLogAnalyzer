@@ -310,12 +310,11 @@ public class MainGui {
 					raids+=string+" ";
 				}
 				raids = raids.trim();
-				if(raids.contains("AQ40")) {
-					aq40Stuff+=BarovUtils.doAQChecksTogether(fileAsArrayList);
-				}
 				
 				int tenPercentLogLines = (fileAsArrayList.size() / 100) *11;
 				for (String string : fileAsArrayList) {
+					BarovUtils.findEntryForFrostUser(string, allPlayers);
+					
 					if(btnWarrior.getSelection()) {
 						WarriorUtils.findEntryForWarrior(string, allPlayers);
 						warriors = WarriorUtils.getWarriors(); 
@@ -343,9 +342,13 @@ public class MainGui {
 					}
 					i++;
 				}
+				if(raids.contains("AQ40")) {
+					aq40Stuff+=BarovUtils.doAQChecksTogether(fileAsArrayList);
+				}
+				
 				String classAbs = "<div style='font-size: 20; font-weight: bold;' >=> Class specific analyze</div>";
 				String br = "<br><br>";
-				HTMLUtils.writeFile(HTMLUtils.getAsHTMLString(playersHtml+boss+aq40Stuff+classAbs+warriors+mages+hunters+warlocks+rogues, raidName, date, startTime, endTime, raids), true);
+				HTMLUtils.writeFile(HTMLUtils.getAsHTMLString(playersHtml+boss+classAbs+warriors+mages+hunters+warlocks+rogues+aq40Stuff, raidName, date, startTime, endTime, raids), true);
 				boolean ftpLognSuccess = false;
 				try {
 					if(btnGeneratePublicLink.getSelection()) {

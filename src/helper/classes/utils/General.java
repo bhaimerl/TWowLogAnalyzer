@@ -2,10 +2,12 @@ package helper.classes.utils;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Set;
 import java.util.StringTokenizer;
 
 import helper.Raids.Boss;
 import helper.classes.NameClassWrapper;
+import helper.classes.utils.besonderes.BarovUtils;
 
 public class General {
 
@@ -253,8 +255,22 @@ public class General {
 			MageUtils.mageMap = new HashMap<>();
 			HunterUtils.hunterMap = new HashMap<>();
 			BossUtils.bossMap = new HashMap<>();
+			BarovUtils.barovMap = new HashMap<>();
 		}
 		
+		public static String getPlayerClass(HashMap<String, ArrayList<NameClassWrapper>> allPlayers, String playerName) {
+			String playerClass="";
+			Set<String> classSet = allPlayers.keySet();
+			for (String currentClass : classSet) {
+				ArrayList<NameClassWrapper> ncwList = allPlayers.get(currentClass);
+				for (NameClassWrapper ncw : ncwList) {
+					if(ncw.getName().equalsIgnoreCase(playerName)) {
+						return ncw.getPlayerClass();
+					}
+				}
+			}
+			return playerClass;
+		}
 		
 		public static boolean isPlayerInClassList(HashMap<String, ArrayList<NameClassWrapper>> allPlayers, String playerName, String className) {
 			boolean isThere = false;

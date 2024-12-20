@@ -30,7 +30,7 @@ public class BossUtils {
 			if(string.contains("casts Sunder Armor")) {
 				String playerWhoSundered = General.getPlayerName(string);
 				if(!boss.getHelpedToSunderUntil5().contains(playerWhoSundered)) {
-					boss.setHelpedToSunderUntil5((boss.getHelpedToSunderUntil5()+" "+General.getPlayerName(string)).trim());
+					boss.setHelpedToSunderUntil5((boss.getHelpedToSunderUntil5()+" "+General.getPlayerName(string)).trim()+"<br>");
 				}
 			}
 			if(string.contains("is afflicted by Sunder Armor (5).")) {
@@ -65,22 +65,16 @@ public class BossUtils {
 				break;
 			}
 		}
-		boolean reckApplied = false;
-		boolean shadowsApplied = false;
-		boolean elementsApplied = false;
 		for (String string : bossLogs) {
 			if(string.contains("is afflicted by Curse") || string.contains("gains Curse")) {
-				if(reckApplied==false && string.contains("is afflicted by Curse of Recklessness") || string.contains("gains Curse of Recklessness")) {
-					boss.setCurseOfRecklessness(General.getEntryAtPosition(string, 1).substring(0,8));
-					reckApplied = true;
+				if(string.contains("is afflicted by Curse of Recklessness") || string.contains("gains Curse of Recklessness")) {
+					boss.setCurseOfRecklessness(boss.getCurseOfRecklessness()+" "+General.getEntryAtPosition(string, 1).substring(0,8).trim()+"<br>");
 				}
-				if(shadowsApplied==false && string.contains("is afflicted by Curse of Shadow") || string.contains("gains Curse of Shadow")) {
-					boss.setCurseOfShadow(General.getEntryAtPosition(string, 1).substring(0,8));
-					shadowsApplied = true;
+				if(string.contains("is afflicted by Curse of Shadow") || string.contains("gains Curse of Shadow")) {
+					boss.setCurseOfShadow(boss.getCurseOfShadow()+" "+General.getEntryAtPosition(string, 1).substring(0,8).trim()+"<br>");
 				}
-				if(elementsApplied==false && string.contains("is afflicted by Curse of the Elements") || string.contains("gains Curse of the Elements")) {
-					boss.setCurseOfElements(General.getEntryAtPosition(string, 1).substring(0,8));
-					elementsApplied = true;
+				if(string.contains("is afflicted by Curse of the Elements") || string.contains("gains Curse of the Elements")) {
+					boss.setCurseOfElements(boss.getCurseOfElements()+" "+General.getEntryAtPosition(string, 1).substring(0,8).trim()+"<br>");
 				}
 			}
 		}
@@ -106,7 +100,7 @@ public class BossUtils {
 			strBuf.append("<th>Name</th>");
 			strBuf.append("<th>FirstHit</th>");
 			strBuf.append("<th>First 5 Sunders</th>");
-			strBuf.append("<th>First Sunders Appliers</th>");
+			strBuf.append("<th>First Sunder Appliers</th>");
 			strBuf.append("<th>Curse of Elements</th>");
 			strBuf.append("<th>Curse of Shadows</th>");
 			strBuf.append("<th>Curse of Recklessness</th>");
