@@ -1,6 +1,9 @@
 package helper.classes.utils;
 
+import java.time.Duration;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Set;
 import java.util.StringTokenizer;
@@ -134,6 +137,8 @@ public class General {
 		//suffers?
 		if(logline.indexOf("suffers")>=0) {
 			dmgAmount = getSuffersDmg(bossname, logline);
+		} else if (logline.contains("reflects")){
+			//not yet implemented
 		} else {
 			//for at end?
 			dmgAmount = getAmountAtEnd(bossname, logline);
@@ -143,15 +148,19 @@ public class General {
 	
 	public static int getSuffersDmg(String bossname, String logLine) {
 		int result = 0;
-		if(logLine.indexOf("suffers")>=0 && logLine.indexOf(bossname)>=0) {
+		if(logLine.indexOf(bossname+" suffers")>=0) {
 			StringTokenizer strTok = new StringTokenizer(logLine, " ");
-			strTok.nextElement(); //Datum
-			strTok.nextElement(); //Uhrzeit
-			strTok.nextElement(); //Name
-			strTok.nextElement();//suffers			
+			String date = (String) strTok.nextElement(); //Datum 
+			String time = (String) strTok.nextElement(); //Uhrzeit
+			String name = (String) strTok.nextElement(); //Name
+			String suffers = (String) strTok.nextElement();//suffers			
 			if(bossname.contains(" ")) {
-				while(!strTok.nextToken().contains("suffers")) {
-					continue;
+				try {
+					while(!strTok.nextToken().contains("suffers")) {
+						continue;
+					}
+				}catch(Exception e) {
+					System.out.println("Problem with line "+logLine +" "+e);
 				}
 			}
 			String amount = strTok.nextElement()+"";//amount
@@ -256,6 +265,19 @@ public class General {
 			HunterUtils.hunterMap = new HashMap<>();
 			BossUtils.bossMap = new HashMap<>();
 			BarovUtils.barovMap = new HashMap<>();
+			//PaladinUtils.paladinMap = new HashMap<>();			
+		}
+		
+		//runtimeCalc
+		public static Date getStartDate() {
+			return new Date();
+		}
+
+		public static long getDifferenceInSecondsGivenAndNow(Date startDate) {
+			return getDifferenceInSeconds(startDate, new Date());
+		}
+		public static long getDifferenceInSeconds(Date startDate, Date endDate) {
+			return ChronoUnit.SECONDS.between(startDate.toInstant(), endDate.toInstant());
 		}
 		
 		public static String getPlayerClass(HashMap<String, ArrayList<NameClassWrapper>> allPlayers, String playerName) {

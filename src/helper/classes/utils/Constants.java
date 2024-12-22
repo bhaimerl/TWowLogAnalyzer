@@ -2,7 +2,8 @@ package helper.classes.utils;
 
 public class Constants {
 	
-	public static final String VERSION = "v0.0.9";
+	public static final String VERSION = "v0.1.2";
+	public static final String LASTCHANGE="Parries added, Nighfall calculation, new Class Paladin, openClose entries";
 	
 	
 	public static final String DRUIDCOLOR = "#FF7D0A";
@@ -106,6 +107,19 @@ public class Constants {
 	public static final String aimedShotCrtis="'s Aimed Shot crits"; 
 	public static final String serpentStringGains="gains Serpent Sting";
 	public static final String serpentStringAfflicted="afflicted by Serpent Sting";
+	
+	
+	//Paladin
+	public static final String holyStrikeHit="'s Holy Strike hits";
+	public static final String holyStrikeCrit="'s Holy Strike crits";
+	public static final String crusaderStrikeHit="'s Crusader Strike hits";
+	public static final String crusaderStrikeCrit="'s Crusader Strike crits";
+	public static final String sealOfCommandHit="'s Seal of Command hits";
+	public static final String sealOfCommandCrit="'s Seal of Command crits";
+	public static final String judgementOfCommandHit="'s Judgement of Command hits";
+	public static final String judgementOfCommandCrit="'s Judgement of Command crits";
+	public static final String exorcismHit="'s Exorcism hits";
+	public static final String exorcismCrit="'s Exorcism crits";
 	
 	
 }

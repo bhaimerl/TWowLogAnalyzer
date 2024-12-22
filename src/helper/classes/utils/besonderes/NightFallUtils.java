@@ -2,20 +2,14 @@ package helper.classes.utils.besonderes;
 
 import java.util.ArrayList;
 
-import helper.Raids.RaidBossMapping;
+import helper.Raids.Boss;
 import helper.classes.besonderes.SpellVulnerability;
-import helper.classes.utils.BossUtils;
-import helper.classes.utils.General;
 
 public class NightFallUtils {
 
 	
-    public static void calculateBossStats(ArrayList<String> completeLog) {
-    	ArrayList<String> bossesFromLog = RaidBossMapping.getBossesFromLog(completeLog);
-    	for (String currentBoss : bossesFromLog) {
-    		ArrayList<String> bossLogs = General.getLogsFromBossByName(currentBoss, completeLog);
-    		calcDamage(bossLogs, currentBoss);
-    	}
+    public static void calculateNightfall(ArrayList<String> bossLogs, Boss boss) {
+    		calcNightfallEffect(bossLogs, boss);
     }
 	
 	
@@ -53,11 +47,11 @@ public class NightFallUtils {
 	
 	
 
-	public static void calcDamage(ArrayList<String> logsFromBossByName,String bossName) {		
+	public static void calcNightfallEffect(ArrayList<String> logsFromBossByName,Boss boss) {		
 		ArrayList<ArrayList<String>> allLogsWithinElementalVulnerability = NightFallUtils.getAllLogsWithinElementalVulnerability(logsFromBossByName);
 
 		SpellVulnerability sv = new SpellVulnerability();
-		sv.fillData(allLogsWithinElementalVulnerability, bossName);
+		sv.fillData(allLogsWithinElementalVulnerability, boss);
 		
 		
 //		int amountBlock = 0;

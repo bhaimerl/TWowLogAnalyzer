@@ -1,13 +1,13 @@
 package helper.classes.utils;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Set;
 
 import helper.Raids.Boss;
-import helper.Raids.RaidBossMapping;
+import helper.classes.utils.besonderes.NightFallUtils;
 
 public class BossUtils {
 	
@@ -23,8 +23,13 @@ public class BossUtils {
     
 	private static void getBossStats(ArrayList<String> completeLog, String bossName) { 
 		ArrayList<String> bossLogs = General.getLogsFromBossByName(bossName, completeLog);
-		ArrayList<String> sunderlogs = General.getOnlySunderLogs(bossLogs);
 		Boss boss = new Boss();
+		boss.setName(bossName);
+		HashMap<String, Integer> playerParryCount = new HashMap<>(); 
+		//Nightfall
+		NightFallUtils.calculateNightfall(bossLogs, boss);
+		
+		ArrayList<String> sunderlogs = General.getOnlySunderLogs(bossLogs);
 		for (int i=0;i<sunderlogs.size();i++) {
 			String string = sunderlogs.get(i);
 			if(string.contains("casts Sunder Armor")) {
@@ -66,6 +71,20 @@ public class BossUtils {
 			}
 		}
 		for (String string : bossLogs) {
+			
+			//Parries
+			if(string.contains(bossName+" parries.")) {
+				String currentPlayer = General.getPlayerName(string);
+				if( Players.isNameAValidPlayerInRaid(currentPlayer)) {
+					if(playerParryCount.get(currentPlayer)!=null) {
+						playerParryCount.put(currentPlayer, playerParryCount.get(currentPlayer)+1);
+					} else {
+						playerParryCount.put(currentPlayer, 1);					
+					}
+				}
+			}
+			
+			//Curses
 			if(string.contains("is afflicted by Curse") || string.contains("gains Curse")) {
 				if(string.contains("is afflicted by Curse of Recklessness") || string.contains("gains Curse of Recklessness")) {
 					boss.setCurseOfRecklessness(boss.getCurseOfRecklessness()+" "+General.getEntryAtPosition(string, 1).substring(0,8).trim()+"<br>");
@@ -78,7 +97,7 @@ public class BossUtils {
 				}
 			}
 		}
-		//Curses
+		boss.setPlayerParryCount(playerParryCount);
 		bossMap.put(bossName, boss);
 	}	
 	
@@ -95,7 +114,7 @@ public class BossUtils {
 			strBuf.append("<br>");				
 			strBuf.append("<body>");				
 			strBuf.append("<table class='classTable' align=\"left\" width='100%'>");
-			strBuf.append("<tr style='background-color: gray;'><td colspan='8'>BossStats</td></tr>");
+			strBuf.append("<tr style='background-color: gray;'><td colspan='10'>BossStats</td></tr>");
 			strBuf.append("<tr>");
 			strBuf.append("<th>Name</th>");
 			strBuf.append("<th>FirstHit</th>");
@@ -104,6 +123,8 @@ public class BossUtils {
 			strBuf.append("<th>Curse of Elements</th>");
 			strBuf.append("<th>Curse of Shadows</th>");
 			strBuf.append("<th>Curse of Recklessness</th>");
+			strBuf.append("<th title='Every parry by boss is dps loss for us + probably parry haste for boss :) '>Boss Parried)</th>");			
+			strBuf.append("<th info='this dmg is additional thanks to nightfall'>Nightfall procs/dmg</th>");			
 			strBuf.append("<th>Boss died</th>");
 			strBuf.append("</tr>");
 			//Ballertony: [sunders=122, deathWish=18, windFury=236, crusader=74, wrath=264, flametongue=314, flurry=313, enrage=161]
@@ -121,6 +142,14 @@ public class BossUtils {
 					strBuf.append("<td>"+boss.getCurseOfElements()+"</td>");
 					strBuf.append("<td>"+boss.getCurseOfShadow()+"</td>");
 					strBuf.append("<td>"+boss.getCurseOfRecklessness()+"</td>");
+					strBuf.append("<td>");
+					HashMap<String, Integer> playerParryCount = boss.getPlayerParryCount();
+					Set<String> keySet = playerParryCount.keySet();
+					for (String player : keySet) {
+						strBuf.append(player+":"+playerParryCount.get(player)+"<br>");
+					}
+					strBuf.append("</td>");					
+					strBuf.append("<td>"+boss.getNightFallProcs()+" | "+((boss.getNightFallDmg()/100)*10)+"</td>");					
 					strBuf.append("<td>"+boss.getDiedTime()+"</td>");					
 					strBuf.append("</tr>");
 			}

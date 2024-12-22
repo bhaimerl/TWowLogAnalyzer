@@ -3,11 +3,16 @@ package helper.Raids;
 
 import java.text.ParseException;
 import java.util.Date;
+import java.util.HashMap;
 
 import com.ibm.icu.text.SimpleDateFormat;
 
 public class Boss implements Comparable<Boss> {
 	SimpleDateFormat formatter = new SimpleDateFormat("HH:mm:ss");		
+	public HashMap<String, Integer> playerParryCount;
+	public int nightFallProcs=0;
+	public int nightFallDmg = 0;
+	
 	public String name;
 	public String firstHitTime;
 	public String diedTime;
@@ -101,6 +106,28 @@ public class Boss implements Comparable<Boss> {
 		}
 		return 0;
 	}
+	
+	
+	public HashMap<String, Integer> getPlayerParryCount() {
+		return playerParryCount;
+	}
+	public void setPlayerParryCount(HashMap<String, Integer> playerParryCount) {
+		this.playerParryCount = playerParryCount;
+	}
+	public int getNightFallProcs() {
+		return nightFallProcs;
+	}
+	public int getNightFallDmg() {
+		return nightFallDmg;
+	}
+	public void setNightFallProcs(int nightFallProcs) {
+		this.nightFallProcs = nightFallProcs;
+	}
+	public void setNightFallDmg(int nightFallDmg) {
+		this.nightFallDmg = nightFallDmg;
+	}
+	
+	
 	
 	
 	

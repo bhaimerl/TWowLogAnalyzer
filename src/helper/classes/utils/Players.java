@@ -10,9 +10,20 @@ import java.util.StringTokenizer;
 import helper.classes.NameClassWrapper;
 
 public class Players {
+	
+	public static ArrayList<NameClassWrapper> uniqueList = new ArrayList<>();
+	
+	public static boolean isNameAValidPlayerInRaid(String playerName) {
+		for (NameClassWrapper nameClassWrapper : uniqueList) {
+			if(nameClassWrapper.getName().equals(playerName)) {
+				return true;
+			}
+		}
+		return false;
+	}
+	
 	public static ArrayList<NameClassWrapper> identifyAllPlayers(ArrayList<String> completeLog) {			
 		HashMap<String, NameClassWrapper> nameClassMap = new HashMap<>();
-		ArrayList<NameClassWrapper> uniqueList = new ArrayList<>();
 		StringTokenizer strTok = null;
 		String name = "";
 		String playerClass = "";

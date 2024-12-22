@@ -16,7 +16,7 @@ public class Starter {
 	public static void main(String[] args) { 
 		ArrayList<String> fileAsArrayList = FileUtils.getFileAsArrayList("C:\\WoWCombatLogAQAQ.txt");
 		ArrayList<String> bossesFromLog = RaidBossMapping.getBossesFromLog(fileAsArrayList);
-		NightFallUtils.calculateBossStats(fileAsArrayList);
+//		NightFallUtils.calculateNightfall(fileAsArrayList);
 //		ArrayList<String> logsFromBossByName = General.getLogsFromBossByName(RaidBossMapping.heiganTheUnclean, fileAsArrayList);
 //		Boss boss = General.getBossStats(logsFromBossByName, RaidBossMapping.heiganTheUnclean);
 //		System.out.println(boss);
