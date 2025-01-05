@@ -26,13 +26,15 @@ public class Warlock {
     private int conflagrateCrits;
     private int highestCflgrAmount;
     private String highestCflgrTarget="";
-
     
+    private int coeCount = 0;
+    private int cosCount = 0;
+    private int corCount = 0;
     //missing getter
     
     
     
-    // Getter and Setter methods
+	// Getter and Setter methods
     public int getShadowtrance() {
         return shadowtrance;
     }
@@ -220,4 +222,24 @@ public class Warlock {
             this.highestCflgrTarget = target;
         }
     }
+    
+    public void incrementCoeCount() {
+        this.coeCount++;
+    }
+    public void incrementCoSCount() {
+        this.cosCount++;
+    }
+    public void incrementCoRCount() {
+        this.corCount++;
+    }
+    public int getCoeCount() {
+		return coeCount;
+	}
+	public int getCosCount() {
+		return cosCount;
+	}
+	public int getCorCount() {
+		return corCount;
+	}
+    
 }

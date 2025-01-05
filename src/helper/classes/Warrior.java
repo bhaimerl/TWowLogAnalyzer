@@ -10,15 +10,15 @@ public class Warrior{
     public void incrementDeathWish() {
         this.deathWish++;
     }
-	public int windFury=0;
-    public void incrementWindFury() {
-        this.windFury++;
-    }
 	public int crusader=0;
     public void incrementCrusader() {
         this.crusader++;
     }    
-	public int flametongue=0;
+	public int windFury=0;
+    public void incrementWindFury() {
+        this.windFury++;
+    }
+    public int flametongue=0;
     public void incrementFlameTongue() {
         this.flametongue++;
     }

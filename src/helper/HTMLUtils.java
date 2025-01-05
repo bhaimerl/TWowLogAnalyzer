@@ -62,10 +62,13 @@ public class HTMLUtils {
 		strBuf.append(" .classTable tr:nth-child(odd) { ");
 		strBuf.append("  background-color: #f2f2f2");
 		strBuf.append("}");
+		strBuf.append(".hidden-column {");
+		strBuf.append("	display: none;");
+		strBuf.append("}");
 
 		strBuf.append("</style>");
 		strBuf.append("</head>");
-		strBuf.append("Raid/s("+raids+") from: "+date+" "+start+" to: "+end);		
+		strBuf.append("<b>Raid/s("+raids+") from: "+date+" "+start.substring(0,8)+" to: "+end.substring(0,8)+" | Generated with TWowLogAnalyzer "+Constants.VERSION+"</b>");		
 		strBuf.append("<body>");		
 		strBuf.append("<table class='borderTable'>");		
 		strBuf.append("<tr>");		
@@ -74,9 +77,43 @@ public class HTMLUtils {
 		strBuf.append("</td>");		
 		strBuf.append("</tr>");				
 		strBuf.append("</table>");		
-		strBuf.append("</body>");		
+		strBuf.append("</body>");	
+		strBuf.append(addJScript());
 		strBuf.append("</html>");		
 		return strBuf.toString();
+	}
+	
+	private static String addJScript() {
+		String jscript = "  <script>\r\n"
+				+ "    const toggleColumnButton = document.getElementById('toggleColumnButton');\r\n"
+				+ "    const toggleColumnHighlightButton = document.getElementById('toggleColumnHighlightsButton');\r\n"
+				+ "    const toggleColumns = document.querySelectorAll('.toggle-column');\r\n"
+				+ "    const toggleColumnsHighlight = document.querySelectorAll('.toggle-column-highlights');\r\n"
+				+ "    let isColumnHidden = true;\r\n"
+				+ "    let isHighlightColumnHidden = true;\r\n"
+				+ "\r\n"
+				+ "    toggleColumnButton.addEventListener('click', () => {\r\n"
+				+ "      toggleColumns.forEach(cell => {\r\n"
+				+ "        cell.style.display = isColumnHidden ? '' : 'none';\r\n"
+				+ "      });\r\n"
+				+ "      isColumnHidden = !isColumnHidden;\r\n"
+				+ "      toggleColumnButton.textContent = isColumnHidden \r\n"
+				+ "        ? 'Show Mana generation' \r\n"
+				+ "        : 'Hide Mana generation';\r\n"
+				+ "    });\r\n"
+				
+				+ "    toggleColumnHighlightButton.addEventListener('click', () => {\r\n"
+				+ "      toggleColumnsHighlight.forEach(cell => {\r\n"
+				+ "        cell.style.display = isHighlightColumnHidden ? '' : 'none';\r\n"
+				+ "      });\r\n"
+				+ "      isHighlightColumnHidden = !isHighlightColumnHidden;\r\n"
+				+ "      toggleColumnHighlightButton.textContent = isHighlightColumnHidden \r\n"
+				+ "        ? 'Show Highlights' \r\n"
+				+ "        : 'Hide Highlights';\r\n"
+				+ "    });\r\n"
+				
+				+ "  </script>	  \r\n";
+		return jscript;
 	}
 	
 	public static String getAllPlayers(HashMap<String, ArrayList<NameClassWrapper>> allPlayers) {

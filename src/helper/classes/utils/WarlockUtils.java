@@ -45,6 +45,12 @@ public class WarlockUtils {
     	}
         updateWarlockStats(logline, currentPlayer, "gains Shadow Trance", Warlock::incrementShadowtrance);
 
+        //curses
+        updateWarlockStats(logline, currentPlayer, Constants.coE, Warlock::incrementCoeCount);
+        updateWarlockStats(logline, currentPlayer, Constants.coS, Warlock::incrementCoSCount);
+        updateWarlockStats(logline, currentPlayer, Constants.coR, Warlock::incrementCoRCount);
+
+        
         updateWarlockStats(logline, currentPlayer, "Life Tap.", warlock -> {
             warlock.incrementLifeTaps();
             warlock.addLifeTapMana(General.getAmountGains("Life Tap.", logline));
@@ -106,12 +112,13 @@ public class WarlockUtils {
 
             strBuf.append("<br><body><table class='classTable' align=\"left\" width='100%'>")
                   .append("<tr style='background-color: ").append(Constants.WARLOCKCOLOR).append(";'>")
-                  .append("<td colspan='16'>"+Constants.WARLOCK+"</td></tr><tr>")
-                  .append("<th>Name</th><th>Shadowtrance</th><th>LifeTaps</th><th>Mana LifeTap</th>")
-                  .append("<th>Mana VampiricTouch</th><th>Mana Judgement</th><th>Mana BOW</th>")
-                  .append("<th>ShadowBolt Hit/Crit</th><th>Highest SB</th><th>SoulFire Hit/Crit</th>")
-                  .append("<th>Highest SF</th><th>SearingPain Hit/Crit</th><th>Highest SP</th>")
-                  .append("<th>Immolate Hit/Crit</th><th>Conflagrate Hit/Crit</th><th>Highest Cflgrt</th></tr>");
+                  .append("<td colspan='17'>"+Constants.WARLOCK+"</td></tr><tr>")
+                  .append("<th>Name</th><th>STrance</th><th>LifeTaps</th><th class=\"toggle-column\" style=\"display: none;\">Mana LifeTap</th>")
+                  .append("<th class=\"toggle-column\" style=\"display: none;\">Mana VampiricTouch</th><th class=\"toggle-column\" style=\"display: none;\">Mana Judgement</th><th class=\"toggle-column\" style=\"display: none;\">Mana BOW</th>")
+                  .append("<th>CoE|CoS|CoR</th>")                  
+                  .append("<th>ShadowBolt Hit/Crit</th><th class=\"toggle-column-highlights\" style=\"display: none;\">Highest SB</th><th>SoulFire Hit/Crit</th>")
+                  .append("<th class=\"toggle-column-highlights\" style=\"display: none;\">Highest SF</th><th>SearingPain Hit/Crit</th><th class=\"toggle-column-highlights\" style=\"display: none;\">Highest SP</th>")
+                  .append("<th>Immolate Hit/Crit</th><th>Conflagrate Hit/Crit</th><th class=\"toggle-column-highlights\" style=\"display: none;\">Highest Cflgrt</th></tr>");
 
             for (String warlockName : warlocks) {
                 Warlock warlock = warlockMap.get(warlockName);
@@ -119,23 +126,36 @@ public class WarlockUtils {
                           .append("<td>").append(warlockName).append("</td>")
                           .append("<td>").append(warlock.getShadowtrance()).append("</td>")
                           .append("<td>").append(warlock.getLifeTaps()).append("</td>")
-                          .append("<td>").append(warlock.getLifeTapMana()).append("</td>")
-                          .append("<td>").append(warlock.getManaFromVampiricTouch()).append("</td>")
-                          .append("<td>").append(warlock.getManaFromJudgementOfWisdom()).append("</td>")
-                          .append("<td>").append(warlock.getManaFromBow()).append("</td>")
+                          .append("<td class=\"toggle-column\" style=\"display: none;\">").append(warlock.getLifeTapMana()).append("</td>")
+                          .append("<td class=\"toggle-column\" style=\"display: none;\">").append(warlock.getManaFromVampiricTouch()).append("</td>")
+                          .append("<td class=\"toggle-column\" style=\"display: none;\">").append(warlock.getManaFromJudgementOfWisdom()).append("</td>")
+                          .append("<td class=\"toggle-column\" style=\"display: none;\">").append(warlock.getManaFromBow()).append("</td>")
+                          .append("<td>").append(warlock.getCoeCount()+" | "+warlock.getCosCount()+" | "+warlock.getCorCount()).append("</td>")
                           .append("<td>").append(warlock.getShadowBoltHits()).append(" / ").append(warlock.getShadowBoltCrits()).append("</td>")
-                          .append("<td>").append(warlock.getHighestSBAmount()).append(" => ").append(warlock.getHighestSBTarget()).append("</td>")
+                          .append("<td class=\"toggle-column-highlights\" style=\"display: none;\">").append(warlock.getHighestSBAmount()).append(" => ").append(warlock.getHighestSBTarget()).append("</td>")
                           .append("<td>").append(warlock.getSoulFireHits()).append(" / ").append(warlock.getSoulFireCrits()).append("</td>")
-                          .append("<td>").append(warlock.getHighestSFAmount()).append(" => ").append(warlock.getHighestSFTarget()).append("</td>")
+                          .append("<td class=\"toggle-column-highlights\" style=\"display: none;\">").append(warlock.getHighestSFAmount()).append(" => ").append(warlock.getHighestSFTarget()).append("</td>")
                           .append("<td>").append(warlock.getSearingPainHits()).append(" / ").append(warlock.getSearingPainCrits()).append("</td>")
-                          .append("<td>").append(warlock.getHighestSPAmount()).append(" => ").append(warlock.getHighestSPTarget()).append("</td>")
+                          .append("<td class=\"toggle-column-highlights\" style=\"display: none;\">").append(warlock.getHighestSPAmount()).append(" => ").append(warlock.getHighestSPTarget()).append("</td>")
                           .append("<td>").append(warlock.getImmolateHits()).append(" / ").append(warlock.getImmolateCrits()).append("</td>")
                           .append("<td>").append(warlock.getConflagrateHits()).append(" / ").append(warlock.getConflagrateCrits()).append("</td>")
-                          .append("<td>").append(warlock.getHighestCflgrAmount()).append(" => ").append(warlock.getHighestCflgrTarget()).append("</td>")
+                          .append("<td class=\"toggle-column-highlights\" style=\"display: none;\">").append(warlock.getHighestCflgrAmount()).append(" => ").append(warlock.getHighestCflgrTarget()).append("</td>")
                           .append("</tr>");
             }
             strBuf.append("</table>");
         }
         return strBuf.toString();
-    }
+    }   
+	public static boolean isWarlock(String logline) {
+		boolean isWarlock = false;
+		if((logline.contains(Constants.shadowBoltHit) || 
+			logline.contains(Constants.soulFirehit) || 
+			logline.contains(Constants.searingPainhit) || 
+			logline.contains(Constants.immolateHit) || 
+			logline.contains(Constants.conflagrateHit) )) {
+			isWarlock = true;
+		}
+		return isWarlock;
+	}
+    
 }

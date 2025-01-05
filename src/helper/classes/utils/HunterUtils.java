@@ -107,13 +107,13 @@ public class HunterUtils {
                   .append("<tr style='background-color: ").append(Constants.HUNTERCOLOR).append(";'>")
                   .append("<td colspan='16'>"+Constants.HUNTER+"</td></tr><tr>")
                   .append("<th>Name</th>")
-                  .append("<th>Mana VampiricTouch</th><th>Mana Judgement</th><th>Mana BOW</th>")
-                  .append("<th>AutoShot Hit/Crit</th><th>Highest Auto</th>")
-            	  .append("<th>Steady Hit/Crit</th><th>Highest Steady</th>")
-            	  .append("<th>MultiShot Hit/Crit</th><th>Highest Multi</th>")
-            	  .append("<th>ArcaneShot Hit/Crit</th><th>Highest Arcane</th>")
-            	  .append("<th>ExtraShot Hit/Crit</th><th>Highest Extra</th>")
-            	  .append("<th>AimedShot Hit/Crit</th><th>Highest Aimed</th>")
+                  .append("<th class=\"toggle-column\" style=\"display: none;\">Mana VampiricTouch</th><th class=\"toggle-column\" style=\"display: none;\">Mana Judgement</th><th class=\"toggle-column\" style=\"display: none;\">Mana BOW</th>")
+                  .append("<th>AutoShot Hit/Crit</th><th class=\"toggle-column-highlights\" style=\"display: none;\">Highest Auto</th>")
+            	  .append("<th>Steady Hit/Crit</th><th class=\"toggle-column-highlights\" style=\"display: none;\">Highest Steady</th>")
+            	  .append("<th>MultiShot Hit/Crit</th><th class=\"toggle-column-highlights\" style=\"display: none;\">Highest Multi</th>")
+            	  .append("<th>ArcaneShot Hit/Crit</th><th class=\"toggle-column-highlights\" style=\"display: none;\">Highest Arcane</th>")
+            	  .append("<th>ExtraShot Hit/Crit</th><th class=\"toggle-column-highlights\" style=\"display: none;\">Highest Extra</th>")
+            	  .append("<th>AimedShot Hit/Crit</th><th class=\"toggle-column-highlights\" style=\"display: none;\">Highest Aimed</th>")
 //            	  .append("<th>Serpent Sting applied</th>")
                   .append("</tr>");
 
@@ -121,21 +121,21 @@ public class HunterUtils {
                 Hunter hunter= hunterMap.get(huterName);
                     strBuf.append("<tr>")
                           .append("<td>").append(huterName).append("</td>")
-                          .append("<td>").append(hunter.getManaFromVampiricTouch()).append("</td>")
-                          .append("<td>").append(hunter.getManaFromJudgementOfWisdom()).append("</td>")
-                          .append("<td>").append(hunter.getManFrombow()).append("</td>")
+                          .append("<td class=\"toggle-column\" style=\"display: none;\">").append(hunter.getManaFromVampiricTouch()).append("</td>")
+                          .append("<td class=\"toggle-column\" style=\"display: none;\">").append(hunter.getManaFromJudgementOfWisdom()).append("</td>")
+                          .append("<td class=\"toggle-column\" style=\"display: none;\">").append(hunter.getManFrombow()).append("</td>")
                           .append("<td>").append(hunter.getAutoShotHit()).append(" / ").append(hunter.getAutoShotCrit()).append("</td>")
-                          .append("<td>").append(hunter.getHighestAutoShot()).append(" => ").append(hunter.getHighestAutoShotTarget()).append("</td>")
+                          .append("<td class=\"toggle-column-highlights\" style=\"display: none;\">").append(hunter.getHighestAutoShot()).append(" => ").append(hunter.getHighestAutoShotTarget()).append("</td>")
                           .append("<td>").append(hunter.getSteadyShotHits()).append(" / ").append(hunter.getSteadyShotCrits()).append("</td>")
-                          .append("<td>").append(hunter.getHighestSteadyShot()).append(" => ").append(hunter.getHighestSteadyShotTarget()).append("</td>")
+                          .append("<td class=\"toggle-column-highlights\" style=\"display: none;\">").append(hunter.getHighestSteadyShot()).append(" => ").append(hunter.getHighestSteadyShotTarget()).append("</td>")
                           .append("<td>").append(hunter.getMultiShotHits()).append(" / ").append(hunter.getMultiSHotCrits()).append("</td>")
-                          .append("<td>").append(hunter.getHighestMultiShot()).append(" => ").append(hunter.getHighestMultiShotTarget()).append("</td>")
+                          .append("<td class=\"toggle-column-highlights\" style=\"display: none;\">").append(hunter.getHighestMultiShot()).append(" => ").append(hunter.getHighestMultiShotTarget()).append("</td>")
                           .append("<td>").append(hunter.getArcaneShotHits()).append(" / ").append(hunter.getArcaneShotCrits()).append("</td>")
-                          .append("<td>").append(hunter.getHighestArcaneShot()).append(" => ").append(hunter.getHighestArcaneShotTarget()).append("</td>")
+                          .append("<td class=\"toggle-column-highlights\" style=\"display: none;\">").append(hunter.getHighestArcaneShot()).append(" => ").append(hunter.getHighestArcaneShotTarget()).append("</td>")
                           .append("<td>").append(hunter.getExtraShotHits()).append(" / ").append(hunter.getExtraShotCrits()).append("</td>")
-                          .append("<td>").append(hunter.getHighestExtraShot()).append(" => ").append(hunter.getHighestExtraShotTarget()).append("</td>")
+                          .append("<td class=\"toggle-column-highlights\" style=\"display: none;\">").append(hunter.getHighestExtraShot()).append(" => ").append(hunter.getHighestExtraShotTarget()).append("</td>")
                           .append("<td>").append(hunter.getAimedShotHits()).append(" / ").append(hunter.getAimedShotCrtis()).append("</td>")
-                          .append("<td>").append(hunter.getHighestAimedShot()).append(" => ").append(hunter.getHighestAimedShotTarget()).append("</td>")
+                          .append("<td class=\"toggle-column-highlights\" style=\"display: none;\">").append(hunter.getHighestAimedShot()).append(" => ").append(hunter.getHighestAimedShotTarget()).append("</td>")
 //                          .append("<td>").append(hunter.getSerpentStringAmount()).append("</td>")
                           .append("</tr>");
             }
@@ -143,6 +143,18 @@ public class HunterUtils {
         }
         return strBuf.toString();
     }
+ 
+	public static boolean isHunter(String logline) {
+		boolean isHunter = false;
+		if((logline.contains(Constants.autoShotHit) || 
+			logline.contains(Constants.steadyShotHits) || 
+			logline.contains(Constants.multiShotHits) || 
+			logline.contains(Constants.aimedShotHits) || 
+			logline.contains(Constants.arcaneShotHits) )) {
+			isHunter = true;
+		}
+		return isHunter;
+	}
 	
 
 }

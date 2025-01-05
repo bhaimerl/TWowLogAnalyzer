@@ -1,6 +1,5 @@
 package helper.classes.utils;
 
-import java.time.Duration;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Date;
@@ -8,19 +7,20 @@ import java.util.HashMap;
 import java.util.Set;
 import java.util.StringTokenizer;
 
-import helper.Raids.Boss;
+import org.joda.time.DateTime;
+
 import helper.classes.NameClassWrapper;
 import helper.classes.utils.besonderes.BarovUtils;
 
 public class General {
-
 	
 	public static ArrayList<String> getLogsFromBossByName(String bossname, ArrayList<String> completeLog) {
 		ArrayList<String> result = new ArrayList<>();
-		int i=1;
 		for (String currentLine : completeLog) {
 			if(currentLine.contains(bossname)) {
-				if(!currentLine.contains("Hunter's Mark")) {
+				if(!currentLine.contains("Hunter's Mark") && !currentLine.contains("Essence of Sapphiron") && 
+				   !currentLine.contains("LOOT:") &&
+				   !currentLine.contains("Grobbulus casts Bombard Slime") && !currentLine.contains("Grobbulus begins to cast Bombard Slime.")) {
 					result.add(currentLine);
 				}
 			}
@@ -38,8 +38,63 @@ public class General {
 		return sunderLogs;
 	}
 	
-
+	public static ArrayList<String> getLogsUntilPLusTolerance(DateTime endTime, int addToleranceMs, ArrayList<String> completeLogs) {
+		ArrayList<String> intervallLogs = new ArrayList<>();
+		try {
+			for (String currentLine : completeLogs) {
+				DateTime currentLineDate = getTimeFromLogAsDateTime(currentLine);
+				if((currentLineDate.isBefore(endTime.plusMillis(addToleranceMs)) )) {
+					intervallLogs.add(currentLine);
+				}
+			}
+		}catch(Exception e) {
+			System.out.println("bzumm");
+		}
+		return intervallLogs;
+	}
 	
+	public static ArrayList<String> getLogsBeginningPLusTolerance(DateTime startTime, int addToleranceMs, ArrayList<String> completeLogs) {
+		ArrayList<String> intervallLogs = new ArrayList<>();
+		try {
+			for (String currentLine : completeLogs) {
+				DateTime currentLineDate = getTimeFromLogAsDateTime(currentLine);
+				if((currentLineDate.isAfter(startTime.plusMillis(addToleranceMs)))) {
+					intervallLogs.add(currentLine);
+				}
+			}
+		}catch(Exception e) {
+			System.out.println("bzumm");
+		}
+		return intervallLogs;
+	}
+	
+	public static String getOnlyTimeFromDateTimeString(String dtstr) {
+		if(dtstr!=null && dtstr.length()>0) {
+			DateTime dateTimeFromString = getDateTimeFromString(dtstr);
+			Date dt = dateTimeFromString.toDate();
+			return Constants.onlyTime.format(dt);
+		} else return "";
+	}
+	
+	
+	public static ArrayList<String> getLogsWithinIntervallPLusTolerance(DateTime startTime, DateTime endTime, int addToleranceMs, ArrayList<String> completeLogs) {
+		ArrayList<String> intervallLogs = new ArrayList<>();
+		try {
+			for (String currentLine : completeLogs) {
+				DateTime currentLineDate = getTimeFromLogAsDateTime(currentLine);
+				if((currentLineDate.isAfter(startTime)  && currentLineDate.isBefore(endTime.plusMillis(addToleranceMs)) )) {
+					intervallLogs.add(currentLine);
+				}
+			}
+		}catch(Exception e) {
+			System.out.println("bzumm");
+		}
+		return intervallLogs;
+	}
+	
+	public static void bla() {
+		org.joda.time.DateTime dt =new org.joda.time.DateTime();
+	}
 	
 	
 	public static ArrayList<String> getCursesOnBoss(ArrayList<String> logList) {
@@ -70,6 +125,32 @@ public class General {
 		}
 		return stack;
 	}
+	
+	public static String getStringFromDateTime(DateTime dt) {
+		return Constants.sdf.format(dt.toDate());
+	}
+	
+	public static DateTime getTimeFromLogAsDateTime(String logline) {
+		Date retDate = null;
+		String dayPlusTime = getEntryAtPosition(logline, 0)+" "+getEntryAtPosition(logline, 1);
+		try {
+			retDate = Constants.sdf.parse(dayPlusTime);
+		}catch(Exception e) {
+			System.out.println("getTimeFromLogAsSDF() Error in line: "+logline+" "+e);
+		}
+		return new DateTime(retDate);
+	}
+	
+	public static DateTime getDateTimeFromString(String str) {
+		Date retDate = null;
+		String dayPlusTime = str;
+		try {
+			retDate = Constants.sdf.parse(dayPlusTime);
+		}catch(Exception e) {
+			System.out.println("getTimeFromLogAsSDF() Error in line: "+str+" "+e);
+		}
+		return new DateTime(retDate);
+	}	
 
 	public static String getTimeFromLog(String logline) {
 		return getEntryAtPosition(logline,1);
@@ -86,12 +167,12 @@ public class General {
 		}
 		return playerName;
 	}
-	
-	public static String getEntryAtPosition(String logline, int position) {
+
+	public static String getEntryAtPosition(String logline, int position, String delimiter) {
 		String result = "";
 		if(logline!=null) {
 			int cnt = 0;
-			StringTokenizer strTok = new StringTokenizer(logline, " ");
+			StringTokenizer strTok = new StringTokenizer(logline, delimiter);
 			while(strTok.hasMoreElements()) {
 				result = strTok.nextToken();
 				if(cnt == position) {
@@ -101,6 +182,11 @@ public class General {
 			}
 		}
 		return result;
+	}	
+	
+	
+	public static String getEntryAtPosition(String logline, int position) {
+		return getEntryAtPosition(logline, position, " ");
 	}	
 	
 	public static int getAmountGains(String searchString, String logline) {
@@ -148,6 +234,9 @@ public class General {
 	
 	public static int getSuffersDmg(String bossname, String logLine) {
 		int result = 0;
+		if(logLine.contains("Eye of C'Thun")) {
+			logLine = logLine.replace("Eye of C'Thun", "C'Thun");
+		}
 		if(logLine.indexOf(bossname+" suffers")>=0) {
 			StringTokenizer strTok = new StringTokenizer(logLine, " ");
 			String date = (String) strTok.nextElement(); //Datum 
@@ -159,12 +248,14 @@ public class General {
 					while(!strTok.nextToken().contains("suffers")) {
 						continue;
 					}
-				}catch(Exception e) {
-					System.out.println("Problem with line "+logLine +" "+e);
-				}
+				}catch(Exception e) {}
 			}
 			String amount = strTok.nextElement()+"";//amount
-			result = Integer.parseInt(amount); //suffersAmount
+			try {
+				result = Integer.parseInt(amount); //suffersAmount
+			}catch (Exception e) {
+				System.out.println("line: "+logLine+" "+e);
+			}
 		}
 		return result;
 	}
@@ -265,7 +356,8 @@ public class General {
 			HunterUtils.hunterMap = new HashMap<>();
 			BossUtils.bossMap = new HashMap<>();
 			BarovUtils.barovMap = new HashMap<>();
-			//PaladinUtils.paladinMap = new HashMap<>();			
+			PaladinUtils.paladinMap = new HashMap<>();	
+			LootUtils.playerLootMap = new HashMap<>();
 		}
 		
 		//runtimeCalc
@@ -305,6 +397,15 @@ public class General {
 				}
 			}
 			return isThere;
+		}
+		
+		public static ArrayList<String> getStringWithDelimterAsArrayList(String str, String delimiter) {
+			ArrayList<String> retList = new ArrayList<>();
+			StringTokenizer strTok = new StringTokenizer(str, delimiter);
+			while(strTok.hasMoreTokens()) {
+				retList.add(strTok.nextToken());
+			}
+			return retList;
 		}
 
 	

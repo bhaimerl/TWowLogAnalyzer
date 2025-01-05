@@ -22,15 +22,18 @@ public class Players {
 		return false;
 	}
 	
-	public static ArrayList<NameClassWrapper> identifyAllPlayers(ArrayList<String> completeLog) {			
+	public static ArrayList<NameClassWrapper> identifyAllPlayers(ArrayList<String> completeLog) {	
+		uniqueList = new ArrayList<>();
 		HashMap<String, NameClassWrapper> nameClassMap = new HashMap<>();
 		StringTokenizer strTok = null;
 		String name = "";
 		String playerClass = "";
 		String guild = "";
+		int combatantCounter = 0;
 		for (String currentLogLine : completeLog) {
 			//12/6 19:16:40.023  COMBATANT_INFO: 06.12.24 19:16:40&Ravenya&DRUID&NightElf&3&nil&ist auch dabei&Officer&1&nil&22732:928:0:0&nil&nil&nil&nil&nil&nil&nil&nil&17063:928:0:0&18879:928:0:0&nil&nil&22938:2622:0:0&nil&nil&23198:0:0:0&5976:0:0:0&nil
 			if(currentLogLine.indexOf("COMBATANT_INFO:")>=0) {
+				combatantCounter+=1;
 				//korrekte zeile
 				//schmeiße alles bis auf das erste & zeichen raus:
 				currentLogLine = currentLogLine.substring(currentLogLine.indexOf("&")+1);
@@ -51,6 +54,46 @@ public class Players {
 				}
 			}
 		}
+		
+		
+		//
+		if(combatantCounter==0) {
+			System.out.println("Combatant_info not found, need a different way to identify players");
+		//performance boost, is pleyer schon vorhanden, skip
+			for (String currentLogLine : completeLog) {
+				if(WarriorUtils.isWarrior(currentLogLine)) {
+					nameClassMap.put(General.getPlayerName(currentLogLine), new NameClassWrapper(General.getPlayerName(currentLogLine), Constants.WARRIOR, "nil"));				
+				}
+				if(WarlockUtils.isWarlock(currentLogLine)) {
+					nameClassMap.put(General.getPlayerName(currentLogLine), new NameClassWrapper(General.getPlayerName(currentLogLine), Constants.WARLOCK, "nil"));				
+				}
+				if(RogueUtils.isRogue(currentLogLine)) {
+					nameClassMap.put(General.getPlayerName(currentLogLine), new NameClassWrapper(General.getPlayerName(currentLogLine), Constants.ROGUE, "nil"));				
+				}			
+				if(MageUtils.isMage(currentLogLine)) {
+					nameClassMap.put(General.getPlayerName(currentLogLine), new NameClassWrapper(General.getPlayerName(currentLogLine), Constants.MAGE, "nil"));				
+				}
+				if(PaladinUtils.isPaladin(currentLogLine)) {
+					nameClassMap.put(General.getPlayerName(currentLogLine), new NameClassWrapper(General.getPlayerName(currentLogLine), Constants.PALADIN, "nil"));				
+				}
+				if(HunterUtils.isHunter(currentLogLine)) {
+					nameClassMap.put(General.getPlayerName(currentLogLine), new NameClassWrapper(General.getPlayerName(currentLogLine), Constants.HUNTER, "nil"));				
+				}
+				if(DruidUtils.isDruid(currentLogLine)) {
+					nameClassMap.put(General.getPlayerName(currentLogLine), new NameClassWrapper(General.getPlayerName(currentLogLine), Constants.DRUID, "nil"));				
+				}
+				if(ShamanUtils.isShaman(currentLogLine)) {
+					nameClassMap.put(General.getPlayerName(currentLogLine), new NameClassWrapper(General.getPlayerName(currentLogLine), Constants.SHAMAN, "nil"));				
+				}
+				if(PriestUtils.isPriest(currentLogLine)) {
+					nameClassMap.put(General.getPlayerName(currentLogLine), new NameClassWrapper(General.getPlayerName(currentLogLine), Constants.PRIEST, "nil"));				
+				}
+			}
+		
+
+		}
+
+		
 		Set<String> names = nameClassMap.keySet();
 		Iterator<String> iterator = names.iterator();
 		while(iterator.hasNext()) {

@@ -1,9 +1,15 @@
 package helper.classes.utils;
 
+import java.text.SimpleDateFormat;
+
 public class Constants {
 	
-	public static final String VERSION = "v0.1.2";
-	public static final String LASTCHANGE="Parries added, Nighfall calculation, new Class Paladin, openClose entries";
+	public static SimpleDateFormat sdf = new SimpleDateFormat("dd/MM HH:mm:ss.SSS");
+	public static SimpleDateFormat onlyTime = new SimpleDateFormat("HH:mm:ss.SSS");
+	
+	
+	public static final String VERSION = "v0.2.1";
+	public static final String LASTCHANGE="Parries added, Nighfall calculation, new Class Paladin, openClose entries, click opener/closer";
 	
 	
 	public static final String DRUIDCOLOR = "#FF7D0A";
@@ -49,6 +55,12 @@ public class Constants {
 	public static final String conflagrateHit="Conflagrate hits ";
 	public static final String conflagrateCrit="Conflagrate crits ";
 	
+	//Curses
+	public static final String coR ="casts Curse of Recklessness"; 
+	public static final String coE ="casts Curse of the Elements";
+	public static final String coS ="casts Curse of Shadow";
+	
+	
 	
 	//Mage
 	public static final String fireBlastCrits = "Fire Blast crits";
@@ -81,6 +93,9 @@ public class Constants {
 	public static final String executeCrit="'s Execute crits ";
 	public static final String bloodthirstCrit = "'s Bloodthirst crits ";
 	public static final String bloodthirstHit = "'s Bloodthirst hits ";	
+	public static final String concussionBlow = "'s Concussion Blow ";	
+	public static final String shieldSlam  = "'s Shield Slam ";
+	
 	
 	//rogue
 	public static final String sliceAndDice="gains Slice and Dice";
@@ -121,5 +136,45 @@ public class Constants {
 	public static final String exorcismHit="'s Exorcism hits";
 	public static final String exorcismCrit="'s Exorcism crits";
 	
+	
+	//DRUID
+	public static final String healingTouch = "'s Healing Touch";
+	public static final String poisonCHarge="'s Poison Charge";
+	public static final String regrowth="'s Regrowth";
+	public static final String swipe="'s Swipe";
+	public static final String maul="'s Maul";
+	public static final String growl="'s Growl";
+	public static final String savegeFury="'s Savage Fury";
+	
+	//PRIEST
+	public static final String renew="'s Renew";
+	public static final String flashHeal="'s Flash Heal";
+	public static final String epiphany="'s gains Epiphany";
+	public static final String holyNova="'s Holy Nova";
+	public static final String enlighten="'s Enlighten";
+	public static final String greaterHEal="'s Greater Heal";
+	public static final String vampiricEmbrace="'s Vampiric Embrace heals";
+	public static final String mindBlast="'s Mind Blast";
+	public static final String mindFlay="'s Mind Flay";
+	
+	//SHAMAN
+	public static final String chainHeal="'s Chain Heal";
+	public static final String lesserHealingWave="'s Lesser Healing Wave";
+	public static final String lighningBolt="'s Lightning Bolt";
+	public static final String fireNova="'s Fire Nova"; 
+	public static final String frostShock="'s Frost Shock";
+	public static final String lightningStrike="'s Lightning Strike";
+	public static final String castWindfuryTotem="casts Windfury Totem.";
+	public static final String castsEarthTotem="casts Strength of Earth Totem.";
+	public static final String castsManSpringTotem="'casts Mana Spring Totem.";	
+	
+	
+	//DIspells
+	public static final String dispelMagic = "casts Dispel Magic";
+	public static final String cleanse = "casts Cleanse";
+	public static final String purify = "casts Purify";
+	public static final String removeCurse = "casts Remove Curse"; 
+	public static final String abolishPoison = "casts Abolish Poison";
+	public static final String removeLesserCurse = "casts Remove Lesser Curse";
 	
 }

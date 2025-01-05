@@ -1,6 +1,6 @@
 package helper.classes;
 
-public class Hunter {
+public class Hunter { 
 	
 	public int manaFromVampiricTouch=0;
 	public int manaFromJudgementOfWisdom=0;

@@ -50,6 +50,7 @@ public class BarovUtils {
 		String bossname = "Huhuran";
 		String time = "";
 		String date = "";
+		int barovEntryCnt = 0;
 		Set<String> entry = new HashSet();
 		ArrayList<String> logsFromBossByName = General.getLogsFromBossByName(bossname, allData);
 		String currentPLayer = "";
@@ -62,6 +63,11 @@ public class BarovUtils {
 					currentPLayer= currentPLayer.replace("(", "");
 					currentPLayer= currentPLayer.replace(")", "");
 					entry.add(currentPLayer);
+				} else {
+					//anderes log
+					if(currentLogLine.contains("Servant of ") && currentLogLine.contains("Barov")) {
+						barovEntryCnt+=1;
+					}
 				}
 			}
 		}
@@ -76,15 +82,24 @@ public class BarovUtils {
 		
 		
 		//System.out.println(entry.size()+" BarovCaller used within BossLogs from: "+date+" "+time+" =>"+bossname);
-		Iterator<String> iterator = entry.iterator();
-		int i=1;
-		while(iterator.hasNext()) {
-			strBuf.append("<tr>");
-			strBuf.append("<td>"+i+++"</td>");
-			strBuf.append("<td>"+iterator.next()+"</td>");
-			strBuf.append("<tr>");
+		if(entry.size()>0) {
+			Iterator<String> iterator = entry.iterator();
+			int i=1;
+			while(iterator.hasNext()) {
+				strBuf.append("<tr>");
+				strBuf.append("<td>"+i+++"</td>");
+				strBuf.append("<td>"+iterator.next()+"</td>");
+				strBuf.append("<tr>");
+			}
+			strBuf.append("</table>");
+		} else {
+				strBuf.append("<tr>");
+				strBuf.append("<td>1</td>");
+				strBuf.append("<td>cant be determined who did, but ~around ("+(barovEntryCnt/11)+"-"+(barovEntryCnt/8)+") BarovCaller used</td>");
+				strBuf.append("<tr>");
+			strBuf.append("</table>");
+			
 		}
-		strBuf.append("</table>");
 		return strBuf.toString();
 	}
 	
@@ -139,7 +154,7 @@ public class BarovUtils {
 		//leer = ca 185zeichen
 		String frostOilCheck = getViscidusCheck();
 		
-		if(barovCheck!=null && barovCheck.length()>200 && frostOilCheck!=null && frostOilCheck.length()>200) {
+		if(barovCheck!=null && frostOilCheck!=null && frostOilCheck.length()>200) {
 			strBuf.append("<table class='classTable' align=\"left\"");
 			strBuf.append("<tr><td colspan='2'>Spezific AQ40 checks</td></tr>");
 			strBuf.append("<tr>");

@@ -95,6 +95,15 @@ public class Paladin {
         }
     }	
     
+	public int windFury=0;
+    public void incrementWindFury() {
+        this.windFury++;
+    }
+    public int flametongue=0;
+    public void incrementFlameTongue() {
+        this.flametongue++;
+    }
+    
     
     
 	public int getManaFromVampiricTouch() {
@@ -353,6 +362,31 @@ public class Paladin {
 		this.highestExorcismTarget = highestExorcismTarget;
 	}
 
+
+
+	public int getWindFury() {
+		return windFury;
+	}
+
+
+
+	public int getFlametongue() {
+		return flametongue;
+	}
+
+
+
+	public void setWindFury(int windFury) {
+		this.windFury = windFury;
+	}
+
+
+
+	public void setFlametongue(int flametongue) {
+		this.flametongue = flametongue;
+	}
+
+	
 	
     
     

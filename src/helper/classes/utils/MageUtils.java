@@ -111,43 +111,43 @@ public class MageUtils {
                   .append("<tr style='background-color: ").append(Constants.MAGECOLOR).append(";'>")
                   .append("<td colspan='18'>"+Constants.MAGE+"</td></tr><tr>")
                   .append("<th>Name</th>")
-                  .append("<th>Mana VampiricTouch</th><th>Mana Judgement</th><th>Mana BOW</th>")
-                  .append("<th>FireBlast Hit/Crit</th><th>Highest FBlast</th>")
-            	  .append("<th>FireBall Hit/Crit</th><th>Highest FBall</th>")
-            	  .append("<th>ArcaneRupture Hit/Crit</th><th>Highest Rupture</th>")
-            	  .append("<th>ArcaneSurge Hit/Crit</th><th>Highest Surge</th>")
-            	  .append("<th>ArcaneMissles Hit/Crit</th><th>Highest Missle</th>")
-            	  .append("<th>PyroBlast Hit/Crit</th><th>Highest PBlast</th>")
-            	  .append("<th>Scorch Hit/Crit</th><th>Highest Scorch</th>")
+                  .append("<th class=\"toggle-column\" style=\"display: none;\">Mana VampiricTouch</th><th class=\"toggle-column\" style=\"display: none;\">Mana Judgement</th><th class=\"toggle-column\" style=\"display: none;\">Mana BOW</th>")
+                  .append("<th>FireBlast Hit/Crit</th><th class=\"toggle-column-highlights\" style=\"display: none;\">Highest FBlast</th>")
+            	  .append("<th>FireBall Hit/Crit</th><th class=\"toggle-column-highlights\" style=\"display: none;\">Highest FBall</th>")
+            	  .append("<th>ArcaneRupture Hit/Crit</th><th class=\"toggle-column-highlights\" style=\"display: none;\">Highest Rupture</th>")
+            	  .append("<th>ArcaneSurge Hit/Crit</th><th class=\"toggle-column-highlights\" style=\"display: none;\">Highest Surge</th>")
+            	  .append("<th>ArcaneMissles Hit/Crit</th><th class=\"toggle-column-highlights\" style=\"display: none;\">Highest Missle</th>")
+            	  .append("<th>PyroBlast Hit/Crit</th><th class=\"toggle-column-highlights\" style=\"display: none;\">Highest PBlast</th>")
+            	  .append("<th>Scorch Hit/Crit</th><th class=\"toggle-column-highlights\" style=\"display: none;\">Highest Scorch</th>")
                   .append("</tr>");
 
             for (String mageName : mages) {
                 Mage mage= mageMap.get(mageName);
                     strBuf.append("<tr>")
                           .append("<td>").append(mageName).append("</td>")
-                          .append("<td>").append(mage.getManaFromVampiricTouch()).append("</td>")
-                          .append("<td>").append(mage.getManaFromJudgementOfWisdom()).append("</td>")
-                          .append("<td>").append(mage.getManFrombow()).append("</td>")
+                          .append("<td class=\"toggle-column\" style=\"display: none;\">").append(mage.getManaFromVampiricTouch()).append("</td>")
+                          .append("<td class=\"toggle-column\" style=\"display: none;\">").append(mage.getManaFromJudgementOfWisdom()).append("</td>")
+                          .append("<td class=\"toggle-column\" style=\"display: none;\">").append(mage.getManFrombow()).append("</td>")
                           .append("<td>").append(mage.getFireBlastHits()).append(" / ").append(mage.getFireBlastCrits()).append("</td>")
-                          .append("<td>").append(mage.getHighestFireBlast()).append(" => ").append(mage.getHighestFireBlastTarget()).append("</td>")
+                          .append("<td class=\"toggle-column-highlights\" style=\"display: none;\">").append(mage.getHighestFireBlast()).append(" => ").append(mage.getHighestFireBlastTarget()).append("</td>")
 
                           .append("<td>").append(mage.getFireBallHits()).append(" / ").append(mage.getFireBallCrits()).append("</td>")
-                          .append("<td>").append(mage.getHighestFireBall()).append(" => ").append(mage.getHighestFireBallTarget()).append("</td>")
+                          .append("<td class=\"toggle-column-highlights\" style=\"display: none;\">").append(mage.getHighestFireBall()).append(" => ").append(mage.getHighestFireBallTarget()).append("</td>")
                           
                           .append("<td>").append(mage.getArcaneRuptureHits()).append(" / ").append(mage.getArcaneRuptureCrits()).append("</td>")
-                          .append("<td>").append(mage.getHighestArcaneRupture()).append(" => ").append(mage.getHighestArcaneRuptureTarget()).append("</td>")
+                          .append("<td class=\"toggle-column-highlights\" style=\"display: none;\">").append(mage.getHighestArcaneRupture()).append(" => ").append(mage.getHighestArcaneRuptureTarget()).append("</td>")
 
                           .append("<td>").append(mage.getArcaneSurgeHits()).append(" / ").append(mage.getArcaneSurgeCrits()).append("</td>")
-                          .append("<td>").append(mage.getHighestArcaneSurge()).append(" => ").append(mage.getHighestArcaneSurgeTarget()).append("</td>")
+                          .append("<td class=\"toggle-column-highlights\" style=\"display: none;\">").append(mage.getHighestArcaneSurge()).append(" => ").append(mage.getHighestArcaneSurgeTarget()).append("</td>")
 
                           .append("<td>").append(mage.getArcaneMissleHits()).append(" / ").append(mage.getArcaneMissleCrits()).append("</td>")
-                          .append("<td>").append(mage.getHighestArcaneMissle()).append(" => ").append(mage.getHighestArcaneMissleTarget()).append("</td>")
+                          .append("<td class=\"toggle-column-highlights\" style=\"display: none;\">").append(mage.getHighestArcaneMissle()).append(" => ").append(mage.getHighestArcaneMissleTarget()).append("</td>")
 
                           .append("<td>").append(mage.getPyroBlastHits()).append(" / ").append(mage.getPyroBlastCrits()).append("</td>")
-                          .append("<td>").append(mage.getHighestPyroBlast()).append(" => ").append(mage.getHighestPyroBlastTarget()).append("</td>")
+                          .append("<td class=\"toggle-column-highlights\" style=\"display: none;\">").append(mage.getHighestPyroBlast()).append(" => ").append(mage.getHighestPyroBlastTarget()).append("</td>")
 
                           .append("<td>").append(mage.getScorchHits()).append(" / ").append(mage.getScorchCrits()).append("</td>")
-                          .append("<td>").append(mage.getHighestScorch()).append(" => ").append(mage.getHigehstScorchTarget()).append("</td>")
+                          .append("<td class=\"toggle-column-highlights\" style=\"display: none;\">").append(mage.getHighestScorch()).append(" => ").append(mage.getHigehstScorchTarget()).append("</td>")
 
                           .append("</tr>");
             }
@@ -155,6 +155,19 @@ public class MageUtils {
         }
         return strBuf.toString();
     }
+    
+	public static boolean isMage(String logline) {
+		boolean isMage = false;
+		if((logline.contains(Constants.fireBlastHits) || 
+			logline.contains(Constants.fireBallHits) || 
+			logline.contains(Constants.arcaneMissleHits) || 
+			logline.contains(Constants.pyroBlastHits) || 
+			logline.contains(Constants.arcaneRuptureHits) )) {
+			isMage = true;
+		}
+		return isMage;
+	}
+    
 	
 
 }

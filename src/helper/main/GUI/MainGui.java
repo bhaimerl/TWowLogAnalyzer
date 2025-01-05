@@ -29,6 +29,7 @@ import helper.classes.utils.BossUtils;
 import helper.classes.utils.Constants;
 import helper.classes.utils.General;
 import helper.classes.utils.HunterUtils;
+import helper.classes.utils.LootUtils;
 import helper.classes.utils.MageUtils;
 import helper.classes.utils.PaladinUtils;
 import helper.classes.utils.Players;
@@ -316,7 +317,7 @@ public class MainGui {
 				int tenPercentLogLines = (fileAsArrayList.size() / 100) *11;
 				Date start = General.getStartDate();			
 				for (String string : fileAsArrayList) {
-					//BarovUtils.findEntryForFrostUser(string, allPlayers);
+					BarovUtils.findEntryForFrostUser(string, allPlayers);
 					
 					if(btnWarrior.getSelection()) {
 						WarriorUtils.findEntryForWarrior(string, allPlayers);
@@ -350,15 +351,19 @@ public class MainGui {
 				mages = MageUtils.getMagesHTML(); 
 				hunters = HunterUtils.getHunterHTML(); 
 				paladins = PaladinUtils.getPaladinHTML(); 
+		    	//loot
+		    	LootUtils.assignEpicLoot(fileAsArrayList);
+				String loot = LootUtils.getLootAsHTML();
 				
-				System.out.println("big for loop time: "+ General.getDifferenceInSecondsGivenAndNow(start) );
 				if(raids.contains("AQ40")) {
 					aq40Stuff+=BarovUtils.doAQChecksTogether(fileAsArrayList);
 				}
 				
-				String classAbs = "<div style='font-size: 20; font-weight: bold;' >=> Class specific analyze</div>";
+				String classAbs = "<div style='font-size: 20; font-weight: bold;' >=> Class specific analyze</div>"
+						+ "<button id=\"toggleColumnButton\">Show Mana generation</button>"
+						+ "<button id=\"toggleColumnHighlightsButton\">Show Highlights</button>";
 				String br = "<br><br>";
-				HTMLUtils.writeFile(HTMLUtils.getAsHTMLString(playersHtml+boss+classAbs+warriors+rogues+paladins+mages+hunters+warlocks+rogues+aq40Stuff, raidName, date, startTime, endTime, raids), true);
+				HTMLUtils.writeFile(HTMLUtils.getAsHTMLString(playersHtml+boss+classAbs+warriors+rogues+paladins+mages+hunters+warlocks+aq40Stuff+loot, raidName, date, startTime, endTime, raids), true);
 				boolean ftpLognSuccess = false;
 				try {
 					if(btnGeneratePublicLink.getSelection()) {

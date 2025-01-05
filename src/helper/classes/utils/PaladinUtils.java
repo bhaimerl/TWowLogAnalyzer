@@ -9,6 +9,7 @@ import java.util.function.Consumer;
 import helper.classes.Hunter;
 import helper.classes.NameClassWrapper;
 import helper.classes.Paladin;
+import helper.classes.Warrior;
 
 public class PaladinUtils {
 	
@@ -43,6 +44,10 @@ public class PaladinUtils {
 		if (!General.isPlayerInClassList(allValidPLayers, currentPlayer, Constants.PALADIN)) {
 			return;
 		}
+		
+		updatePaladinStats(logline, currentPlayer, Constants.windfury, Paladin::incrementWindFury);
+		updatePaladinStats(logline, currentPlayer, Constants.flametongue, Paladin::incrementFlameTongue);
+		
 		updatePaladinStats(logline, currentPlayer, Constants.manFromVampirismTouch, paladin -> paladin
 				.addManaFromVampiricTouch(General.getAmountGains(Constants.manFromVampirismTouch, logline)));
 
@@ -95,39 +100,57 @@ public class PaladinUtils {
 			SortedSet<String> paladins =  new TreeSet<>(paladinMap.keySet());			
             strBuf.append("<br><body><table class='classTable' align=\"left\" width='100%'>")
                   .append("<tr style='background-color: ").append(Constants.PALADINCOLOR).append(";'>")
-                  .append("<td colspan='14'>"+Constants.PALADIN+"</td></tr><tr>")
+                  .append("<td colspan='16'>"+Constants.PALADIN+"</td></tr><tr>")
                   .append("<th>Name</th>")
-                  .append("<th>Mana VampiricTouch</th><th>Mana Judgement</th><th>Mana BOW</th>")
-                  .append("<th>HolyStrike Hit/Crit</th><th>Highest HolyStrike</th>")
-            	  .append("<th>CrusaderStrike Hit/Crit</th><th>Highest CrusaderStrike</th>")
-            	  .append("<th>SealOfCommand Hit/Crit</th><th>Highest SoC</th>")
-            	  .append("<th>JudgementOfCommand Hit/Crit</th><th>Highest JoC</th>")
-            	  .append("<th>Exorcism Hit/Crit</th><th>Highest Exorcism</th>")
+                  .append("<th class=\"toggle-column\" style=\"display: none;\">Mana VampiricTouch</th><th class=\"toggle-column\" style=\"display: none;\">Mana Judgement</th><th class=\"toggle-column\" style=\"display: none;\">Mana BOW</th>")
+                  .append("<th>Windfury procs</th>")
+                  .append("<th>Flametongue procs</th>")
+                  .append("<th>HolyStrike Hit/Crit</th><th class=\"toggle-column-highlights\" style=\"display: none;\">Highest HolyStrike</th>")
+            	  .append("<th>CrusaderStrike Hit/Crit</th><th class=\"toggle-column-highlights\" style=\"display: none;\">Highest CrusaderStrike</th>")
+            	  .append("<th>SealOfCommand Hit/Crit</th><th class=\"toggle-column-highlights\" style=\"display: none;\">Highest SoC</th>")
+            	  .append("<th>JudgementOfCommand Hit/Crit</th><th class=\"toggle-column-highlights\" style=\"display: none;\">Highest JoC</th>")
+            	  .append("<th>Exorcism Hit/Crit</th><th class=\"toggle-column-highlights\" style=\"display: none;\">Highest Exorcism</th>")
                   .append("</tr>");
 
             for (String palaName : paladins) {
                 Paladin pala= paladinMap.get(palaName);
                     strBuf.append("<tr>")
                           .append("<td>").append(palaName).append("</td>")
-                          .append("<td>").append(pala.getManaFromVampiricTouch()).append("</td>")
-                          .append("<td>").append(pala.getManaFromJudgementOfWisdom()).append("</td>")
-                          .append("<td>").append(pala.getManFrombow()).append("</td>")
+                          .append("<td class=\"toggle-column\" style=\"display: none;\">").append(pala.getManaFromVampiricTouch()).append("</td>")
+                          .append("<td class=\"toggle-column\" style=\"display: none;\">").append(pala.getManaFromJudgementOfWisdom()).append("</td>")
+                          .append("<td class=\"toggle-column\" style=\"display: none;\">").append(pala.getManFrombow()).append("</td>")
+                          .append("<td>").append(pala.getWindFury()).append("</td>")
+                          .append("<td>").append(pala.getFlametongue()).append("</td>")
                           .append("<td>").append(pala.getHolyStrikeHit()).append(" / ").append(pala.getHolyStrikeCrit()).append("</td>")
-                          .append("<td>").append(pala.getHighestHolyStrike()).append(" => ").append(pala.getHighestHolyStrikeTarget()).append("</td>")
+                          .append("<td class=\"toggle-column-highlights\" style=\"display: none;\">").append(pala.getHighestHolyStrike()).append(" => ").append(pala.getHighestHolyStrikeTarget()).append("</td>")
                           .append("<td>").append(pala.getCrusaderStrikeHit()).append(" / ").append(pala.getCrusaderStrikeCrit()).append("</td>")
-                          .append("<td>").append(pala.getHighestCrusaderStrike()).append(" => ").append(pala.getHighestCrusaderStrikeTarget()).append("</td>")
+                          .append("<td class=\"toggle-column-highlights\" style=\"display: none;\">").append(pala.getHighestCrusaderStrike()).append(" => ").append(pala.getHighestCrusaderStrikeTarget()).append("</td>")
                           .append("<td>").append(pala.getSealOfCommandHit()).append(" / ").append(pala.getSealOfCommandCrit()).append("</td>")
-                          .append("<td>").append(pala.getHighestSealOfCommand()).append(" => ").append(pala.getHighestSealOfCommandTarget()).append("</td>")
+                          .append("<td class=\"toggle-column-highlights\" style=\"display: none;\">").append(pala.getHighestSealOfCommand()).append(" => ").append(pala.getHighestSealOfCommandTarget()).append("</td>")
                           .append("<td>").append(pala.getJudgementOfCommandHit()).append(" / ").append(pala.getJudgementOfCommandCrit()).append("</td>")
-                          .append("<td>").append(pala.getHighestJudgementOfCommand()).append(" => ").append(pala.getHighestJudgementOfCommandTarget()).append("</td>")
+                          .append("<td class=\"toggle-column-highlights\" style=\"display: none;\">").append(pala.getHighestJudgementOfCommand()).append(" => ").append(pala.getHighestJudgementOfCommandTarget()).append("</td>")
                           .append("<td>").append(pala.getExorcismHit()).append(" / ").append(pala.getExorcismCrit()).append("</td>")
-                          .append("<td>").append(pala.getHighestExorcism()).append(" => ").append(pala.getHighestExorcismTarget()).append("</td>")
+                          .append("<td class=\"toggle-column-highlights\" style=\"display: none;\">").append(pala.getHighestExorcism()).append(" => ").append(pala.getHighestExorcismTarget()).append("</td>")
                           .append("</tr>");
             }
             strBuf.append("</table>");
         }
         return strBuf.toString();
     }
+    
+    
+	public static boolean isPaladin(String logline) {
+		boolean isPaladin = false;
+		if((logline.contains(Constants.holyStrikeHit) || 
+			logline.contains(Constants.crusaderStrikeHit) || 
+			logline.contains(Constants.sealOfCommandHit) || 
+			logline.contains(Constants.judgementOfCommandHit) || 
+			logline.contains(Constants.exorcismHit) )) {
+			isPaladin = true;
+		}
+		return isPaladin;
+	}
+    
 	
 
 }

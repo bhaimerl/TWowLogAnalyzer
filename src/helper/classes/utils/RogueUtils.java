@@ -71,7 +71,7 @@ public class RogueUtils {
 	
 	public static String getRogues() {
 		StringBuffer strBuf = new StringBuffer();
-		if(rogueMap!=null) {
+		if(rogueMap!=null && rogueMap.size()>0) {
 			SortedSet<String> rogues =  new TreeSet<>(rogueMap.keySet());			
 			strBuf.append("<br>");				
 			strBuf.append("<body>");				
@@ -85,11 +85,11 @@ public class RogueUtils {
 			strBuf.append("<th>Slice&Dice procs</th>");
 			strBuf.append("<th>Blade Flurry procs</th>");
 			strBuf.append("<th>Backstab Hit/Crit</th>");
-			strBuf.append("<th>Highest BS</th>");
+			strBuf.append("<th class=\"toggle-column-highlights\" style=\"display: none;\">Highest BS</th>");
 			strBuf.append("<th>Eviscerate Hit/Crit</th>");
-			strBuf.append("<th>Highest Evsc</th>");
+			strBuf.append("<th class=\"toggle-column-highlights\" style=\"display: none;\">Highest Evsc</th>");
 			strBuf.append("<th>SinisterStrike Hit/Crit</th>");
-			strBuf.append("<th>Highest SS</th>");
+			strBuf.append("<th class=\"toggle-column-highlights\" style=\"display: none;\">Highest SS</th>");
 			strBuf.append("</tr>");
 			//Ballertony: [sunders=122, deathWish=18, windFury=236, crusader=74, wrath=264, flametongue=314, flurry=313, enrage=161]
 			//System.out.println("Name | Sunders | Deathwish | WindfuryProcs | CrusaderProcs | extra rage from unbridled wrath | FlametongueProcs | Flurry | Enrage");
@@ -103,16 +103,27 @@ public class RogueUtils {
 					strBuf.append("<td>"+rogue.getSliceAndDice()+"</td>");
 					strBuf.append("<td>"+rogue.getBladeFlurry()+"</td>");
 					strBuf.append("<td>"+rogue.getBackStabHits()+" / "+rogue.getBackStabCrits()+"</td>");
-					strBuf.append("<td>"+rogue.getHighestBackStabAmount()+"=> "+rogue.getHighestBackStabTarget()+"</td>");					
+					strBuf.append("<td class=\"toggle-column-highlights\" style=\"display: none;\">"+rogue.getHighestBackStabAmount()+"=> "+rogue.getHighestBackStabTarget()+"</td>");					
 					strBuf.append("<td>"+rogue.getEviscerateHit()+" / "+rogue.getEviscerateCrit()+"</td>");
-					strBuf.append("<td>"+rogue.getHighestEviscerateAmount()+"=> "+rogue.getHighestEviscerateTarget()+"</td>");					
+					strBuf.append("<td class=\"toggle-column-highlights\" style=\"display: none;\">"+rogue.getHighestEviscerateAmount()+"=> "+rogue.getHighestEviscerateTarget()+"</td>");					
 					strBuf.append("<td>"+rogue.getSinisterStrikeHit()+" / "+rogue.getSinisterStrikeCrit()+"</td>");
-					strBuf.append("<td>"+rogue.getHighestSinisterStrikeAmount()+"=> "+rogue.getHighestSinisterStrikeTarget()+"</td>");					
+					strBuf.append("<td class=\"toggle-column-highlights\" style=\"display: none;\">"+rogue.getHighestSinisterStrikeAmount()+"=> "+rogue.getHighestSinisterStrikeTarget()+"</td>");					
 					strBuf.append("</tr>");
 			}
 			strBuf.append("</table>");
 		}
 		return strBuf.toString();
 	}	
-	
+		
+	public static boolean isRogue(String logline) {
+		boolean isRogue = false;
+		if((logline.contains(Constants.sliceAndDice) || 
+			logline.contains(Constants.bladeFlurry) || 
+			logline.contains(Constants.backStabHits) || 
+			logline.contains(Constants.backStabHits) || 
+			logline.contains(Constants.sinisterStrikeHits) )) {
+			isRogue = true;
+		}
+		return isRogue;
+	}
 }

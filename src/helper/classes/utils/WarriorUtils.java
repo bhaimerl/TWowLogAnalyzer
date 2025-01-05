@@ -44,8 +44,8 @@ public class WarriorUtils {
     	updateWarriorStats(logline, currentPlayer, Constants.sunder, Warrior::incrementSunders);
     	updateWarriorStats(logline, currentPlayer, Constants.deathWish, Warrior::incrementDeathWish);
     	updateWarriorStats(logline, currentPlayer, Constants.windfury, Warrior::incrementWindFury);
-    	updateWarriorStats(logline, currentPlayer, Constants.crusader, Warrior::incrementCrusader);
     	updateWarriorStats(logline, currentPlayer, Constants.flametongue, Warrior::incrementFlameTongue);
+    	updateWarriorStats(logline, currentPlayer, Constants.crusader, Warrior::incrementCrusader);
     	updateWarriorStats(logline, currentPlayer, Constants.flurry, Warrior::incrementFlurry);
     	updateWarriorStats(logline, currentPlayer, Constants.enrage, Warrior::incrementEnrage);
 
@@ -87,9 +87,9 @@ public class WarriorUtils {
 			strBuf.append("<th>Flurry procs</th>");
 			strBuf.append("<th>Enrage procs</th>");
 			strBuf.append("<th>Executes</th>");
-			strBuf.append("<th>Highest Execute</th>");
+			strBuf.append("<th class=\"toggle-column-highlights\" style=\"display: none;\">Highest Execute</th>");
 			strBuf.append("<th>Bloodthirsts</th>");
-			strBuf.append("<th>Highest Bloodthirst</th>");
+			strBuf.append("<th class=\"toggle-column-highlights\" style=\"display: none;\">Highest Bloodthirst</th>");
 			strBuf.append("</tr>");
 			//Ballertony: [sunders=122, deathWish=18, windFury=236, crusader=74, wrath=264, flametongue=314, flurry=313, enrage=161]
 			//System.out.println("Name | Sunders | Deathwish | WindfuryProcs | CrusaderProcs | extra rage from unbridled wrath | FlametongueProcs | Flurry | Enrage");
@@ -106,14 +106,28 @@ public class WarriorUtils {
 					strBuf.append("<td>"+warri.getFlurry()+"</td>");
 					strBuf.append("<td>"+warri.getEnrage()+"</td>");
 					strBuf.append("<td>"+warri.getExecuteAmount()+"</td>");
-					strBuf.append("<td>"+warri.getHighestExecute()+"=> "+warri.getHighestExecuteTarget()+"</td>");
+					strBuf.append("<td class=\"toggle-column-highlights\" style=\"display: none;\">"+warri.getHighestExecute()+"=> "+warri.getHighestExecuteTarget()+"</td>");
 					strBuf.append("<td>"+warri.getBloodThirstAmount()+"</td>");
-					strBuf.append("<td>"+warri.getHighestBloodthirst()+"=> "+warri.getHighestBloodthirstTarget()+"</td>");
+					strBuf.append("<td class=\"toggle-column-highlights\" style=\"display: none;\">"+warri.getHighestBloodthirst()+"=> "+warri.getHighestBloodthirstTarget()+"</td>");
 					strBuf.append("</tr>");
 			}
 			strBuf.append("</table>");
 		}
 		return strBuf.toString();
 	}	
+	
+	public static boolean isWarrior(String logline) {
+		boolean isWarrior = false;
+		if((logline.contains(Constants.sunder) || 
+			logline.contains(Constants.deathWish) || 
+			logline.contains(Constants.wrath) || 
+			logline.contains(Constants.enrage) || 
+			logline.contains(Constants.concussionBlow) || 
+			logline.contains(Constants.shieldSlam) || 			
+			logline.contains(Constants.bloodthirstHit))) {
+			isWarrior = true;
+		}
+		return isWarrior;
+	}
 	
 }
