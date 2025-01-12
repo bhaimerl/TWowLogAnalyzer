@@ -9,7 +9,7 @@ import org.apache.commons.net.ftp.FTPClient;
 
 public class FtpUpload {
 
-	public static boolean fileUpload(String password, String pathToFile, String fileName) { 
+	public static boolean fileUpload(String password, String subdirname, String pathToFile, String fileName) { 
 		
 		boolean success = false;
 		String server = "f28-preview.awardspace.net";
@@ -30,10 +30,23 @@ public class FtpUpload {
             // FTP-Modus einstellen
             ftpClient.enterLocalPassiveMode(); // Für Firewalls empfohlen
             ftpClient.setFileType(FTP.BINARY_FILE_TYPE);
+            String remoteDir = "klarasprudel.atwebpages.com/"+subdirname;
 
+            if (!ftpClient.changeWorkingDirectory(remoteDir)) {
+                boolean dirCreated = ftpClient.makeDirectory(remoteDir);
+                if (dirCreated) {
+                	ftpClient.changeWorkingDirectory(remoteDir);
+                    System.out.println("Verzeichnis erstellt: " + remoteDir);
+                } else {
+                    System.out.println("Konnte Verzeichnis nicht erstellen.");
+                }
+            }            
+            
+            
+            
             // Datei zum Hochladen vorbereiten
             File localFile = new File(pathToFile);
-            String remoteFile = "klarasprudel.atwebpages.com/"+fileName; // Zielpfad auf dem Server
+            String remoteFile = fileName; // Zielpfad auf dem Server
 
             try (FileInputStream inputStream = new FileInputStream(localFile)) {
                 boolean done = ftpClient.storeFile(remoteFile, inputStream);
@@ -41,7 +54,7 @@ public class FtpUpload {
             		success = true;
                     System.out.println("Datei erfolgreich hochgeladen.");
                 } else {
-                    System.out.println("Fehler beim Hochladen der Datei.");
+                    System.out.println("Fehler beim Hochladen der Datei: " +remoteFile+" in das verzeichnis: "+remoteDir);
                 }
             }
 

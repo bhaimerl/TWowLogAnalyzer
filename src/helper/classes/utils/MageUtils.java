@@ -127,7 +127,7 @@ public class MageUtils {
                           .append("<td>").append(mageName).append("</td>")
                           .append("<td class=\"toggle-column\" style=\"display: none;\">").append(mage.getManaFromVampiricTouch()).append("</td>")
                           .append("<td class=\"toggle-column\" style=\"display: none;\">").append(mage.getManaFromJudgementOfWisdom()).append("</td>")
-                          .append("<td class=\"toggle-column\" style=\"display: none;\">").append(mage.getManFrombow()).append("</td>")
+                          .append("<td class=\"toggle-column\" style=\"display: none;\">").append(mage.getManaFromBow()).append("</td>")
                           .append("<td>").append(mage.getFireBlastHits()).append(" / ").append(mage.getFireBlastCrits()).append("</td>")
                           .append("<td class=\"toggle-column-highlights\" style=\"display: none;\">").append(mage.getHighestFireBlast()).append(" => ").append(mage.getHighestFireBlastTarget()).append("</td>")
 

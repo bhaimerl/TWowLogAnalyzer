@@ -1,10 +1,7 @@
 package helper.classes;
 
-public class Mage {
+public class Mage extends Caster {
 
-	public int manaFromVampiricTouch=0;
-	public int manaFromJudgementOfWisdom=0;
-	public int manFrombow=0;
 
 	int fireBlastCrits = 0;
 	int fireBlastHits = 0;
@@ -356,35 +353,6 @@ public class Mage {
 		this.higehstScorchTarget = higehstScorchTarget;
 	}
 
-	public int getManaFromVampiricTouch() {
-		return manaFromVampiricTouch;
-	}
-	public void setManaFromVampiricTouch(int manaFromVampiricTouch) {
-		this.manaFromVampiricTouch = manaFromVampiricTouch;
-	}
-	public int getManaFromJudgementOfWisdom() {
-		return manaFromJudgementOfWisdom;
-	}
-	public void setManaFromJudgementOfWisdom(int manaFromJudgementOfWisdom) {
-		this.manaFromJudgementOfWisdom = manaFromJudgementOfWisdom;
-	}
-	public int getManFrombow() {
-		return manFrombow;
-	}
-	public void setManFrombow(int manFrombow) {
-		this.manFrombow = manFrombow;
-	}
-    public void addManaFromVampiricTouch(int amount) {
-        this.manaFromVampiricTouch += amount;
-    }
-
-    public void addManaFromBow(int amount) {
-        this.manFrombow += amount;
-    }
-    public void addManaFromJudgementOfWisdom(int amount) {
-        this.manaFromJudgementOfWisdom += amount;
-    }
-	
 	
 	
 

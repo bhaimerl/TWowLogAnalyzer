@@ -1,19 +1,6 @@
 package helper.classes;
 
-public class Rogue {
-	
-	public int windFury=0;
-    public void incrementWindFury() {
-        this.windFury++;
-    }
-	public int crusader=0;
-    public void incrementCrusader() {
-        this.crusader++;
-    }    
-	public int flametongue=0;
-    public void incrementFlameTongue() {
-        this.flametongue++;
-    }
+public class Rogue extends Melee{
 	
 	
 	public int sliceAndDice=0;
@@ -76,24 +63,6 @@ public class Rogue {
             this.highestSinisterStrikeTarget = target;
         }
     }
-	public int getWindFury() {
-		return windFury;
-	}
-	public void setWindFury(int windFury) {
-		this.windFury = windFury;
-	}
-	public int getCrusader() {
-		return crusader;
-	}
-	public void setCrusader(int crusader) {
-		this.crusader = crusader;
-	}
-	public int getFlametongue() {
-		return flametongue;
-	}
-	public void setFlametongue(int flametongue) {
-		this.flametongue = flametongue;
-	}
 	public int getSliceAndDice() {
 		return sliceAndDice;
 	}

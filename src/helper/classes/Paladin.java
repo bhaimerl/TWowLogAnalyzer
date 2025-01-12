@@ -1,10 +1,7 @@
 package helper.classes;
 
-public class Paladin {
+public class Paladin extends CasterMelee {
 	
-	public int manaFromVampiricTouch=0;
-	public int manaFromJudgementOfWisdom=0;
-	public int manFrombow=0;
 	//Holy Strike 
 	//Crusader Strike
 	//Judgement of Command
@@ -95,46 +92,6 @@ public class Paladin {
         }
     }	
     
-	public int windFury=0;
-    public void incrementWindFury() {
-        this.windFury++;
-    }
-    public int flametongue=0;
-    public void incrementFlameTongue() {
-        this.flametongue++;
-    }
-    
-    
-    
-	public int getManaFromVampiricTouch() {
-		return manaFromVampiricTouch;
-	}
-	public void setManaFromVampiricTouch(int manaFromVampiricTouch) {
-		this.manaFromVampiricTouch = manaFromVampiricTouch;
-	}
-	public int getManaFromJudgementOfWisdom() {
-		return manaFromJudgementOfWisdom;
-	}
-	public void setManaFromJudgementOfWisdom(int manaFromJudgementOfWisdom) {
-		this.manaFromJudgementOfWisdom = manaFromJudgementOfWisdom;
-	}
-	public int getManFrombow() {
-		return manFrombow;
-	}
-	public void setManFrombow(int manFrombow) {
-		this.manFrombow = manFrombow;
-	}
-    public void addManaFromVampiricTouch(int amount) {
-        this.manaFromVampiricTouch += amount;
-    }
-
-    public void addManaFromBow(int amount) {
-        this.manFrombow += amount;
-    }
-    public void addManaFromJudgementOfWisdom(int amount) {
-        this.manaFromJudgementOfWisdom += amount;
-    }
-
 	public int getHighestHolyStrike() {
 		return highestHolyStrike;
 	}
@@ -362,32 +319,4 @@ public class Paladin {
 		this.highestExorcismTarget = highestExorcismTarget;
 	}
 
-
-
-	public int getWindFury() {
-		return windFury;
-	}
-
-
-
-	public int getFlametongue() {
-		return flametongue;
-	}
-
-
-
-	public void setWindFury(int windFury) {
-		this.windFury = windFury;
-	}
-
-
-
-	public void setFlametongue(int flametongue) {
-		this.flametongue = flametongue;
-	}
-
-	
-	
-    
-    
 }

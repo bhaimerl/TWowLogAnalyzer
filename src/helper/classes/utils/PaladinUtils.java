@@ -118,7 +118,7 @@ public class PaladinUtils {
                           .append("<td>").append(palaName).append("</td>")
                           .append("<td class=\"toggle-column\" style=\"display: none;\">").append(pala.getManaFromVampiricTouch()).append("</td>")
                           .append("<td class=\"toggle-column\" style=\"display: none;\">").append(pala.getManaFromJudgementOfWisdom()).append("</td>")
-                          .append("<td class=\"toggle-column\" style=\"display: none;\">").append(pala.getManFrombow()).append("</td>")
+                          .append("<td class=\"toggle-column\" style=\"display: none;\">").append(pala.getManaFromBow()).append("</td>")
                           .append("<td>").append(pala.getWindFury()).append("</td>")
                           .append("<td>").append(pala.getFlametongue()).append("</td>")
                           .append("<td>").append(pala.getHolyStrikeHit()).append(" / ").append(pala.getHolyStrikeCrit()).append("</td>")

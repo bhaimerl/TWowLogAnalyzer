@@ -1,11 +1,6 @@
 package helper.classes;
 
-public class Hunter { 
-	
-	public int manaFromVampiricTouch=0;
-	public int manaFromJudgementOfWisdom=0;
-	public int manFrombow=0;
-
+public class Hunter extends CasterMelee{ 
 	
 	public int autoShotHit=0;
 	public void incrementAutoShotHit() {
@@ -116,28 +111,6 @@ public class Hunter {
 	}		
 	
 	
-    public void addManaFromVampiricTouch(int amount) {
-        this.manaFromVampiricTouch += amount;
-    }
-
-    public void addManaFromBow(int amount) {
-        this.manFrombow += amount;
-    }
-    public void addManaFromJudgementOfWisdom(int amount) {
-        this.manaFromJudgementOfWisdom += amount;
-    }
-
-	public int getManaFromVampiricTouch() {
-		return manaFromVampiricTouch;
-	}
-
-	public int getManaFromJudgementOfWisdom() {
-		return manaFromJudgementOfWisdom;
-	}
-
-	public int getManFrombow() {
-		return manFrombow;
-	}
 
 	public int getAutoShotHit() {
 		return autoShotHit;

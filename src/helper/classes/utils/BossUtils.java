@@ -193,7 +193,12 @@ public class BossUtils {
 				String currentPlayer = General.getPlayerName(string);
 				if( Players.isNameAValidPlayerInRaid(currentPlayer) && string.contains(currentPlayer+" dies.")) {
 					//was ist mit dem spieler passiert, bevor er gestorben ist?
-					ArrayList<String> logsInIntervallUntilPlayerDeath = General.getLogsWithinIntervallPLusTolerance(General.getTimeFromLogAsDateTime(string).minusMillis(1500), General.getTimeFromLogAsDateTime(string), 250, logsInIntervall);
+					int msTogoBack = 1500;
+					if(Players.isPlayerAPriest(currentPlayer)) {
+						msTogoBack = 11000;
+					}
+					
+					ArrayList<String> logsInIntervallUntilPlayerDeath = General.getLogsWithinIntervallPLusTolerance(General.getTimeFromLogAsDateTime(string).minusMillis(msTogoBack), General.getTimeFromLogAsDateTime(string), 1000, logsInIntervall);
 					boolean foundCause = false;
 					for(int i = logsInIntervallUntilPlayerDeath.size()-1;i>0;i--) {
 						String deathLine = logsInIntervallUntilPlayerDeath.get(i);
@@ -204,7 +209,7 @@ public class BossUtils {
 						}
 					}
 					if(foundCause==false) {
-						playerDeathCause.put(currentPlayer, "unclear why!"+" ("+General.getTimeFromLog(string).substring(0,8)+")");
+						playerDeathCause.put(currentPlayer, "unclear why!"+" ("+General.getTimeFromLog(string)+")");
 					}
 				}
 			}
@@ -247,6 +252,8 @@ public class BossUtils {
 			//Ballertony: [sunders=122, deathWish=18, windFury=236, crusader=74, wrath=264, flametongue=314, flurry=313, enrage=161]
 			//System.out.println("Name | Sunders | Deathwish | WindfuryProcs | CrusaderProcs | extra rage from unbridled wrath | FlametongueProcs | Flurry | Enrage");
 			Collections.sort(sortedBosses);
+			//um sich alte deaths zu merken, damit die nicht erneut auftauchen
+			ArrayList<String> playerDeathCauseold = new ArrayList<>();
 			for (Boss boss : sortedBosses) {
 				if(boss.getName()==null) {
 					continue;
@@ -300,7 +307,10 @@ public class BossUtils {
 					HashMap<String, String> playerDeathCause = boss.getPlayerDeathCause();
 					Set<String> playerDeathSet = playerDeathCause.keySet();
 					for (String player : playerDeathSet) {
-						strBuf.append("<b>"+player+":</b><i style='font-size: 11px;' title=\""+playerDeathCause.get(player)+"\">"+StringUtils.abbreviate(playerDeathCause.get(player), 65)+"</i><br>");
+						if(!playerDeathCauseold.contains(playerDeathCause.get(player))) {
+							strBuf.append("<b>"+player+":</b><i style='font-size: 11px;' title=\""+playerDeathCause.get(player)+"\">"+StringUtils.abbreviate(playerDeathCause.get(player), 65)+"</i><br>");
+							playerDeathCauseold.add(playerDeathCause.get(player));
+						}
 					}
 					strBuf.append("</td>");					
 					strBuf.append("<td>"+boss.getNightFallProcs()+" | "+((boss.getNightFallDmg()/100)*10)+"</td>");					

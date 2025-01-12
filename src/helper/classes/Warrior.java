@@ -1,6 +1,6 @@
 package helper.classes;
 
-public class Warrior{
+public class Warrior extends Melee{
 	
 	public int sunders=0;
     public void incrementSunders() {
@@ -9,18 +9,6 @@ public class Warrior{
 	public int deathWish=0;
     public void incrementDeathWish() {
         this.deathWish++;
-    }
-	public int crusader=0;
-    public void incrementCrusader() {
-        this.crusader++;
-    }    
-	public int windFury=0;
-    public void incrementWindFury() {
-        this.windFury++;
-    }
-    public int flametongue=0;
-    public void incrementFlameTongue() {
-        this.flametongue++;
     }
 	public int flurry=0;
     public void incrementFlurry() {
@@ -73,15 +61,6 @@ public class Warrior{
 	public int getDeathWish() {
 		return deathWish;
 	}
-	public int getWindFury() {
-		return windFury;
-	}
-	public int getCrusader() {
-		return crusader;
-	}
-	public int getFlametongue() {
-		return flametongue;
-	}
 	public int getFlurry() {
 		return flurry;
 	}
@@ -105,11 +84,6 @@ public class Warrior{
 	}
 	public String getHighestBloodthirstTarget() {
 		return highestBloodthirstTarget;
-	}
-	@Override
-	public String toString() {
-	           //("Name | Sunders | Deathwish | WindfuryProcs | CrusaderProcs | extra rage from unbridled wrath | FlametongueProcs | Flurry | Enrage");
-		return ""+ sunders + "| " + deathWish + " | " + windFury + " | "+ crusader + " | " + wrath + " | " + flametongue + " | " + flurry + " | "+ enrage + "]";
 	}
 	
 	

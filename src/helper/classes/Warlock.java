@@ -1,13 +1,10 @@
 package helper.classes;
 
-public class Warlock {
+public class Warlock extends Caster {
 
     private int shadowtrance;
     private int lifeTaps;
     private int lifeTapMana;
-    private int manaFromVampiricTouch;
-    private int manaFromJudgementOfWisdom;
-    private int manaFromBow;
     private int shadowBoltHits;
     private int shadowBoltCrits;
     private int highestSBAmount;
@@ -74,31 +71,6 @@ public class Warlock {
     public void addLifeTapMana(int amount) {
         this.lifeTapMana += amount;
     }
-
-    public int getManaFromVampiricTouch() {
-        return manaFromVampiricTouch;
-    }
-
-    public void addManaFromVampiricTouch(int amount) {
-        this.manaFromVampiricTouch += amount;
-    }
-
-    public int getManaFromJudgementOfWisdom() {
-        return manaFromJudgementOfWisdom;
-    }
-
-    public void addManaFromJudgementOfWisdom(int amount) {
-        this.manaFromJudgementOfWisdom += amount;
-    }
-
-    public int getManaFromBow() {
-        return manaFromBow;
-    }
-
-    public void addManaFromBow(int amount) {
-        this.manaFromBow += amount;
-    }
-
     public int getShadowBoltHits() {
         return shadowBoltHits;
     }

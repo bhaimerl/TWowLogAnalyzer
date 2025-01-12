@@ -27,13 +27,15 @@ import helper.Raids.RaidBossMapping;
 import helper.classes.NameClassWrapper;
 import helper.classes.utils.BossUtils;
 import helper.classes.utils.Constants;
+import helper.classes.utils.DruidUtils;
 import helper.classes.utils.General;
 import helper.classes.utils.HunterUtils;
 import helper.classes.utils.LootUtils;
 import helper.classes.utils.MageUtils;
 import helper.classes.utils.PaladinUtils;
 import helper.classes.utils.Players;
-import helper.classes.utils.Raid;
+import helper.classes.utils.PriestUtils;
+import helper.classes.utils.RaidLogInfo;
 import helper.classes.utils.RogueUtils;
 import helper.classes.utils.WarlockUtils;
 import helper.classes.utils.WarriorUtils;
@@ -143,6 +145,7 @@ public class MainGui {
 			    String choosenFileInclPath = fileDialog.open();
 		        File f = new File(choosenFileInclPath);
 		        if(f.isFile()) {
+		        	General.flushAllGuild();
 					fileAsArrayList = FileUtils.getFileAsArrayList(choosenFileInclPath);
 					allPlayers = new HashMap<>();
 					allPlayers = Players.getAllPlayersSortedByClass(fileAsArrayList);					
@@ -215,7 +218,7 @@ public class MainGui {
 		btnWarlock.setBounds(128, 190, 64, 16);
 		btnWarlock.setText("Warlock");
 		
-		btnDruid.setEnabled(false);
+		btnDruid.setSelection(true);
 		btnDruid.setText("Druid");
 		btnDruid.setBounds(198, 146, 58, 16);
 		
@@ -231,7 +234,7 @@ public class MainGui {
 		btnShaman.setText("Shaman");
 		btnShaman.setBounds(263, 146, 64, 16);
 		
-		btnPriest.setEnabled(false);
+		btnPriest.setSelection(true);
 		btnPriest.setText("Priest");
 		btnPriest.setBounds(263, 168, 64, 16);
 		
@@ -301,19 +304,24 @@ public class MainGui {
 				String aq40Stuff = "";
 				String hunters = "";
 				String paladins = "";
+				String druids = "";
+				String priests = "";
 				String boss = "";
 				String raids = "";
 				int i = 0;
 				int j=1;
 				String processBar = "";
+				lblInvalidInputData.setText("reading log...");
 		    	ArrayList<String> bossesFromLog = RaidBossMapping.getBossesFromLog(fileAsArrayList);
+				lblInvalidInputData.setText("calculate boss stats...");		    	
 				BossUtils.calculateBossStats(fileAsArrayList, bossesFromLog);
 				boss = BossUtils.getBossStatsHTML();
 				Set<String> raidFromBosses = RaidBossMapping.getRaidFromBosses(bossesFromLog);
 				for (String string : raidFromBosses) {
-					raids+=string+" ";
+					raids+=string+"";
 				}
 				raids = raids.trim();
+				lblInvalidInputData.setText("parse players...");
 				int tenPercentLogLines = (fileAsArrayList.size() / 100) *11;
 				Date start = General.getStartDate();			
 				for (String string : fileAsArrayList) {
@@ -337,6 +345,13 @@ public class MainGui {
 					if(brnPaladin.getSelection()) {
 						PaladinUtils.findEntryForPaladin(string, allPlayers);
 					}						
+					if(btnDruid.getSelection()) {
+						DruidUtils.findEntryForDruid(string, allPlayers);
+					}						
+					if(btnPriest.getSelection()) {
+						PriestUtils.findEntryForPriest(string, allPlayers);
+					}						
+					
 					
 					if(i%tenPercentLogLines==0) {
 						processBar="..."+j+"0%...";
@@ -350,7 +365,9 @@ public class MainGui {
 				rogues = RogueUtils.getRogues(); 
 				mages = MageUtils.getMagesHTML(); 
 				hunters = HunterUtils.getHunterHTML(); 
-				paladins = PaladinUtils.getPaladinHTML(); 
+				paladins = PaladinUtils.getPaladinHTML();
+				druids = DruidUtils.getDruidHTML();
+				priests = PriestUtils.getPriestHTML();
 		    	//loot
 		    	LootUtils.assignEpicLoot(fileAsArrayList);
 				String loot = LootUtils.getLootAsHTML();
@@ -363,15 +380,17 @@ public class MainGui {
 						+ "<button id=\"toggleColumnButton\">Show Mana generation</button>"
 						+ "<button id=\"toggleColumnHighlightsButton\">Show Highlights</button>";
 				String br = "<br><br>";
-				HTMLUtils.writeFile(HTMLUtils.getAsHTMLString(playersHtml+boss+classAbs+warriors+rogues+paladins+mages+hunters+warlocks+aq40Stuff+loot, raidName, date, startTime, endTime, raids), true);
+				HTMLUtils.writeFile(HTMLUtils.getAsHTMLString(playersHtml+boss+classAbs+warriors+rogues+druids+paladins+priests+mages+hunters+warlocks+aq40Stuff+loot, raidName, date, startTime, endTime, raids), true);
+				String guildBasedFileName = RaidLogInfo.getUNiqueFileName(raids, date, startTime, Players.getMainGuild()+".html");
 				boolean ftpLognSuccess = false;
 				try {
 					if(btnGeneratePublicLink.getSelection()) {
 						lblInvalidInputData.setText("...i will open your browser...to public url");
-						String uniqueFileName = UUID.randomUUID().toString()+".html";
-						ftpLognSuccess = FtpUpload.fileUpload(passwordField.getText(), HTMLUtils.getTmpFileNameInclPath(),uniqueFileName);
+						//String uniqueFileName = UUID.randomUUID().toString()+".html";
+						ftpLognSuccess = FtpUpload.fileUpload(passwordField.getText(), Players.getMainGuild(), HTMLUtils.getTmpFileNameInclPath(),guildBasedFileName);
 						if(ftpLognSuccess) {
-							String resulturl = "http://klarasprudel.atwebpages.com/"+uniqueFileName;
+							String resulturl = "http://klarasprudel.atwebpages.com/"+Players.getMainGuild()+"/"+guildBasedFileName;
+							System.out.println("URL is: "+resulturl);
 							FileUtils.openWebpage(new URI(resulturl));
 							//lblInvalidInputData.setText("URL: "+resulturl);
 						} else {
@@ -434,7 +453,9 @@ public class MainGui {
 	private boolean allowCalculation() {
 		//at least one class selected?
 		boolean classValid = false;
-		if(btnWarrior.getSelection() || btnRogue.getSelection() || btnWarlock.getSelection() || btnMage.getSelection() || btnHunter.getSelection() || brnPaladin.getSelection()) {
+		if(btnWarrior.getSelection() || btnRogue.getSelection() || btnWarlock.getSelection() || 
+				btnMage.getSelection() || btnHunter.getSelection() || brnPaladin.getSelection() || 
+				btnDruid.getSelection() || btnPriest.getSelection()) {
 			classValid = true;
 		}
 		if(classValid && validTimes) {

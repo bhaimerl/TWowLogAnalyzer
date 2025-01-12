@@ -7,11 +7,68 @@ import java.util.Iterator;
 import java.util.Set;
 import java.util.StringTokenizer;
 
+import org.joda.time.DateTime;
+import org.joda.time.DateTimeUtils;
+import org.joda.time.Years;
+
 import helper.classes.NameClassWrapper;
 
 public class Players {
 	
+	
 	public static ArrayList<NameClassWrapper> uniqueList = new ArrayList<>();
+	
+	public static String mainGuild = null;
+	public static String logYear = null;;
+	public static HashMap<String, Integer> guildCountMap = new HashMap<>();
+	
+	private static void addGuildEntry(String guildName) {
+		if(guildCountMap.containsKey(guildName)) {
+			int newValue = guildCountMap.get(guildName)+1;
+			guildCountMap.put(guildName, newValue);
+		} else {
+			guildCountMap.put(guildName, 1);
+		}
+	}
+	
+	public static boolean isPlayerAPriest(String playerName) {
+		for (NameClassWrapper nameClassWrapper : uniqueList) {
+			if(nameClassWrapper.getName().equals(playerName) && nameClassWrapper.getPlayerClass().equals(Constants.PRIEST)) {
+				return true;
+			}
+		}
+		return false;
+		
+	}
+	
+	public static String getPlayerClass(String playerName) {
+		for (NameClassWrapper nameClassWrapper : uniqueList) {
+			if(nameClassWrapper.getName().equals(playerName)) {
+				return nameClassWrapper.getPlayerClass();
+			}
+		}
+		return "";
+	}
+	
+	public static String getMainGuild() {
+		String maxKey = "custom";
+		if(mainGuild!=null) {
+			return mainGuild;
+		}
+        int maxValue = Integer.MIN_VALUE;
+        // Iteration über die Einträge der Map
+        for (HashMap.Entry<String, Integer> entry : guildCountMap.entrySet()) {
+            if (entry.getValue() > maxValue) {
+                maxValue = entry.getValue();
+                maxKey = entry.getKey();
+            }
+        }	
+        maxKey = maxKey.replace(" ", "");
+        maxKey = maxKey.replace("_", "");
+        maxKey = maxKey.replace("-", "");
+        mainGuild = maxKey.toLowerCase();
+        return mainGuild;
+	}
 	
 	public static boolean isNameAValidPlayerInRaid(String playerName) {
 		for (NameClassWrapper nameClassWrapper : uniqueList) {
@@ -20,6 +77,32 @@ public class Players {
 			}
 		}
 		return false;
+	}
+	
+	public static String getYear() {
+		return logYear;
+	}
+	
+	private static void calcYear(String logLine) {
+			StringTokenizer strTok = null;
+			if(logLine.contains("COMBATANT_INFO:")) {
+				//12/6 19:16:40.023  COMBATANT_INFO: 06.12.24 19:16:40&Ravenya&DRUID&NightElf&3&nil&ist auch dabei&Officer&1&nil&22732:928:0:0&nil&nil&nil&nil&nil&nil&nil&nil&17063:928:0:0&18879:928:0:0&nil&nil&22938:2622:0:0&nil&nil&23198:0:0:0&5976:0:0:0&nil
+				strTok = new StringTokenizer(logLine, " ");
+				try {
+					while(strTok.hasMoreTokens()) {
+						strTok.nextToken(); //date
+						strTok.nextToken(); // time;
+						strTok.nextToken(); // combatant
+						String date = strTok.nextToken(); //date
+						date = date.substring(6);
+						logYear = "20"+date;
+						return;
+					}
+				} catch(Exception e) {
+					System.out.println("YEAR calc: Problem during this line: "+logLine);
+				}
+			}
+		
 	}
 	
 	public static ArrayList<NameClassWrapper> identifyAllPlayers(ArrayList<String> completeLog) {	
@@ -32,7 +115,8 @@ public class Players {
 		int combatantCounter = 0;
 		for (String currentLogLine : completeLog) {
 			//12/6 19:16:40.023  COMBATANT_INFO: 06.12.24 19:16:40&Ravenya&DRUID&NightElf&3&nil&ist auch dabei&Officer&1&nil&22732:928:0:0&nil&nil&nil&nil&nil&nil&nil&nil&17063:928:0:0&18879:928:0:0&nil&nil&22938:2622:0:0&nil&nil&23198:0:0:0&5976:0:0:0&nil
-			if(currentLogLine.indexOf("COMBATANT_INFO:")>=0) {
+			if(currentLogLine.contains("COMBATANT_INFO:")) {
+				if(logYear==null) {calcYear(currentLogLine);}
 				combatantCounter+=1;
 				//korrekte zeile
 				//schmeiße alles bis auf das erste & zeichen raus:
@@ -47,6 +131,7 @@ public class Players {
 						strTok.nextToken(); //ka
 						guild = strTok.nextToken();
 						nameClassMap.put(name, new NameClassWrapper(name, playerClass, guild));
+						addGuildEntry(guild);
 						break;
 					}
 				} catch(Exception e) {

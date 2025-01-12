@@ -280,9 +280,13 @@ public class General {
 				//alles was nun kommt bis zu hits oder crits ist ability
 				ability = strTok.nextElement()+"";
 				String ability2 = strTok.nextElement()+"";
-				while(ability2.indexOf("crits")==-1 && ability2.indexOf("hits")==-1) {
+				while(ability2.indexOf("crits")==-1 && ability2.indexOf("hits")==-1 && ability2.indexOf("heals")==-1 && ability2.indexOf("critically heals")==-1) {
 					ability = ability+ability2;
-					ability2 = strTok.nextElement()+"";
+					try {
+						ability2 = strTok.nextElement()+"";
+					}catch(Exception e) {
+						System.out.println("numm");
+					}
 				}
 				String crits = ability2; //hits oder crits
 
@@ -329,7 +333,7 @@ public class General {
 					//alles was nun kommt bis zu hits oder crits ist ability
 					ability = strTok.nextElement()+"";
 					String ability2 = strTok.nextElement()+"";
-					while(ability2.indexOf("crits")==-1 && ability2.indexOf("hits")==-1) {
+					while(ability2.indexOf("crits")==-1 && ability2.indexOf("hits")==-1 && ability2.indexOf("heals")==-1 && ability2.indexOf("critically heals")==-1) {
 						ability = ability+ability2;
 						ability2 = strTok.nextElement()+"";
 					}
@@ -354,11 +358,24 @@ public class General {
 			WarlockUtils.warlockMap = new HashMap<>(); 
 			MageUtils.mageMap = new HashMap<>();
 			HunterUtils.hunterMap = new HashMap<>();
+			PaladinUtils.paladinMap = new HashMap<>();	
+			DruidUtils.druidMap = new HashMap<>();
+			PriestUtils.priestMap = new HashMap<>();
+			//ShamanUtils.
 			BossUtils.bossMap = new HashMap<>();
 			BarovUtils.barovMap = new HashMap<>();
-			PaladinUtils.paladinMap = new HashMap<>();	
 			LootUtils.playerLootMap = new HashMap<>();
+			LootUtils.lootRessouces = new HashMap<>();
 		}
+		
+		public static void flushAllGuild()  {
+			//flush
+			Players.mainGuild = null;
+			Players.logYear = null;
+			Players.uniqueList = new ArrayList<>();
+			Players.guildCountMap = new HashMap<>();
+		}
+		
 		
 		//runtimeCalc
 		public static Date getStartDate() {

@@ -59,6 +59,8 @@ public class HunterUtils {
 		
 //		updateHunterStats(logline, currentPlayer, Constants.serpentStringGains, Hunter::incrementSerpentSting);
 //		updateHunterStats(logline, currentPlayer, Constants.serpentStringAfflicted, Hunter::incrementSerpentSting);
+		updateHunterStats(logline, currentPlayer, Constants.windfury, Hunter::incrementWindFury);
+		updateHunterStats(logline, currentPlayer, Constants.flametongue, Hunter::incrementFlameTongue);
 
 		
 		processAbility(logline, currentPlayer, Constants.autoShotHit, Constants.autoShotCrit,
@@ -105,8 +107,10 @@ public class HunterUtils {
 			SortedSet<String> hunters =  new TreeSet<>(hunterMap.keySet());			
             strBuf.append("<br><body><table class='classTable' align=\"left\" width='100%'>")
                   .append("<tr style='background-color: ").append(Constants.HUNTERCOLOR).append(";'>")
-                  .append("<td colspan='16'>"+Constants.HUNTER+"</td></tr><tr>")
+                  .append("<td colspan='18'>"+Constants.HUNTER+"</td></tr><tr>")
                   .append("<th>Name</th>")
+      			  .append("<th>Windfury Procs</th>")
+      			  .append("<th>Flametongue Procs</th>")
                   .append("<th class=\"toggle-column\" style=\"display: none;\">Mana VampiricTouch</th><th class=\"toggle-column\" style=\"display: none;\">Mana Judgement</th><th class=\"toggle-column\" style=\"display: none;\">Mana BOW</th>")
                   .append("<th>AutoShot Hit/Crit</th><th class=\"toggle-column-highlights\" style=\"display: none;\">Highest Auto</th>")
             	  .append("<th>Steady Hit/Crit</th><th class=\"toggle-column-highlights\" style=\"display: none;\">Highest Steady</th>")
@@ -121,9 +125,11 @@ public class HunterUtils {
                 Hunter hunter= hunterMap.get(huterName);
                     strBuf.append("<tr>")
                           .append("<td>").append(huterName).append("</td>")
+      					  .append("<td>"+hunter.getWindFury()+"</td>")
+      					  .append("<td>"+hunter.getFlametongue()+"</td>")
                           .append("<td class=\"toggle-column\" style=\"display: none;\">").append(hunter.getManaFromVampiricTouch()).append("</td>")
                           .append("<td class=\"toggle-column\" style=\"display: none;\">").append(hunter.getManaFromJudgementOfWisdom()).append("</td>")
-                          .append("<td class=\"toggle-column\" style=\"display: none;\">").append(hunter.getManFrombow()).append("</td>")
+                          .append("<td class=\"toggle-column\" style=\"display: none;\">").append(hunter.getManaFromBow()).append("</td>")
                           .append("<td>").append(hunter.getAutoShotHit()).append(" / ").append(hunter.getAutoShotCrit()).append("</td>")
                           .append("<td class=\"toggle-column-highlights\" style=\"display: none;\">").append(hunter.getHighestAutoShot()).append(" => ").append(hunter.getHighestAutoShotTarget()).append("</td>")
                           .append("<td>").append(hunter.getSteadyShotHits()).append(" / ").append(hunter.getSteadyShotCrits()).append("</td>")

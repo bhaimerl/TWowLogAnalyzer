@@ -20,7 +20,10 @@ public class RaidBossMapping {
 	//MIlitary
 	public static String instructorRazuvious="Instructor Razuvious";
 	public static String gothik ="Gothik the Harvester";
-	public static String fourHorseman="-----";
+	public static String zeliek ="Sir Zeliek";
+	public static String mograine ="Highlord Mograine";
+	public static String blaumeux ="Lady Blaumeux";
+	public static String thaneKortazz ="Thane Korth'azz";
 	
 	//plague
 	public static String nothThePlaguebringer="Noth the Plaguebringer";
@@ -29,6 +32,8 @@ public class RaidBossMapping {
 	//Abom
 	public static String patchwerk = "Patchwerk";
 	public static String grobolus = "Grobbulus";
+	public static String stalagg = "Stalagg";
+	public static String feugen = "Feugen";	
 	public static String thaddius = "Thaddius";
 	public static String gluth = "Gluth";	
 	//upper 
@@ -87,12 +92,18 @@ public class RaidBossMapping {
 		naxxramas.add(maexxna);
 		naxxramas.add(instructorRazuvious);
 		naxxramas.add(gothik);
-		naxxramas.add(fourHorseman);
+		naxxramas.add(zeliek);
+		naxxramas.add(mograine);
+		naxxramas.add(blaumeux);
+		naxxramas.add(thaneKortazz);
 		naxxramas.add(nothThePlaguebringer);
 		naxxramas.add(heiganTheUnclean);
 		naxxramas.add(loatheb);
 		naxxramas.add(patchwerk);
 		naxxramas.add(grobolus);
+		naxxramas.add(stalagg);
+		naxxramas.add(feugen);
+		
 		naxxramas.add(thaddius);
 		naxxramas.add(gluth);
 		naxxramas.add(sapphiron);
