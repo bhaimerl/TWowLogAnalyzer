@@ -75,6 +75,7 @@ public class DruidUtils {
 		});
 		updateDruidStats(logline, currentPlayer, Constants.windfury, Druid::incrementWindFury);
 		updateDruidStats(logline, currentPlayer, Constants.flametongue, Druid::incrementFlameTongue);
+		updateDruidStats(logline, currentPlayer, Constants.rebirth, Druid::incrementRebirth);
 		
 		updateDruidStats(logline, currentPlayer, Constants.faerieFire, Druid::incrementFaerieFire);
 		//updateDruidStats(logline, currentPlayer, Constants.growl, Druid::incrementGrowl);
@@ -130,7 +131,7 @@ public class DruidUtils {
 			SortedSet<String> druids =  new TreeSet<>(druidMap.keySet());			
             strBuf.append("<br><body><table class='classTable' align=\"left\" width='100%'>")
                   .append("<tr style='background-color: ").append(Constants.DRUIDCOLOR).append(";'>")
-                  .append("<td colspan='23'>"+Constants.DRUID+"</td></tr><tr>")
+                  .append("<td colspan='24'>"+Constants.DRUID+"</td></tr><tr>")
                   .append("<th>Name</th>")
                   .append("<th class=\"toggle-column\" style=\"display: none;\">Mana VampiricTouch</th><th class=\"toggle-column\" style=\"display: none;\">Mana Judgement</th><th class=\"toggle-column\" style=\"display: none;\">Mana BOW</th>")
       			  .append("<th>Windfury Procs</th>")
@@ -139,6 +140,7 @@ public class DruidUtils {
       			  .append("<th>Rejuvenations</th>")
       			  .append("<th>Regrowth</th>")
       			  .append("<th>Insect Swarm</th>")
+      			  .append("<th>Rebirth</th>")
       			  .append("<th>De -Curse/-Poison</th>")
                   .append("<th>Starfire Hit/Crit</th><th class=\"toggle-column-highlights\" style=\"display: none;\">Highest SF</th>")
             	  .append("<th>Moonfire Hit/Crit</th><th class=\"toggle-column-highlights\" style=\"display: none;\">Highest MF</th>")
@@ -162,6 +164,7 @@ public class DruidUtils {
         				  .append("<td>"+druid.getImprovedRejuvenation()+"</td>")
         				  .append("<td>"+druid.getImprovedRegrowth()+"</td>")
         				  .append("<td>"+druid.getInsectSwarm()+"</td>")        				  
+        				  .append("<td>"+druid.getRebirth()+"</td>")        				  
         				  .append("<td>"+druid.getRemoveCurse()+" / "+druid.getAbolishPoison()+"</td>")        				  
                           .append("<td>").append(druid.getStarFireHit()).append(" / ").append(druid.getStarFireCrit()).append("</td>")
                           .append("<td class=\"toggle-column-highlights\" style=\"display: none;\">").append(druid.getHigheststarFire()).append(" => ").append(druid.getHigheststarFireTarget()).append("</td>")

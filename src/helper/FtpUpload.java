@@ -14,7 +14,7 @@ public class FtpUpload {
 		boolean success = false;
 		String server = "f28-preview.awardspace.net";
         int port = 21; // Standard-FTP-Port
-        String user = "4561924_klarasprudel";
+        String user = "4561924";
         FTPClient ftpClient = new FTPClient();
 
         try {

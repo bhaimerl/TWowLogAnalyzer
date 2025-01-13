@@ -60,6 +60,7 @@ public class PriestUtils {
 			}
 		});
 		
+		updatePriestStats(logline, currentPlayer, currentPlayer+" "+Constants.resurrection, Priest::incrementResurrection);
 		updatePriestStats(logline, currentPlayer, currentPlayer+" "+Constants.renew, Priest::incrementRenew);
 		updatePriestStats(logline, currentPlayer, currentPlayer+" "+Constants.epiphany, Priest::incrementEpiphany);
 		updatePriestStats(logline, currentPlayer, currentPlayer+" "+Constants.holyNova, Priest::incrementHolyNova);
@@ -94,7 +95,7 @@ public class PriestUtils {
 			SortedSet<String> priests =  new TreeSet<>(priestMap.keySet());			
             strBuf.append("<br><body><table class='classTable' align=\"left\" width='100%'>")
                   .append("<tr style='background-color: ").append(Constants.PRIESTCOLOR).append(";'>")
-                  .append("<td colspan='18'>"+Constants.PRIEST+"</td></tr><tr>")
+                  .append("<td colspan='19'>"+Constants.PRIEST+"</td></tr><tr>")
                   .append("<th>Name</th>")
                   .append("<th class=\"toggle-column\" style=\"display: none;\">Mana VampiricTouch</th><th class=\"toggle-column\" style=\"display: none;\">Mana Judgement</th><th class=\"toggle-column\" style=\"display: none;\">Mana BOW</th>")
       			  .append("<th>Renew</th>")
@@ -104,6 +105,7 @@ public class PriestUtils {
       			  .append("<th>Enlighten</th>")
       			  .append("<th>Mindflay</th>")
       			  .append("<th>Champion Casts</th>")
+      			  .append("<th>Resurrection</th>")
       			  .append("<th>Dispell Magic</th>")
                   .append("<th>Flash Heal Hit/Crit</th><th class=\"toggle-column-highlights\" style=\"display: none;\">Highest FH</th>")
             	  .append("<th>Greater Heal Hit/Crit</th><th class=\"toggle-column-highlights\" style=\"display: none;\">Highest GH</th>")
@@ -124,6 +126,7 @@ public class PriestUtils {
       					  .append("<td>"+priest.getEnlighten()+"</td>")
       					  .append("<td>"+priest.getMindFLay()+"</td>")
       					  .append("<td>"+priest.getProclaimChampion()+"</td>")                          
+      					  .append("<td>"+priest.getResurrection()+"</td>")                          
       					  .append("<td>"+priest.getDispellMagic()+"</td>")                          
                           .append("<td>").append(priest.getFlashHealHit()).append(" / ").append(priest.getFlashHealCrit()).append("</td>")
                           .append("<td class=\"toggle-column-highlights\" style=\"display: none;\">").append(priest.getHighestflashHeal()).append(" => ").append(priest.getHighestflashHealTarget()).append("</td>")

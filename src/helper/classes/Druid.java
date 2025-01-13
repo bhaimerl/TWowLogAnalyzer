@@ -7,6 +7,11 @@ public class Druid extends CasterMelee {
 		this.faerieFire++;
 	}
 
+	public int rebirth = 0;
+	public void incrementRebirth() {
+		this.rebirth++;
+	}
+
 	public int removeCurse = 0;
 	public void incrementRemoveCurse() {
 		this.removeCurse++;
@@ -385,5 +390,12 @@ public class Druid extends CasterMelee {
 	public void setHighestshredTarget(String highestshredTarget) {
 		this.highestshredTarget = highestshredTarget;
 	}
+	public int getRebirth() {
+		return rebirth;
+	}
+	public void setRebirth(int rebirth) {
+		this.rebirth = rebirth;
+	}
+	
 
 }

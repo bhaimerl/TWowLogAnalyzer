@@ -6,6 +6,15 @@ public class Paladin extends CasterMelee {
 	//Crusader Strike
 	//Judgement of Command
 	//Seal of Command
+	public int cleanse = 0;
+	public void incrementCleanse() {
+		this.cleanse++;
+	}
+	
+	public int redemption = 0;
+	public void incrementRedemption() {
+		this.redemption++;
+	}
 	
 	public int holyStrikeHit=0;
 	public void incrementHolyStrikeHit() {
@@ -318,5 +327,23 @@ public class Paladin extends CasterMelee {
 	public void setHighestExorcismTarget(String highestExorcismTarget) {
 		this.highestExorcismTarget = highestExorcismTarget;
 	}
+
+	public int getCleanse() {
+		return cleanse;
+	}
+
+	public void setCleanse(int cleanse) {
+		this.cleanse = cleanse;
+	}
+
+	public int getRedemption() {
+		return redemption;
+	}
+
+	public void setRedemption(int redemption) {
+		this.redemption = redemption;
+	}
+	
+	
 
 }

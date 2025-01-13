@@ -2,13 +2,13 @@ package helper.classes.utils;
 
 import java.text.SimpleDateFormat;
 
-public class Constants {
+public class Constants { 
 	
 	public static SimpleDateFormat sdf = new SimpleDateFormat("dd/MM HH:mm:ss.SSS");
 	public static SimpleDateFormat onlyTime = new SimpleDateFormat("HH:mm:ss.SSS");
 	
 	
-	public static final String VERSION = "v0.2.5";
+	public static final String VERSION = "v0.2.7";
 	public static final String LASTCHANGE="Parries added, Nighfall calculation, new Class Paladin, openClose entries, click opener/closer";
 	
 	
@@ -144,6 +144,9 @@ public class Constants {
 	public static final String cleanse = "casts Cleanse";
 	public static final String purify = "casts Purify";
 	
+	//rezz
+	public static final String redemption = "casts Redemption";
+	
 	
 	
 	//DRUID
@@ -172,7 +175,9 @@ public class Constants {
 	//DIspells
 	//druid
 	public static final String removeCurse = "casts Remove Curse"; 
-	public static final String abolishPoison = "casts Abolish Poison";
+	public static final String abolishPoison = "casts Abolish Poison";	
+	//rezz
+	public static final String rebirth = "casts Rebirth";
 	
 	
 	
@@ -194,6 +199,8 @@ public class Constants {
 	//DIspells
 	//priest
 	public static final String dispelMagic = "casts Dispel Magic";
+	//rezz
+	public static final String resurrection ="casts Resurrection";
 	
 	//SHAMAN
 	public static final String chainHeal="'s Chain Heal";

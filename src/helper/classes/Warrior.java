@@ -6,6 +6,15 @@ public class Warrior extends Melee{
     public void incrementSunders() {
         this.sunders++;
     }	
+	public int consussionBlow=0;
+    public void incrementConsussionBlow() {
+        this.consussionBlow++;
+    }	
+    public int shieldSlam = 0;
+    public void incrementShieldSlam() {
+    	this.shieldSlam++;
+    }
+    
 	public int deathWish=0;
     public void incrementDeathWish() {
         this.deathWish++;
@@ -85,6 +94,20 @@ public class Warrior extends Melee{
 	public String getHighestBloodthirstTarget() {
 		return highestBloodthirstTarget;
 	}
+	public int getConsussionBlow() {
+		return consussionBlow;
+	}
+	public void setConsussionBlow(int consussionBlow) {
+		this.consussionBlow = consussionBlow;
+	}
+	public int getShieldSlam() {
+		return shieldSlam;
+	}
+	public void setShieldSlam(int shieldSlam) {
+		this.shieldSlam = shieldSlam;
+	}
+	
+	
 	
 	
 }

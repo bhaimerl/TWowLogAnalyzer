@@ -6,10 +6,8 @@ import java.util.SortedSet;
 import java.util.TreeSet;
 import java.util.function.Consumer;
 
-import helper.classes.Hunter;
 import helper.classes.NameClassWrapper;
 import helper.classes.Paladin;
-import helper.classes.Warrior;
 
 public class PaladinUtils {
 	
@@ -47,6 +45,8 @@ public class PaladinUtils {
 		
 		updatePaladinStats(logline, currentPlayer, Constants.windfury, Paladin::incrementWindFury);
 		updatePaladinStats(logline, currentPlayer, Constants.flametongue, Paladin::incrementFlameTongue);
+		updatePaladinStats(logline, currentPlayer, Constants.cleanse, Paladin::incrementCleanse);
+		updatePaladinStats(logline, currentPlayer, Constants.redemption, Paladin::incrementRedemption);
 		
 		updatePaladinStats(logline, currentPlayer, Constants.manFromVampirismTouch, paladin -> paladin
 				.addManaFromVampiricTouch(General.getAmountGains(Constants.manFromVampirismTouch, logline)));
@@ -100,9 +100,11 @@ public class PaladinUtils {
 			SortedSet<String> paladins =  new TreeSet<>(paladinMap.keySet());			
             strBuf.append("<br><body><table class='classTable' align=\"left\" width='100%'>")
                   .append("<tr style='background-color: ").append(Constants.PALADINCOLOR).append(";'>")
-                  .append("<td colspan='16'>"+Constants.PALADIN+"</td></tr><tr>")
+                  .append("<td colspan='18'>"+Constants.PALADIN+"</td></tr><tr>")
                   .append("<th>Name</th>")
                   .append("<th class=\"toggle-column\" style=\"display: none;\">Mana VampiricTouch</th><th class=\"toggle-column\" style=\"display: none;\">Mana Judgement</th><th class=\"toggle-column\" style=\"display: none;\">Mana BOW</th>")
+                  .append("<th>Redemption</th>")
+                  .append("<th>Cleanse</th>")
                   .append("<th>Windfury procs</th>")
                   .append("<th>Flametongue procs</th>")
                   .append("<th>HolyStrike Hit/Crit</th><th class=\"toggle-column-highlights\" style=\"display: none;\">Highest HolyStrike</th>")
@@ -119,7 +121,9 @@ public class PaladinUtils {
                           .append("<td class=\"toggle-column\" style=\"display: none;\">").append(pala.getManaFromVampiricTouch()).append("</td>")
                           .append("<td class=\"toggle-column\" style=\"display: none;\">").append(pala.getManaFromJudgementOfWisdom()).append("</td>")
                           .append("<td class=\"toggle-column\" style=\"display: none;\">").append(pala.getManaFromBow()).append("</td>")
-                          .append("<td>").append(pala.getWindFury()).append("</td>")
+                          .append("<td>").append(pala.getRedemption()).append("</td>")
+                          .append("<td>").append(pala.getCleanse()/3).append("</td>")
+                          .append("<td>").append(pala.getWindFury()).append("</td>") 
                           .append("<td>").append(pala.getFlametongue()).append("</td>")
                           .append("<td>").append(pala.getHolyStrikeHit()).append(" / ").append(pala.getHolyStrikeCrit()).append("</td>")
                           .append("<td class=\"toggle-column-highlights\" style=\"display: none;\">").append(pala.getHighestHolyStrike()).append(" => ").append(pala.getHighestHolyStrikeTarget()).append("</td>")

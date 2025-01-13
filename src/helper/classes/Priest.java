@@ -6,6 +6,10 @@ public class Priest extends Caster{
 	public void incrementRenew() {
 		this.renew++;
 	}
+	public int resurrection = 0;
+	public void incrementResurrection() {
+		this.resurrection++;
+	}
 	
 	public int innervate = 0;
 	public void incrementInnervate() {
@@ -210,6 +214,12 @@ public class Priest extends Caster{
 	}
 	public void setInnervate(int innervate) {
 		this.innervate = innervate;
+	}
+	public int getResurrection() {
+		return resurrection;
+	}
+	public void setResurrection(int resurrection) {
+		this.resurrection = resurrection;
 	}
 	
 	

@@ -41,6 +41,8 @@ public class WarriorUtils {
     	if(!General.isPlayerInClassList(allValidPLayers, currentPlayer, Constants.WARRIOR)) {
     		return;
     	}
+    	updateWarriorStats(logline, currentPlayer, Constants.shieldSlam, Warrior::incrementShieldSlam);
+    	updateWarriorStats(logline, currentPlayer, Constants.concussionBlow, Warrior::incrementConsussionBlow);
     	updateWarriorStats(logline, currentPlayer, Constants.sunder, Warrior::incrementSunders);
     	updateWarriorStats(logline, currentPlayer, Constants.deathWish, Warrior::incrementDeathWish);
     	updateWarriorStats(logline, currentPlayer, Constants.windfury, Warrior::incrementWindFury);
@@ -75,7 +77,7 @@ public class WarriorUtils {
 			SortedSet<String> warriors =  new TreeSet<>(warriorMap.keySet());
 			strBuf.append("<br>");				
 			strBuf.append("<table class='classTable' align=\"left\" width='100%'>");
-			strBuf.append("<tr style='background-color: "+Constants.WARRIORCOLOR+";'><td colspan='13'>"+Constants.WARRIOR+"</td></tr>");
+			strBuf.append("<tr style='background-color: "+Constants.WARRIORCOLOR+";'><td colspan='14'>"+Constants.WARRIOR+"</td></tr>");
 			strBuf.append("<tr>");
 			strBuf.append("<th>Name</th>");
 			strBuf.append("<th>Sunder Armor</th>");
@@ -86,6 +88,7 @@ public class WarriorUtils {
 			strBuf.append("<th>Flametongue procs</th>");
 			strBuf.append("<th>Flurry procs</th>");
 			strBuf.append("<th>Enrage procs</th>");
+			strBuf.append("<th>DEF: CBlow / SSlam</th>");
 			strBuf.append("<th>Executes</th>");
 			strBuf.append("<th class=\"toggle-column-highlights\" style=\"display: none;\">Highest Execute</th>");
 			strBuf.append("<th>Bloodthirsts</th>");
@@ -105,6 +108,7 @@ public class WarriorUtils {
 					strBuf.append("<td>"+warri.getFlametongue()+"</td>");
 					strBuf.append("<td>"+warri.getFlurry()+"</td>");
 					strBuf.append("<td>"+warri.getEnrage()+"</td>");
+					strBuf.append("<td>"+warri.getConsussionBlow()+" / "+warri.getShieldSlam()+"</td>");
 					strBuf.append("<td>"+warri.getExecuteAmount()+"</td>");
 					strBuf.append("<td class=\"toggle-column-highlights\" style=\"display: none;\">"+warri.getHighestExecute()+"=> "+warri.getHighestExecuteTarget()+"</td>");
 					strBuf.append("<td>"+warri.getBloodThirstAmount()+"</td>");
