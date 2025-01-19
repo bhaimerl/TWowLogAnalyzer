@@ -4,7 +4,7 @@ import java.text.SimpleDateFormat;
 
 public class Constants { 
 	
-	public static SimpleDateFormat sdf = new SimpleDateFormat("dd/MM HH:mm:ss.SSS");
+	public static SimpleDateFormat sdf = new SimpleDateFormat("MM/dd HH:mm:ss.SSS");
 	public static SimpleDateFormat onlyTime = new SimpleDateFormat("HH:mm:ss.SSS");
 	
 	

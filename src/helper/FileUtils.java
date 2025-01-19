@@ -27,9 +27,9 @@ public class FileUtils {
 	      String line;
 	      //null wird bei EOF oder Fehler zurueckgegeben
 	      while (null != (line = bufferedReader.readLine())) {
-	        //Zeile auf der Konsole ausgeben
-	        fileCnt.add(line);
-	        //Hier kann Ihr Code stehen ...
+	    	if(line!=null && line.length()>1) {
+		        fileCnt.add(line);
+	    	}
 	      }
 	    } catch (IOException e) {
 	        e.printStackTrace();
