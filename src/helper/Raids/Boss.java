@@ -21,6 +21,9 @@ public class Boss implements Comparable<Boss> {
 	public String diedTime="";
 	public String helpedToSunderUntil5="";
 	public String sunderTimes="";
+
+	public ArrayList<String> exposedArmorAppliedist = new ArrayList<>();	
+	public ArrayList<String> exposedArmorFadesList = new ArrayList<>();	
 	public ArrayList<String> curseOfShadowsAppliedList = new ArrayList<>();;
 	public ArrayList<String> curseOfShadowsFadedList = new ArrayList<>();;
 	public ArrayList<String> curseOfRecklessnessAppliedList = new ArrayList<>();;
@@ -191,6 +194,16 @@ public class Boss implements Comparable<Boss> {
 	    }
 	    return dispellerMap;
     }
-	
-
+	public ArrayList<String> getExposedArmorAppliedist() {
+		return exposedArmorAppliedist;
+	}
+	public ArrayList<String> getExposedArmorFadesList() {
+		return exposedArmorFadesList;
+	}
+	public void setExposedArmorAppliedist(ArrayList<String> exposedArmorAppliedist) {
+		this.exposedArmorAppliedist = exposedArmorAppliedist;
+	}
+	public void setExposedArmorFadesList(ArrayList<String> exposedArmorFadesList) {
+		this.exposedArmorFadesList = exposedArmorFadesList;
+	}
 }

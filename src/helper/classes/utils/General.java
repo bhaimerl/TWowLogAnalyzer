@@ -6,9 +6,12 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Set;
 import java.util.StringTokenizer;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.joda.time.DateTime;
 
+import helper.classes.Healer;
 import helper.classes.NameClassWrapper;
 import helper.classes.utils.besonderes.BarovUtils;
 
@@ -167,6 +170,18 @@ public class General {
 		}
 		return playerName;
 	}
+	
+	public static String getPlayerNameFromEndFrom(String logline) {
+		String playerName = null;
+		// Regulärer Ausdruck, um den Heiler-Namen zu extrahieren
+        Pattern pattern = Pattern.compile("from (\\w+) 's Greater Heal");
+        Matcher matcher = pattern.matcher(logline);
+        if (matcher.find()) {
+        	playerName = matcher.group(1); // Gefundener Name
+        }
+		return playerName;
+	}
+	
 
 	public static String getEntryAtPosition(String logline, int position, String delimiter) {
 		String result = "";
@@ -361,11 +376,13 @@ public class General {
 			PaladinUtils.paladinMap = new HashMap<>();	
 			DruidUtils.druidMap = new HashMap<>();
 			PriestUtils.priestMap = new HashMap<>();
-			//ShamanUtils.
+			//ShamanUtils
+			ShamanUtils.shamanMap = new HashMap<>();
 			BossUtils.bossMap = new HashMap<>();
 			BarovUtils.barovMap = new HashMap<>();
 			LootUtils.playerLootMap = new HashMap<>();
 			LootUtils.lootRessouces = new HashMap<>();
+			Healer.healerMap = new ArrayList<>();
 		}
 		
 		public static void flushAllGuild()  {
@@ -388,6 +405,8 @@ public class General {
 		public static long getDifferenceInSeconds(Date startDate, Date endDate) {
 			return ChronoUnit.SECONDS.between(startDate.toInstant(), endDate.toInstant());
 		}
+		
+		
 		
 		public static String getPlayerClass(HashMap<String, ArrayList<NameClassWrapper>> allPlayers, String playerName) {
 			String playerClass="";

@@ -7,6 +7,7 @@ import java.util.TreeSet;
 import java.util.function.Consumer;
 
 import helper.classes.Druid;
+import helper.classes.Healer;
 import helper.classes.Hunter;
 import helper.classes.NameClassWrapper;
 import helper.classes.Priest;
@@ -42,11 +43,25 @@ public class PriestUtils {
     public static void findEntryForPriest(String logline, HashMap<String, ArrayList<NameClassWrapper>>  allValidPLayers) {
     	
     	//bezieht sich die aktuelle Zeile auf einen Priest?
-    	String currentPlayer = General.getPlayerName(logline);
-    	if(!General.isPlayerInClassList(allValidPLayers, currentPlayer, Constants.PRIEST)) {
-    		return;
-    	}
-
+    	String name1 = General.getPlayerName(logline);
+		String name2 = General.getPlayerNameFromEndFrom(logline);
+		String winner = "";
+		
+		//ist einer der beiden ein priest?
+		//wenn beide dann gewinnt der erste, wenn nur der 2. dann der 2. 
+		boolean name1IsPriest = General.isPlayerInClassList(allValidPLayers, name1, Constants.PRIEST);
+		boolean name2IsPriest = General.isPlayerInClassList(allValidPLayers, name2, Constants.PRIEST);
+		
+		if(name1IsPriest && name2IsPriest) {
+			winner = name2;
+		} else if(!name1IsPriest && name2IsPriest) {
+			winner = name2;			
+		} else if(name1IsPriest && !name2IsPriest) {
+			winner = name1;			
+		} else {
+			return;
+		}
+		String currentPlayer = winner;
 		updatePriestStats(logline, currentPlayer, Constants.manFromVampirismTouch, warlock -> warlock
 				.addManaFromVampiricTouch(General.getAmountGains(Constants.manFromVampirismTouch, logline)));
 		updatePriestStats(logline, currentPlayer, Constants.manaFromJudgement, warlock -> {
@@ -59,6 +74,18 @@ public class PriestUtils {
 				warlock.addManaFromBow(General.getAmountGains(Constants.manaFromBOW, logline));
 			}
 		});
+		 
+		//T2 greater heal hot
+		updatePriestStats(logline, currentPlayer, "health from "+currentPlayer+" 's Greater Heal.", Priest::incrementT2GreaterHeal);
+		updatePriestStats(logline, currentPlayer, "health from "+currentPlayer+" 's Greater Heal.", priest -> {
+			if (logline.contains("gains")) {
+				priest.addT2GreaterHealAmount(General.getAmountGains("health from "+currentPlayer+" 's Greater Heal.", logline));
+			}
+		});
+		
+		updatePriestStats(logline, currentPlayer, currentPlayer+" "+Constants.powerWordFortitude, Priest::incrementPowerWordFortitude);
+		updatePriestStats(logline, currentPlayer, currentPlayer+" "+Constants.powerWordShield, Priest::incrementpowerWordShield);
+		updatePriestStats(logline, currentPlayer, currentPlayer+" "+Constants.prayerOfFortitude, Priest::incrementPrayerOfFortitude);
 		
 		updatePriestStats(logline, currentPlayer, currentPlayer+" "+Constants.resurrection, Priest::incrementResurrection);
 		updatePriestStats(logline, currentPlayer, currentPlayer+" "+Constants.renew, Priest::incrementRenew);
@@ -95,25 +122,33 @@ public class PriestUtils {
 			SortedSet<String> priests =  new TreeSet<>(priestMap.keySet());			
             strBuf.append("<br><body><table class='classTable' align=\"left\" width='100%'>")
                   .append("<tr style='background-color: ").append(Constants.PRIESTCOLOR).append(";'>")
-                  .append("<td colspan='19'>"+Constants.PRIEST+"</td></tr><tr>")
+                  .append("<td colspan='22'>"+Constants.PRIEST+"</td></tr><tr>")
                   .append("<th>Name</th>")
                   .append("<th class=\"toggle-column\" style=\"display: none;\">Mana VampiricTouch</th><th class=\"toggle-column\" style=\"display: none;\">Mana Judgement</th><th class=\"toggle-column\" style=\"display: none;\">Mana BOW</th>")
       			  .append("<th>Renew</th>")
       			  .append("<th>Epiphany</th>")
-      			  .append("<th>Innervate</th>")
+      			  .append("<th>PW: Fortitude</th>")
+      			  .append("<th>PW: Shield</th>")
+      			  .append("<th>Prayer of Fortitude</th>")
       			  .append("<th>Holy Nova</th>")
       			  .append("<th>Enlighten</th>")
       			  .append("<th>Mindflay</th>")
       			  .append("<th>Champion Casts</th>")
       			  .append("<th>Resurrection</th>")
       			  .append("<th>Dispell Magic</th>")
-                  .append("<th>Flash Heal Hit/Crit</th><th class=\"toggle-column-highlights\" style=\"display: none;\">Highest FH</th>")
-            	  .append("<th>Greater Heal Hit/Crit</th><th class=\"toggle-column-highlights\" style=\"display: none;\">Highest GH</th>")
-            	  .append("<th>MindBlast Hit/Crit</th><th class=\"toggle-column-highlights\" style=\"display: none;\">Highest MB</th>")
+      			  .append("<th>T2 Greater Heal procs / complete</th>")
+                  .append("<th>Flash Heal Hit/Crit</th><th class=\"toggle-column-highlights\">Highest FH</th>")
+            	  .append("<th>Greater Heal Hit/Crit</th><th class=\"toggle-column-highlights\">Highest GH</th>")
+            	  .append("<th>MindBlast Hit/Crit</th><th class=\"toggle-column-highlights\">Highest MB</th>")
                   .append("</tr>");
 
             for (String priesterName : priests) {
                 Priest priest= priestMap.get(priesterName);
+                
+                //healercheck
+                if(	priest.getFlashHealHit()+priest.getFlashHealCrit() > 10 || priest.renew > 10 || priest.greaterHealHit+priest.greaterHealCrit > 50) {
+                	Healer.addHealer(priesterName);
+                }
                     strBuf.append("<tr>")
                           .append("<td>").append(priesterName).append("</td>")
                           .append("<td class=\"toggle-column\" style=\"display: none;\">").append(priest.getManaFromVampiricTouch()).append("</td>")
@@ -121,22 +156,25 @@ public class PriestUtils {
                           .append("<td class=\"toggle-column\" style=\"display: none;\">").append(priest.getManaFromBow()).append("</td>")
       					  .append("<td>"+priest.getRenew()+"</td>")
       					  .append("<td>"+priest.getEpiphany()+"</td>")
-      					  .append("<td>"+priest.getInnervate()+"</td>")
+      					  .append("<td>"+priest.getPowerWordFortitude()+"</td>")
+      					  .append("<td>"+priest.getPowerWordShield()+"</td>")
+      					  .append("<td>"+priest.getPrayerOfFortitude()+"</td>")
       					  .append("<td>"+priest.getHolyNova()+"</td>")
       					  .append("<td>"+priest.getEnlighten()+"</td>")
       					  .append("<td>"+priest.getMindFLay()+"</td>")
       					  .append("<td>"+priest.getProclaimChampion()+"</td>")                          
       					  .append("<td>"+priest.getResurrection()+"</td>")                          
       					  .append("<td>"+priest.getDispellMagic()+"</td>")                          
+      					  .append("<td>"+priest.getT2GreaterHeal()+" / "+priest.getT2GreaterHealAmount()+"</td>")                          
                           .append("<td>").append(priest.getFlashHealHit()).append(" / ").append(priest.getFlashHealCrit()).append("</td>")
-                          .append("<td class=\"toggle-column-highlights\" style=\"display: none;\">").append(priest.getHighestflashHeal()).append(" => ").append(priest.getHighestflashHealTarget()).append("</td>")
+                          .append("<td class=\"toggle-column-highlights\">").append(priest.getHighestflashHeal()).append(" => ").append(priest.getHighestflashHealTarget()).append("</td>")
                           .append("<td>").append(priest.getGreaterHealHit()).append(" / ").append(priest.getGreaterHealCrit()).append("</td>")
-                          .append("<td class=\"toggle-column-highlights\" style=\"display: none;\">").append(priest.getHighestgreaterHeal()).append(" => ").append(priest.getHighestgreaterHealTarget()).append("</td>")
+                          .append("<td class=\"toggle-column-highlights\">").append(priest.getHighestgreaterHeal()).append(" => ").append(priest.getHighestgreaterHealTarget()).append("</td>")
                           .append("<td>").append(priest.getMindBlastHit()).append(" / ").append(priest.getMindBlastCrit()).append("</td>")
-                          .append("<td class=\"toggle-column-highlights\" style=\"display: none;\">").append(priest.getHighestmindBlast()).append(" => ").append(priest.getHighestmindBlastTarget()).append("</td>")
+                          .append("<td class=\"toggle-column-highlights\">").append(priest.getHighestmindBlast()).append(" => ").append(priest.getHighestmindBlastTarget()).append("</td>")
                           .append("</tr>");
             }
-            strBuf.append("</table>");
+            strBuf.append("</table>"); 
         }
         return strBuf.toString();
     }    

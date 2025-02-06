@@ -7,9 +7,9 @@ public class Constants {
 	public static SimpleDateFormat sdf = new SimpleDateFormat("MM/dd HH:mm:ss.SSS");
 	public static SimpleDateFormat onlyTime = new SimpleDateFormat("HH:mm:ss.SSS");
 	
-	
-	public static final String VERSION = "v0.2.7";
-	public static final String LASTCHANGE="Parries added, Nighfall calculation, new Class Paladin, openClose entries, click opener/closer";
+	  
+	public static final String VERSION = "v0.3.1";
+	public static final String LASTCHANGE="Shami added";
 	
 	
 	public static final String DRUIDCOLOR = "#FF7D0A";
@@ -139,6 +139,17 @@ public class Constants {
 	public static final String judgementOfCommandCrit="'s Judgement of Command crits";
 	public static final String exorcismHit="'s Exorcism hits";
 	public static final String exorcismCrit="'s Exorcism crits";
+	//heal
+	public static final String holyShockHit="'s Holy Shock heals ";
+	public static final String holyShockCrit="'s Holy Shock critically heals ";
+
+	public static final String flashOfLightHit="'s Flash of Light heals ";
+	public static final String flashOfLightCrit="'s Flash of Light critically heals ";
+
+	public static final String holyLightHit="'s Holy Light heals ";
+	public static final String holyLightCrit="'s Holy Light critically heals ";
+	
+	
 	//DIspells
 	//pala
 	public static final String cleanse = "casts Cleanse";
@@ -150,7 +161,10 @@ public class Constants {
 	
 	
 	//DRUID
-	public static final String healingTouch = "'s Healing Touch";
+	public static final String healingTouch = "'s Healing Touch"; //deprecated
+	public static final String healingTouchCrit = "'s Healing Touch critically heals";
+	public static final String healingTouchHit = "'s Healing Touch heals";
+
 	public static final String regrowth="'s Regrowth";
 	public static final String swipe="'s Swipe";
 	public static final String maul="'s Maul";
@@ -172,6 +186,7 @@ public class Constants {
 	public static final String swipeCrits = "'s Swipe crits";
 	public static final String shredHits = "'s Shred hits";
 	public static final String shredCrits = "'s Shred crits"; 
+	
 	//DIspells
 	//druid
 	public static final String removeCurse = "casts Remove Curse"; 
@@ -196,6 +211,10 @@ public class Constants {
 	public static final String vampiricEmbrace="'s Vampiric Embrace heals";
 	public static final String mindBlastHit ="'s Mind Blast hits";
 	public static final String mindBlastCrit ="'s Mind Blast crits";
+	public static final String powerWordFortitude = "casts Power Word: Fortitude";
+	public static final String prayerOfFortitude = "casts Prayer of Fortitude";
+	public static final String powerWordShield = "casts Power Word: Shield";
+	
 	//DIspells
 	//priest
 	public static final String dispelMagic = "casts Dispel Magic";
@@ -204,6 +223,35 @@ public class Constants {
 	
 	//SHAMAN
 	public static final String chainHeal="'s Chain Heal";
+
+	public static final String chainHealHit = "'s Chain Heal heals";
+	public static final String chainHealCrit = "'s Chain Heal critically heals";
+	
+	
+	public static final String healingWaveHit = "'s Healing Wave heals";
+	public static final String healingWaveCrits = "'s Healing Wave critically heals";
+	
+	public static final String lesserHealingWaveHit = "'s Lesser Healing Wave heals";
+	public static final String lesserHealingWaveCrits = "'s Lesser Healing Wave critically heals";
+	
+	public static final String lightningBoltHit = "'s Lightning Bolt hits";
+	public static final String lightningBoltCrit = "'s Lightning Bolt crits";
+	
+	public static final String fireNovaHit = "'s Fire Nova hits";
+	public static final String fireNovaCrit = "'s Fire Nova crits";
+	
+	public static final String frostShockHit = "'s Frost Shock hits";
+	public static final String frostShockCrit = "'s Frost Shock crits";
+	
+	public static final String lighningStrikeHit = "'s Lightning Strike hits";
+	public static final String lightningSTrikeCrit = "'s Lightning Strike crits";
+	
+	public static final String chainLigheningHits = "'s Chain Lightning hits";
+	public static final String chainLigheningCrits = "'s Chain Lightning crits"; 
+	
+	
+	
+	
 	public static final String lesserHealingWave="'s Lesser Healing Wave";
 	public static final String lighningBolt="'s Lightning Bolt";
 	public static final String fireNova="'s Fire Nova"; 

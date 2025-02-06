@@ -2,9 +2,11 @@ package helper;
 
 import java.awt.Desktop;
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileFilter;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -98,6 +100,50 @@ public class FileUtils {
 	    return false;
 	}	
 	
+	
+	 public static void saveEntriesToFile(ArrayList<ArrayList<String>> entries) {
+	        String baseFileName ="C:\\DT\\Spielerei\\";
+	        try (BufferedWriter writer = new BufferedWriter(new FileWriter(baseFileName+"result.txt"))) {
+	            for (int i = 0; i < entries.size(); i++) {
+	                ArrayList<String> currentList = entries.get(i);
+
+	                // Schreibe alle Zeilen des aktuellen Arrays
+	                for (String line : currentList) {
+	                    writer.write(line);
+	                    writer.newLine(); // Zeilenumbruch
+	                }
+
+	                // Füge zwei Leerzeilen hinzu, außer nach dem letzten Array
+	                if (i < entries.size() - 1) {
+	                    writer.newLine();
+	                    writer.newLine();
+	                }
+	            }
+	            System.out.println("Datei gespeichert: " + baseFileName);
+	        } catch (IOException e) {
+	            System.err.println("Fehler beim Speichern der Datei: " + baseFileName);
+	            e.printStackTrace();
+	        }
+	    }	
+//	
+//	public static void saveEntriesToFiles(ArrayList<ArrayList<String>> entries) {
+//		for (int i = 0; i < entries.size(); i++) {
+//            String fileName = baseFileName + "_" + (i + 1) + ".txt"; // Name der Datei z. B. "output_1.txt"
+//            ArrayList<String> currentList = entries.get(i);
+//
+//            try (BufferedWriter writer = new BufferedWriter(new FileWriter(fileName))) {
+//                for (String line : currentList) {
+//                    writer.write(line);
+//                    writer.newLine(); // Zeilenumbruch
+//                }
+//                System.out.println("Datei gespeichert: " + fileName);
+//            } catch (IOException e) {
+//                System.err.println("Fehler beim Speichern der Datei: " + fileName);
+//                e.printStackTrace();
+//            }
+//        }
+//    }
+//	
 	
 
 }

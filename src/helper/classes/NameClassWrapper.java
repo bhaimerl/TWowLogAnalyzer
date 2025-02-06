@@ -4,8 +4,7 @@ public class NameClassWrapper implements Comparable<NameClassWrapper>{
 	
 	public String name;
 	public String playerClass;
-	public String guild;
-	
+	public String guild;	
 	
 	
 	

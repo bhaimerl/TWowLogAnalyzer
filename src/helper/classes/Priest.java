@@ -63,6 +63,31 @@ public class Priest extends Caster{
         }
     }
     
+    public int t2GreaterHeal= 0;
+	public void incrementT2GreaterHeal() {
+		this.t2GreaterHeal++;
+	}
+
+    public int t2GreaterHealAmount = 0;
+    public void addT2GreaterHealAmount(int amount) {
+        this.t2GreaterHealAmount += amount;
+    }
+    
+    public int powerWordFortitude = 0;
+    public void incrementPowerWordFortitude() {
+        this.powerWordFortitude++;
+    }
+    public int prayerOfFortitude = 0;
+    public void incrementPrayerOfFortitude() {
+        this.prayerOfFortitude++;
+    }
+    public int powerWordShield = 0;
+    public void incrementpowerWordShield() {
+        this.powerWordShield++;
+    }
+    
+
+    
 	public int greaterHealHit=0;
 	public void incrementgreaterHealHit() {
 		this.greaterHealHit++;
@@ -221,8 +246,35 @@ public class Priest extends Caster{
 	public void setResurrection(int resurrection) {
 		this.resurrection = resurrection;
 	}
+	public int getT2GreaterHealAmount() {
+		return t2GreaterHealAmount;
+	}
+	public void setT2GreaterHealAmount(int t2GreaterHealAmount) {
+		this.t2GreaterHealAmount = t2GreaterHealAmount;
+	}
+	public int getT2GreaterHeal() {
+		return t2GreaterHeal;
+	}
+	public void setT2GreaterHeal(int t2GreaterHeal) {
+		this.t2GreaterHeal = t2GreaterHeal;
+	}
+	public int getPowerWordFortitude() {
+		return powerWordFortitude;
+	}
+	public void setPowerWordFortitude(int powerWordFortitude) {
+		this.powerWordFortitude = powerWordFortitude;
+	}
+	public int getPrayerOfFortitude() {
+		return prayerOfFortitude;
+	}
+	public void setPrayerOfFortitude(int prayerOfFortitude) {
+		this.prayerOfFortitude = prayerOfFortitude;
+	}
+	public int getPowerWordShield() {
+		return powerWordShield;
+	}
+	public void setPowerWordShield(int powerWordShield) {
+		this.powerWordShield = powerWordShield;
+	}
 	
-	
-    
-    
 }

@@ -156,6 +156,16 @@ public class BossUtils {
 				}
 			}
 			
+			
+			if(string.contains(bossName+" is afflicted by Expose Armor (1)")) {
+				boss.getExposedArmorAppliedist().add(General.getEntryAtPosition(string, 1).substring(0,8));
+			}			
+			//Curses fades
+			if(string.contains("Expose Armor fades from "+bossName) ) {
+				boss.getExposedArmorFadesList().add(General.getEntryAtPosition(string, 1).substring(0,8));
+			}
+			
+			
 			//Curses fades
 			if(string.contains("Curse of Recklessness fades from "+bossName) ) {
 				boss.getCurseOfRecklessnessFadedList().add(General.getEntryAtPosition(string, 1).substring(0,8));
@@ -233,12 +243,13 @@ public class BossUtils {
 			strBuf.append("<br>");				
 			strBuf.append("<body>");				
 			strBuf.append("<table id='bossStats' class='classTable' align=\"left\" width='100%'>");
-			strBuf.append("<tr style='background-color: gray;'><td colspan='13'>BossStats</td></tr>");
+			strBuf.append("<tr style='background-color: gray;'><td colspan='14'>BossStats</td></tr>");
 			strBuf.append("<tr>");
 			strBuf.append("<th>Name</th>");
 			strBuf.append("<th>FirstHit</th>");
 			strBuf.append("<th>First 5 Sunders</th>");
 			strBuf.append("<th title='Players who initial helped to sunder to 5 Stacks'>First Sunder Appliers</th>");
+			strBuf.append("<th>EArmor applied-fades</th>");
 			strBuf.append("<th>Faerie Fire</th>");
 			strBuf.append("<th>CoE applied-fades</th>");
 			strBuf.append("<th>CoS applied-fades</th>");
@@ -269,6 +280,11 @@ public class BossUtils {
 					strBuf.append("<td>"+General.getOnlyTimeFromDateTimeString(boss.getFirstHitTime())+"</td>");
 					strBuf.append("<td>"+boss.getSunderTimes()+"</td>");
 					strBuf.append("<td>"+boss.getHelpedToSunderUntil5()+"</td>");
+					strBuf.append("<td>"); //ExposedArmor
+					for (String exposedEntry : mergeCursesAppliedAndFades(boss.getExposedArmorAppliedist(), boss.getExposedArmorFadesList())) {
+						strBuf.append(exposedEntry+"<br>");
+					}
+					strBuf.append("</td>");
 					strBuf.append("<td>"+boss.getFaerieFireApplied()+"</td>");
 					strBuf.append("<td>");
 					for (String elementsEntry : mergeCursesAppliedAndFades(boss.getCurseOfElementsAppliedList(), boss.getCurseOfElementsFadedList())) {

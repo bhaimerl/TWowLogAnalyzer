@@ -7,6 +7,7 @@ import java.util.TreeSet;
 import java.util.function.Consumer;
 
 import helper.classes.Druid;
+import helper.classes.Healer;
 import helper.classes.Hunter;
 import helper.classes.NameClassWrapper;
 import helper.classes.Warrior;
@@ -84,8 +85,14 @@ public class DruidUtils {
 		updateDruidStats(logline, currentPlayer, Constants.insectSwarm, Druid::incrementInsectSwarm);		
 
 		updateDruidStats(logline, currentPlayer, Constants.abolishPoison, Druid::incrementAbolishPoison);		
-		updateDruidStats(logline, currentPlayer, Constants.removeCurse, Druid::incrementRemoveCurse);		
+		updateDruidStats(logline, currentPlayer, Constants.removeCurse, Druid::incrementRemoveCurse);	
 		
+
+		processAbility(logline, currentPlayer, Constants.healingTouchHit, Constants.healingTouchCrit,
+				Druid::incrementhealingTouchHit, Druid::incrementhealingTouchCrit,
+				druid -> druid.updatehighestsHealingTouchAmount(
+						General.getAmountAtEnd(Constants.healingTouchHit, Constants.healingTouchCrit, logline),
+						General.getTarget(Constants.healingTouchHit, Constants.healingTouchCrit, logline)));		
 		
 		processAbility(logline, currentPlayer, Constants.starFireHits, Constants.starFireCrits,
 				Druid::incrementstarFireHit, Druid::incrementstarFireCrit,
@@ -131,7 +138,7 @@ public class DruidUtils {
 			SortedSet<String> druids =  new TreeSet<>(druidMap.keySet());			
             strBuf.append("<br><body><table class='classTable' align=\"left\" width='100%'>")
                   .append("<tr style='background-color: ").append(Constants.DRUIDCOLOR).append(";'>")
-                  .append("<td colspan='24'>"+Constants.DRUID+"</td></tr><tr>")
+                  .append("<td colspan='26'>"+Constants.DRUID+"</td></tr><tr>")
                   .append("<th>Name</th>")
                   .append("<th class=\"toggle-column\" style=\"display: none;\">Mana VampiricTouch</th><th class=\"toggle-column\" style=\"display: none;\">Mana Judgement</th><th class=\"toggle-column\" style=\"display: none;\">Mana BOW</th>")
       			  .append("<th>Windfury Procs</th>")
@@ -142,17 +149,24 @@ public class DruidUtils {
       			  .append("<th>Insect Swarm</th>")
       			  .append("<th>Rebirth</th>")
       			  .append("<th>De -Curse/-Poison</th>")
-                  .append("<th>Starfire Hit/Crit</th><th class=\"toggle-column-highlights\" style=\"display: none;\">Highest SF</th>")
-            	  .append("<th>Moonfire Hit/Crit</th><th class=\"toggle-column-highlights\" style=\"display: none;\">Highest MF</th>")
-            	  .append("<th>Wrath Hit/Crit</th><th class=\"toggle-column-highlights\" style=\"display: none;\">Highest Wrath</th>")
-            	  .append("<th>Maul Hit/Crit</th><th class=\"toggle-column-highlights\" style=\"display: none;\">Highest Maul</th>")
-            	  .append("<th>Swipe Hit/Crit</th><th class=\"toggle-column-highlights\" style=\"display: none;\">Highest Swipe</th>")
-            	  .append("<th>Shred Hit/Crit</th><th class=\"toggle-column-highlights\" style=\"display: none;\">Highest Shred</th>")
+                  .append("<th>HealingTouch Hit/Crit</th><th class=\"toggle-column-highlights\">Highest HT</th>")
+                  .append("<th>Starfire Hit/Crit</th><th class=\"toggle-column-highlights\">Highest SF</th>")
+            	  .append("<th>Moonfire Hit/Crit</th><th class=\"toggle-column-highlights\">Highest MF</th>")
+            	  .append("<th>Wrath Hit/Crit</th><th class=\"toggle-column-highlights\">Highest Wrath</th>")
+            	  .append("<th>Maul Hit/Crit</th><th class=\"toggle-column-highlights\">Highest Maul</th>")
+            	  .append("<th>Swipe Hit/Crit</th><th class=\"toggle-column-highlights\">Highest Swipe</th>")
+            	  .append("<th>Shred Hit/Crit</th><th class=\"toggle-column-highlights\">Highest Shred</th>")
 //            	  .append("<th>Serpent Sting applied</th>")
                   .append("</tr>");
 
             for (String druidName : druids) {
                 Druid druid = druidMap.get(druidName);
+                //healercheck
+                if(druid.getImprovedRejuvenation()>10 || druid.getImprovedRegrowth()>10 || (druid.getHealingTouchCrit()+druid.getHealingTouchHit())>15) {
+                	Healer.addHealer(druidName);
+                }
+                
+                
                     strBuf.append("<tr>")
                           .append("<td>").append(druidName).append("</td>")
                           .append("<td class=\"toggle-column\" style=\"display: none;\">").append(druid.getManaFromVampiricTouch()).append("</td>")
@@ -166,18 +180,20 @@ public class DruidUtils {
         				  .append("<td>"+druid.getInsectSwarm()+"</td>")        				  
         				  .append("<td>"+druid.getRebirth()+"</td>")        				  
         				  .append("<td>"+druid.getRemoveCurse()+" / "+druid.getAbolishPoison()+"</td>")        				  
+                          .append("<td>").append(druid.getHealingTouchHit()).append(" / ").append(druid.getHealingTouchCrit()).append("</td>")
+                          .append("<td class=\"toggle-column-highlights\">").append(druid.getHighestsHealingTouch()).append(" => ").append(druid.getHighestsHealingTouchTarget()).append("</td>")
                           .append("<td>").append(druid.getStarFireHit()).append(" / ").append(druid.getStarFireCrit()).append("</td>")
-                          .append("<td class=\"toggle-column-highlights\" style=\"display: none;\">").append(druid.getHigheststarFire()).append(" => ").append(druid.getHigheststarFireTarget()).append("</td>")
+                          .append("<td class=\"toggle-column-highlights\">").append(druid.getHigheststarFire()).append(" => ").append(druid.getHigheststarFireTarget()).append("</td>")
                           .append("<td>").append(druid.getMoonFireHit()).append(" / ").append(druid.getMoonFireCrit()).append("</td>")
-                          .append("<td class=\"toggle-column-highlights\" style=\"display: none;\">").append(druid.getHighestmoonFire()).append(" => ").append(druid.getHighestmoonFireTarget()).append("</td>")
+                          .append("<td class=\"toggle-column-highlights\">").append(druid.getHighestmoonFire()).append(" => ").append(druid.getHighestmoonFireTarget()).append("</td>")
                           .append("<td>").append(druid.getWrathHit()).append(" / ").append(druid.getWrathCrit()).append("</td>")
-                          .append("<td class=\"toggle-column-highlights\" style=\"display: none;\">").append(druid.getHighestwrath()).append(" => ").append(druid.getHighestwrathTarget()).append("</td>")
+                          .append("<td class=\"toggle-column-highlights\">").append(druid.getHighestwrath()).append(" => ").append(druid.getHighestwrathTarget()).append("</td>")
                           .append("<td>").append(druid.getMaulHit()).append(" / ").append(druid.getMaulCrit()).append("</td>")
-                          .append("<td class=\"toggle-column-highlights\" style=\"display: none;\">").append(druid.getHighestmaul()).append(" => ").append(druid.getHighestmaulTarget()).append("</td>")
+                          .append("<td class=\"toggle-column-highlights\">").append(druid.getHighestmaul()).append(" => ").append(druid.getHighestmaulTarget()).append("</td>")
                           .append("<td>").append(druid.getSwipeHit()).append(" / ").append(druid.getSwipeCrit()).append("</td>")
-                          .append("<td class=\"toggle-column-highlights\" style=\"display: none;\">").append(druid.getHighestswipe()).append(" => ").append(druid.getHighestswipeTarget()).append("</td>")
+                          .append("<td class=\"toggle-column-highlights\">").append(druid.getHighestswipe()).append(" => ").append(druid.getHighestswipeTarget()).append("</td>")
                           .append("<td>").append(druid.getShredHit()).append(" / ").append(druid.getShredCrit()).append("</td>")
-                          .append("<td class=\"toggle-column-highlights\" style=\"display: none;\">").append(druid.getHighestshred()).append(" => ").append(druid.getHighestshredTarget()).append("</td>")
+                          .append("<td class=\"toggle-column-highlights\">").append(druid.getHighestshred()).append(" => ").append(druid.getHighestshredTarget()).append("</td>")
 //                          .append("<td>").append(hunter.getSerpentStringAmount()).append("</td>")
                           .append("</tr>");
             }

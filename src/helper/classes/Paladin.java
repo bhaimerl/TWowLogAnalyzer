@@ -33,6 +33,7 @@ public class Paladin extends CasterMelee {
             this.highestHolyStrikeTarget = target;
         }
     }	
+    
 	
 	public int crusaderStrikeHit=0;
 	public void incrementCrusaderStrikeHit() {
@@ -50,6 +51,57 @@ public class Paladin extends CasterMelee {
             this.highestCrusaderStrikeTarget = target;
         }
     }	
+    
+	public int flashOfLightHit=0;
+	public void incrementflashOfLightHit() {
+		this.flashOfLightHit++;
+	}
+	public int flashOfLightCrit=0;
+	public void incrementflashOfLightCrit() {
+		this.flashOfLightCrit++;
+	}
+	int highestFlashOfLight = 0;
+	String highestFlashOfLightTarget ="";
+    public void updatehighestFlashOfLightAmount(int amount, String target) {
+        if (amount > this.highestFlashOfLight) {
+            this.highestFlashOfLight = amount;
+            this.highestFlashOfLightTarget = target;
+        }
+    }	
+
+	public int holyShockHit=0;
+	public void incrementholyShockHit() {
+		this.holyShockHit++;
+	}
+	public int holyShockCrit=0;
+	public void incrementholyShockCrit() {
+		this.holyShockCrit++;
+	}
+	int highestHolyShock = 0;
+	String highestHolyShockTarget ="";
+    public void updatehighestHolyShockAmount(int amount, String target) {
+        if (amount > this.highestHolyShock) {
+            this.highestHolyShock = amount;
+            this.highestHolyShockTarget = target;
+        }
+    }	  
+    
+	public int holyLightHit=0;
+	public void incrementholyLightHit() {
+		this.holyLightHit++;
+	}
+	public int holyLightCrit=0;
+	public void incrementholyLightCrit() {
+		this.holyLightCrit++;
+	}
+	int highestHolyLight = 0;
+	String highestHolyLightTarget ="";
+    public void updatehighestHolyLightAmount(int amount, String target) {
+        if (amount > this.highestHolyLight) {
+            this.highestHolyLight = amount;
+            this.highestHolyLightTarget = target;
+        }
+    }	    
 	
 	public int judgementOfCommandHit=0;
 	public void incrementJudgementOfCommandHit() {
@@ -342,6 +394,102 @@ public class Paladin extends CasterMelee {
 
 	public void setRedemption(int redemption) {
 		this.redemption = redemption;
+	}
+
+	public int getFlashOfLightHit() {
+		return flashOfLightHit;
+	}
+
+	public int getFlashOfLightCrit() {
+		return flashOfLightCrit;
+	}
+
+	public int getHighestFlashOfLight() {
+		return highestFlashOfLight;
+	}
+
+	public String getHighestFlashOfLightTarget() {
+		return highestFlashOfLightTarget;
+	}
+
+	public int getHolyShockHit() {
+		return holyShockHit;
+	}
+
+	public int getHolyShockCrit() {
+		return holyShockCrit;
+	}
+
+	public int getHighestHolyShock() {
+		return highestHolyShock;
+	}
+
+	public String getHighestHolyShockTarget() {
+		return highestHolyShockTarget;
+	}
+
+	public int getHolyLightHit() {
+		return holyLightHit;
+	}
+
+	public int getHolyLightCrit() {
+		return holyLightCrit;
+	}
+
+	public int getHighestHolyLight() {
+		return highestHolyLight;
+	}
+
+	public String getHighestHolyLightTarget() {
+		return highestHolyLightTarget;
+	}
+
+	public void setFlashOfLightHit(int flashOfLightHit) {
+		this.flashOfLightHit = flashOfLightHit;
+	}
+
+	public void setFlashOfLightCrit(int flashOfLightCrit) {
+		this.flashOfLightCrit = flashOfLightCrit;
+	}
+
+	public void setHighestFlashOfLight(int highestFlashOfLight) {
+		this.highestFlashOfLight = highestFlashOfLight;
+	}
+
+	public void setHighestFlashOfLightTarget(String highestFlashOfLightTarget) {
+		this.highestFlashOfLightTarget = highestFlashOfLightTarget;
+	}
+
+	public void setHolyShockHit(int holyShockHit) {
+		this.holyShockHit = holyShockHit;
+	}
+
+	public void setHolyShockCrit(int holyShockCrit) {
+		this.holyShockCrit = holyShockCrit;
+	}
+
+	public void setHighestHolyShock(int highestHolyShock) {
+		this.highestHolyShock = highestHolyShock;
+	}
+
+	public void setHighestHolyShockTarget(String highestHolyShockTarget) {
+		this.highestHolyShockTarget = highestHolyShockTarget;
+	}
+
+	public void setHolyLightHit(int holyLightHit) {
+		this.holyLightHit = holyLightHit;
+	}
+
+	public void setHolyLightCrit(int holyLightCrit) {
+		this.holyLightCrit = holyLightCrit;
+	}
+
+	public void setHighestHolyLight(int highestHolyLight) {
+		this.highestHolyLight = highestHolyLight;
+	}
+
+	public void setHighestHolyLightTarget(String highestHolyLightTarget) {
+		this.highestHolyLightTarget = highestHolyLightTarget;
 	}
 	
 	

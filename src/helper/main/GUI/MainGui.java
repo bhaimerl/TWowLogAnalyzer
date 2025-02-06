@@ -37,9 +37,12 @@ import helper.classes.utils.Players;
 import helper.classes.utils.PriestUtils;
 import helper.classes.utils.RaidLogInfo;
 import helper.classes.utils.RogueUtils;
+import helper.classes.utils.ShamanUtils;
 import helper.classes.utils.WarlockUtils;
 import helper.classes.utils.WarriorUtils;
 import helper.classes.utils.besonderes.BarovUtils;
+import helper.classes.utils.besonderes.HealCommUtils;
+import helper.classes.utils.besonderes.WarlockShadowTranceCheck;
 
 import org.eclipse.wb.swt.SWTResourceManager;
 
@@ -147,6 +150,9 @@ public class MainGui {
 		        if(f.isFile()) {
 		        	General.flushAllGuild();
 					fileAsArrayList = FileUtils.getFileAsArrayList(choosenFileInclPath);
+					
+					//WarlockShadowTranceCheck.getWarlockShadowTranceLogs(fileAsArrayList);
+					
 					allPlayers = new HashMap<>();
 					allPlayers = Players.getAllPlayersSortedByClass(fileAsArrayList);					
 					playersHtml = HTMLUtils.getAllPlayers(allPlayers);
@@ -230,7 +236,7 @@ public class MainGui {
 		btnMage.setText("Mage");
 		btnMage.setBounds(198, 190, 58, 16);
 		
-		btnShaman.setEnabled(false);
+		btnShaman.setSelection(true);
 		btnShaman.setText("Shaman");
 		btnShaman.setBounds(263, 146, 64, 16);
 		
@@ -306,6 +312,7 @@ public class MainGui {
 				String paladins = "";
 				String druids = "";
 				String priests = "";
+				String shamans = "";
 				String boss = "";
 				String raids = "";
 				int i = 0;
@@ -351,7 +358,9 @@ public class MainGui {
 					if(btnPriest.getSelection()) {
 						PriestUtils.findEntryForPriest(string, allPlayers);
 					}						
-					
+					if(btnShaman.getSelection()) {
+						ShamanUtils.findEntryForShaman(string, allPlayers);
+					}						
 					
 					if(i%tenPercentLogLines==0) {
 						processBar="..."+j+"0%...";
@@ -368,6 +377,7 @@ public class MainGui {
 				paladins = PaladinUtils.getPaladinHTML();
 				druids = DruidUtils.getDruidHTML();
 				priests = PriestUtils.getPriestHTML();
+				shamans = ShamanUtils.getShamanHTML();
 		    	//loot
 		    	LootUtils.assignEpicLoot(fileAsArrayList);
 				String loot = LootUtils.getLootAsHTML();
@@ -380,7 +390,8 @@ public class MainGui {
 						+ "<button id=\"toggleColumnButton\">Show Mana generation</button>"
 						+ "<button id=\"toggleColumnHighlightsButton\">Show Highlights</button>";
 				String br = "<br><br>";
-				HTMLUtils.writeFile(HTMLUtils.getAsHTMLString(playersHtml+boss+classAbs+warriors+rogues+druids+paladins+priests+mages+hunters+warlocks+aq40Stuff+loot, raidName, date, startTime, endTime, raids), true);
+				
+				HTMLUtils.writeFile(HTMLUtils.getAsHTMLString(playersHtml+boss+classAbs+warriors+rogues+druids+paladins+priests+mages+hunters+warlocks+shamans+aq40Stuff+loot, raidName, date, startTime, endTime, raids), true);
 				String guildBasedFileName = RaidLogInfo.getUNiqueFileName(raids, date, startTime, Players.getMainGuild()+".html");
 				boolean ftpLognSuccess = false;
 				try {
@@ -455,7 +466,7 @@ public class MainGui {
 		boolean classValid = false;
 		if(btnWarrior.getSelection() || btnRogue.getSelection() || btnWarlock.getSelection() || 
 				btnMage.getSelection() || btnHunter.getSelection() || brnPaladin.getSelection() || 
-				btnDruid.getSelection() || btnPriest.getSelection()) {
+				btnDruid.getSelection() || btnPriest.getSelection() || btnShaman.getSelection() ) {
 			classValid = true;
 		}
 		if(classValid && validTimes) {

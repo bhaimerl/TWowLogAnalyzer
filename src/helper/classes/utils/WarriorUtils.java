@@ -90,9 +90,9 @@ public class WarriorUtils {
 			strBuf.append("<th>Enrage procs</th>");
 			strBuf.append("<th>DEF: CBlow / SSlam</th>");
 			strBuf.append("<th>Executes</th>");
-			strBuf.append("<th class=\"toggle-column-highlights\" style=\"display: none;\">Highest Execute</th>");
+			strBuf.append("<th class=\"toggle-column-highlights\">Highest Execute</th>");
 			strBuf.append("<th>Bloodthirsts</th>");
-			strBuf.append("<th class=\"toggle-column-highlights\" style=\"display: none;\">Highest Bloodthirst</th>");
+			strBuf.append("<th class=\"toggle-column-highlights\">Highest Bloodthirst</th>");
 			strBuf.append("</tr>");
 			//Ballertony: [sunders=122, deathWish=18, windFury=236, crusader=74, wrath=264, flametongue=314, flurry=313, enrage=161]
 			//System.out.println("Name | Sunders | Deathwish | WindfuryProcs | CrusaderProcs | extra rage from unbridled wrath | FlametongueProcs | Flurry | Enrage");
@@ -110,9 +110,9 @@ public class WarriorUtils {
 					strBuf.append("<td>"+warri.getEnrage()+"</td>");
 					strBuf.append("<td>"+warri.getConsussionBlow()+" / "+warri.getShieldSlam()+"</td>");
 					strBuf.append("<td>"+warri.getExecuteAmount()+"</td>");
-					strBuf.append("<td class=\"toggle-column-highlights\" style=\"display: none;\">"+warri.getHighestExecute()+"=> "+warri.getHighestExecuteTarget()+"</td>");
+					strBuf.append("<td class=\"toggle-column-highlights\">"+warri.getHighestExecute()+"=> "+warri.getHighestExecuteTarget()+"</td>");
 					strBuf.append("<td>"+warri.getBloodThirstAmount()+"</td>");
-					strBuf.append("<td class=\"toggle-column-highlights\" style=\"display: none;\">"+warri.getHighestBloodthirst()+"=> "+warri.getHighestBloodthirstTarget()+"</td>");
+					strBuf.append("<td class=\"toggle-column-highlights\">"+warri.getHighestBloodthirst()+"=> "+warri.getHighestBloodthirstTarget()+"</td>");
 					strBuf.append("</tr>");
 			}
 			strBuf.append("</table>");

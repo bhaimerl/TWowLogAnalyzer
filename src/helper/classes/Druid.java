@@ -53,6 +53,23 @@ public class Druid extends CasterMelee {
             this.higheststarFireTarget = target;
         }
     }
+    
+	public int healingTouchHit=0;
+	public void incrementhealingTouchHit() {
+		this.healingTouchHit++;
+	}
+	public int healingTouchCrit=0;
+	public void incrementhealingTouchCrit() {
+		this.healingTouchCrit++;
+	}
+	int highestsHealingTouch = 0;
+	String highestsHealingTouchTarget ="";
+    public void updatehighestsHealingTouchAmount(int amount, String target) {
+        if (amount > this.highestsHealingTouch) {
+            this.highestsHealingTouch = amount;
+            this.highestsHealingTouchTarget = target;
+        }
+    }    
 
 	public int moonFireHit=0;
 	public void incrementmoonFireHit() {
@@ -396,6 +413,31 @@ public class Druid extends CasterMelee {
 	public void setRebirth(int rebirth) {
 		this.rebirth = rebirth;
 	}
+	public int getHealingTouchHit() {
+		return healingTouchHit;
+	}
+	public int getHealingTouchCrit() {
+		return healingTouchCrit;
+	}
+	public int getHighestsHealingTouch() {
+		return highestsHealingTouch;
+	}
+	public String getHighestsHealingTouchTarget() {
+		return highestsHealingTouchTarget;
+	}
+	public void setHealingTouchHit(int healingTouchHit) {
+		this.healingTouchHit = healingTouchHit;
+	}
+	public void setHealingTouchCrit(int healingTouchCrit) {
+		this.healingTouchCrit = healingTouchCrit;
+	}
+	public void setHighestsHealingTouch(int highestsHealingTouch) {
+		this.highestsHealingTouch = highestsHealingTouch;
+	}
+	public void setHighestsHealingTouchTarget(String highestsHealingTouchTarget) {
+		this.highestsHealingTouchTarget = highestsHealingTouchTarget;
+	}
+
 	
 
 }

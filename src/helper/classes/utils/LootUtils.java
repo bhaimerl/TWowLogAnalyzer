@@ -87,7 +87,6 @@ public class LootUtils {
 	public static String getLootAsHTML() {
         StringBuilder strBuf = new StringBuilder();
         if (!playerLootMap.isEmpty()) {
-            strBuf.append("<div><b> => LOOT</b></div>");
         	strBuf.append("<br><body><table class='classTable' align=\"left\" width='100%'>")
                   .append("<tr style='background-color: #a335ee;'>")
                   .append("<td colspan='2'>LOOT</td></tr><tr>")

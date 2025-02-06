@@ -116,9 +116,9 @@ public class WarlockUtils {
                   .append("<th>Name</th><th>STrance</th><th>LifeTaps</th><th class=\"toggle-column\" style=\"display: none;\">Mana LifeTap</th>")
                   .append("<th class=\"toggle-column\" style=\"display: none;\">Mana VampiricTouch</th><th class=\"toggle-column\" style=\"display: none;\">Mana Judgement</th><th class=\"toggle-column\" style=\"display: none;\">Mana BOW</th>")
                   .append("<th>CoE|CoS|CoR</th>")                  
-                  .append("<th>ShadowBolt Hit/Crit</th><th class=\"toggle-column-highlights\" style=\"display: none;\">Highest SB</th><th>SoulFire Hit/Crit</th>")
-                  .append("<th class=\"toggle-column-highlights\" style=\"display: none;\">Highest SF</th><th>SearingPain Hit/Crit</th><th class=\"toggle-column-highlights\" style=\"display: none;\">Highest SP</th>")
-                  .append("<th>Immolate Hit/Crit</th><th>Conflagrate Hit/Crit</th><th class=\"toggle-column-highlights\" style=\"display: none;\">Highest Cflgrt</th></tr>");
+                  .append("<th>ShadowBolt Hit/Crit</th><th class=\"toggle-column-highlights\">Highest SB</th><th>SoulFire Hit/Crit</th>")
+                  .append("<th class=\"toggle-column-highlights\">Highest SF</th><th>SearingPain Hit/Crit</th><th class=\"toggle-column-highlights\">Highest SP</th>")
+                  .append("<th>Immolate Hit/Crit</th><th>Conflagrate Hit/Crit</th><th class=\"toggle-column-highlights\">Highest Cflgrt</th></tr>");
 
             for (String warlockName : warlocks) {
                 Warlock warlock = warlockMap.get(warlockName);
@@ -132,14 +132,14 @@ public class WarlockUtils {
                           .append("<td class=\"toggle-column\" style=\"display: none;\">").append(warlock.getManaFromBow()).append("</td>")
                           .append("<td>").append(warlock.getCoeCount()+" | "+warlock.getCosCount()+" | "+warlock.getCorCount()).append("</td>")
                           .append("<td>").append(warlock.getShadowBoltHits()).append(" / ").append(warlock.getShadowBoltCrits()).append("</td>")
-                          .append("<td class=\"toggle-column-highlights\" style=\"display: none;\">").append(warlock.getHighestSBAmount()).append(" => ").append(warlock.getHighestSBTarget()).append("</td>")
+                          .append("<td class=\"toggle-column-highlights\">").append(warlock.getHighestSBAmount()).append(" => ").append(warlock.getHighestSBTarget()).append("</td>")
                           .append("<td>").append(warlock.getSoulFireHits()).append(" / ").append(warlock.getSoulFireCrits()).append("</td>")
-                          .append("<td class=\"toggle-column-highlights\" style=\"display: none;\">").append(warlock.getHighestSFAmount()).append(" => ").append(warlock.getHighestSFTarget()).append("</td>")
+                          .append("<td class=\"toggle-column-highlights\">").append(warlock.getHighestSFAmount()).append(" => ").append(warlock.getHighestSFTarget()).append("</td>")
                           .append("<td>").append(warlock.getSearingPainHits()).append(" / ").append(warlock.getSearingPainCrits()).append("</td>")
-                          .append("<td class=\"toggle-column-highlights\" style=\"display: none;\">").append(warlock.getHighestSPAmount()).append(" => ").append(warlock.getHighestSPTarget()).append("</td>")
+                          .append("<td class=\"toggle-column-highlights\">").append(warlock.getHighestSPAmount()).append(" => ").append(warlock.getHighestSPTarget()).append("</td>")
                           .append("<td>").append(warlock.getImmolateHits()).append(" / ").append(warlock.getImmolateCrits()).append("</td>")
                           .append("<td>").append(warlock.getConflagrateHits()).append(" / ").append(warlock.getConflagrateCrits()).append("</td>")
-                          .append("<td class=\"toggle-column-highlights\" style=\"display: none;\">").append(warlock.getHighestCflgrAmount()).append(" => ").append(warlock.getHighestCflgrTarget()).append("</td>")
+                          .append("<td class=\"toggle-column-highlights\">").append(warlock.getHighestCflgrAmount()).append(" => ").append(warlock.getHighestCflgrTarget()).append("</td>")
                           .append("</tr>");
             }
             strBuf.append("</table>");
