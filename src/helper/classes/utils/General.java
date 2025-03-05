@@ -174,7 +174,13 @@ public class General {
 	public static String getPlayerNameFromEndFrom(String logline) {
 		String playerName = null;
 		// Regulärer Ausdruck, um den Heiler-Namen zu extrahieren
-        Pattern pattern = Pattern.compile("from (\\w+) 's Greater Heal");
+		String priestAbility ="";
+		if(logline.contains("'s Greater Heal")) {
+			priestAbility = "'s Greater Heal";
+		} else if(logline.contains("'s Mind Flay")) {
+			priestAbility = "'s Mind Flay";
+		}
+        Pattern pattern = Pattern.compile("from (\\w+) "+priestAbility);
         Matcher matcher = pattern.matcher(logline);
         if (matcher.find()) {
         	playerName = matcher.group(1); // Gefundener Name

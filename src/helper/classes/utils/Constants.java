@@ -1,14 +1,14 @@
 package helper.classes.utils;
 
 import java.text.SimpleDateFormat;
-
+ 
 public class Constants { 
 	
 	public static SimpleDateFormat sdf = new SimpleDateFormat("MM/dd HH:mm:ss.SSS");
 	public static SimpleDateFormat onlyTime = new SimpleDateFormat("HH:mm:ss.SSS");
 	
 	  
-	public static final String VERSION = "v0.3.1";
+	public static final String VERSION = "v0.3.2";
 	public static final String LASTCHANGE="Shami added";
 	
 	
@@ -87,7 +87,7 @@ public class Constants {
 	public static final String crusader= "gains Holy Strength";
 	public static final String flametongue="Flametongue Attack";
 	
-	//Warror
+	//Warrior
 	public static final String sunder= "casts Sunder";
 	public static final String deathWish="is afflicted by Death Wish";
 	public static final String wrath= "Unbridled Wrath";
@@ -99,6 +99,10 @@ public class Constants {
 	public static final String bloodthirstHit = "'s Bloodthirst hits ";	
 	public static final String concussionBlow = "'s Concussion Blow ";	
 	public static final String shieldSlam  = "'s Shield Slam ";
+	public static final String mortalStrikeHit="'s Mortal Strike hits ";
+	public static final String mortalStrikeCrit="'s Mortal Strike crits ";
+	
+	
 	
 	
 	//rogue
@@ -214,6 +218,10 @@ public class Constants {
 	public static final String powerWordFortitude = "casts Power Word: Fortitude";
 	public static final String prayerOfFortitude = "casts Prayer of Fortitude";
 	public static final String powerWordShield = "casts Power Word: Shield";
+	public static final String smiteHit = "'s Smite hits";
+	public static final String smiteCrit = "'s Smite crits";
+	public static final String holyFireHit = "'s Holy Fire hits";
+	public static final String holyFireCrit = "'s Holy Fire crits";
 	
 	//DIspells
 	//priest

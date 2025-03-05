@@ -62,6 +62,13 @@ public class WarriorUtils {
             warrior -> warrior.updateHighestExecuteAmount(General.getAmountAtEnd(Constants.executeHit, Constants.executeCrit, logline),
                         General.getTarget(Constants.executeHit, Constants.executeCrit, logline))
         );
+        
+        processAbility(logline, currentPlayer, Constants.mortalStrikeHit, Constants.mortalStrikeCrit, 
+                Warrior::incrementExecute, Warrior::incrementMortalStrike,
+                warrior -> warrior.updateHighestMortalStrikeAmount(General.getAmountAtEnd(Constants.mortalStrikeHit, Constants.mortalStrikeCrit, logline),
+                            General.getTarget(Constants.mortalStrikeHit, Constants.mortalStrikeCrit, logline))
+        );
+        
     	
         processAbility(logline, currentPlayer, Constants.bloodthirstHit, Constants.bloodthirstCrit, 
                 Warrior::incrementBloodThirstAmount, Warrior::incrementBloodThirstAmount,
@@ -77,7 +84,7 @@ public class WarriorUtils {
 			SortedSet<String> warriors =  new TreeSet<>(warriorMap.keySet());
 			strBuf.append("<br>");				
 			strBuf.append("<table class='classTable' align=\"left\" width='100%'>");
-			strBuf.append("<tr style='background-color: "+Constants.WARRIORCOLOR+";'><td colspan='14'>"+Constants.WARRIOR+"</td></tr>");
+			strBuf.append("<tr style='background-color: "+Constants.WARRIORCOLOR+";'><td colspan='16'>"+Constants.WARRIOR+"</td></tr>");
 			strBuf.append("<tr>");
 			strBuf.append("<th>Name</th>");
 			strBuf.append("<th>Sunder Armor</th>");
@@ -91,6 +98,8 @@ public class WarriorUtils {
 			strBuf.append("<th>DEF: CBlow / SSlam</th>");
 			strBuf.append("<th>Executes</th>");
 			strBuf.append("<th class=\"toggle-column-highlights\">Highest Execute</th>");
+			strBuf.append("<th>Mortal Strikes</th>");
+			strBuf.append("<th class=\"toggle-column-highlights\">Highest MS</th>");
 			strBuf.append("<th>Bloodthirsts</th>");
 			strBuf.append("<th class=\"toggle-column-highlights\">Highest Bloodthirst</th>");
 			strBuf.append("</tr>");
@@ -111,6 +120,8 @@ public class WarriorUtils {
 					strBuf.append("<td>"+warri.getConsussionBlow()+" / "+warri.getShieldSlam()+"</td>");
 					strBuf.append("<td>"+warri.getExecuteAmount()+"</td>");
 					strBuf.append("<td class=\"toggle-column-highlights\">"+warri.getHighestExecute()+"=> "+warri.getHighestExecuteTarget()+"</td>");
+					strBuf.append("<td>"+warri.getMortalStrikeAmount()+"</td>");
+					strBuf.append("<td class=\"toggle-column-highlights\">"+warri.getHighestMortalStrike()+"=> "+warri.getHighestMortalStrikeTarget()+"</td>");
 					strBuf.append("<td>"+warri.getBloodThirstAmount()+"</td>");
 					strBuf.append("<td class=\"toggle-column-highlights\">"+warri.getHighestBloodthirst()+"=> "+warri.getHighestBloodthirstTarget()+"</td>");
 					strBuf.append("</tr>");

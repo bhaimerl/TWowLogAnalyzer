@@ -154,7 +154,7 @@ public class MainGui {
 					//WarlockShadowTranceCheck.getWarlockShadowTranceLogs(fileAsArrayList);
 					
 					allPlayers = new HashMap<>();
-					allPlayers = Players.getAllPlayersSortedByClass(fileAsArrayList);					
+					allPlayers = Players.getAllPlayersSortedByClass(fileAsArrayList);	
 					playersHtml = HTMLUtils.getAllPlayers(allPlayers);
 					startTime = Filter.getStartTime(fileAsArrayList);
 					endTime = Filter.getEndTime(fileAsArrayList);

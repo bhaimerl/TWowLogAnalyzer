@@ -114,6 +114,19 @@ public class PriestUtils {
 				priest -> priest.updateHighestmindBlastAmount(
 						General.getAmountAtEnd(Constants.mindBlastHit, Constants.mindBlastCrit, logline),
 						General.getTarget(Constants.mindBlastHit, Constants.mindBlastCrit, logline))); //17
+		
+		processAbility(logline, currentPlayer, Constants.smiteHit, Constants.smiteCrit,
+				Priest::incrementsmiteHit, Priest::incrementsmiteCrit,
+				priest -> priest.updateHighestsmiteAmount(
+						General.getAmountAtEnd(Constants.smiteHit, Constants.smiteCrit, logline),
+						General.getTarget(Constants.smiteHit, Constants.smiteCrit, logline))); 
+		
+		processAbility(logline, currentPlayer, Constants.holyFireHit, Constants.holyFireCrit,
+				Priest::incrementholyfireHit, Priest::incrementholyfireCrit,
+				priest -> priest.updateHighestholyfireAmount(
+						General.getAmountAtEnd(Constants.holyFireHit, Constants.holyFireCrit, logline),
+						General.getTarget(Constants.holyFireHit, Constants.holyFireCrit, logline))); 
+		
     }
     
     public static String getPriestHTML() {
@@ -122,7 +135,7 @@ public class PriestUtils {
 			SortedSet<String> priests =  new TreeSet<>(priestMap.keySet());			
             strBuf.append("<br><body><table class='classTable' align=\"left\" width='100%'>")
                   .append("<tr style='background-color: ").append(Constants.PRIESTCOLOR).append(";'>")
-                  .append("<td colspan='22'>"+Constants.PRIEST+"</td></tr><tr>")
+                  .append("<td colspan='26'>"+Constants.PRIEST+"</td></tr><tr>")
                   .append("<th>Name</th>")
                   .append("<th class=\"toggle-column\" style=\"display: none;\">Mana VampiricTouch</th><th class=\"toggle-column\" style=\"display: none;\">Mana Judgement</th><th class=\"toggle-column\" style=\"display: none;\">Mana BOW</th>")
       			  .append("<th>Renew</th>")
@@ -137,6 +150,8 @@ public class PriestUtils {
       			  .append("<th>Resurrection</th>")
       			  .append("<th>Dispell Magic</th>")
       			  .append("<th>T2 Greater Heal procs / complete</th>")
+                  .append("<th>Smite Hit/Crit</th><th class=\"toggle-column-highlights\">Highest Smite</th>")
+                  .append("<th>HolyFire Hit/Crit</th><th class=\"toggle-column-highlights\">Highest HF</th>")
                   .append("<th>Flash Heal Hit/Crit</th><th class=\"toggle-column-highlights\">Highest FH</th>")
             	  .append("<th>Greater Heal Hit/Crit</th><th class=\"toggle-column-highlights\">Highest GH</th>")
             	  .append("<th>MindBlast Hit/Crit</th><th class=\"toggle-column-highlights\">Highest MB</th>")
@@ -165,7 +180,14 @@ public class PriestUtils {
       					  .append("<td>"+priest.getProclaimChampion()+"</td>")                          
       					  .append("<td>"+priest.getResurrection()+"</td>")                          
       					  .append("<td>"+priest.getDispellMagic()+"</td>")                          
-      					  .append("<td>"+priest.getT2GreaterHeal()+" / "+priest.getT2GreaterHealAmount()+"</td>")                          
+      					  .append("<td>"+priest.getT2GreaterHeal()+" / "+priest.getT2GreaterHealAmount()+"</td>")                         
+      					  
+                          .append("<td>").append(priest.getSmiteHit()).append(" / ").append(priest.getSmiteCrit()).append("</td>")
+                          .append("<td class=\"toggle-column-highlights\">").append(priest.getHighestsmite()).append(" => ").append(priest.getHighestsmiteTarget()).append("</td>")
+                          .append("<td>").append(priest.getHolyfireHit()).append(" / ").append(priest.getHolyfireCrit()).append("</td>")
+                          .append("<td class=\"toggle-column-highlights\">").append(priest.getHighestholyfire()).append(" => ").append(priest.getHighestholyfireTarget()).append("</td>")
+                          
+      					  
                           .append("<td>").append(priest.getFlashHealHit()).append(" / ").append(priest.getFlashHealCrit()).append("</td>")
                           .append("<td class=\"toggle-column-highlights\">").append(priest.getHighestflashHeal()).append(" => ").append(priest.getHighestflashHealTarget()).append("</td>")
                           .append("<td>").append(priest.getGreaterHealHit()).append(" / ").append(priest.getGreaterHealCrit()).append("</td>")

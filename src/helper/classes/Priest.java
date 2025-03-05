@@ -63,6 +63,40 @@ public class Priest extends Caster{
         }
     }
     
+	public int smiteHit=0;
+	public void incrementsmiteHit() {
+		this.smiteHit++;
+	}
+	public int smiteCrit=0;
+	public void incrementsmiteCrit() {
+		this.smiteCrit++;
+	}
+	int highestsmite = 0;
+	String highestsmiteTarget ="";
+    public void updateHighestsmiteAmount(int amount, String target) {
+        if (amount > this.highestsmite) {
+            this.highestsmite = amount;
+            this.highestsmiteTarget = target;
+        }
+    }
+    
+	public int holyfireHit=0;
+	public void incrementholyfireHit() {
+		this.holyfireHit++;
+	}
+	public int holyfireCrit=0;
+	public void incrementholyfireCrit() {
+		this.holyfireCrit++;
+	}
+	int highestholyfire = 0;
+	String highestholyfireTarget ="";
+    public void updateHighestholyfireAmount(int amount, String target) {
+        if (amount > this.highestholyfire) {
+            this.highestholyfire = amount;
+            this.highestholyfireTarget = target;
+        }
+    }    
+    
     public int t2GreaterHeal= 0;
 	public void incrementT2GreaterHeal() {
 		this.t2GreaterHeal++;
@@ -276,5 +310,54 @@ public class Priest extends Caster{
 	public void setPowerWordShield(int powerWordShield) {
 		this.powerWordShield = powerWordShield;
 	}
+	public int getSmiteHit() {
+		return smiteHit;
+	}
+	public int getSmiteCrit() {
+		return smiteCrit;
+	}
+	public int getHighestsmite() {
+		return highestsmite;
+	}
+	public String getHighestsmiteTarget() {
+		return highestsmiteTarget;
+	}
+	public int getHolyfireHit() {
+		return holyfireHit;
+	}
+	public int getHolyfireCrit() {
+		return holyfireCrit;
+	}
+	public int getHighestholyfire() {
+		return highestholyfire;
+	}
+	public String getHighestholyfireTarget() {
+		return highestholyfireTarget;
+	}
+	public void setSmiteHit(int smiteHit) {
+		this.smiteHit = smiteHit;
+	}
+	public void setSmiteCrit(int smiteCrit) {
+		this.smiteCrit = smiteCrit;
+	}
+	public void setHighestsmite(int highestsmite) {
+		this.highestsmite = highestsmite;
+	}
+	public void setHighestsmiteTarget(String highestsmiteTarget) {
+		this.highestsmiteTarget = highestsmiteTarget;
+	}
+	public void setHolyfireHit(int holyfireHit) {
+		this.holyfireHit = holyfireHit;
+	}
+	public void setHolyfireCrit(int holyfireCrit) {
+		this.holyfireCrit = holyfireCrit;
+	}
+	public void setHighestholyfire(int highestholyfire) {
+		this.highestholyfire = highestholyfire;
+	}
+	public void setHighestholyfireTarget(String highestholyfireTarget) {
+		this.highestholyfireTarget = highestholyfireTarget;
+	}
+	
 	
 }

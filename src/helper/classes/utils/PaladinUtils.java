@@ -137,8 +137,7 @@ public class PaladinUtils {
                   .append("</tr>");
 
             for (String palaName : paladins) {
-                Paladin pala= paladinMap.get(palaName);
-                
+                Paladin pala= paladinMap.get(palaName);                
 	                //healercheck
 	                if(	pala.getHolyShockCrit()+pala.getHolyShockHit()>2 || pala.getFlashOfLightHit()+pala.getFlashOfLightCrit()>50) {
 	                	Healer.addHealer(palaName);
@@ -184,6 +183,7 @@ public class PaladinUtils {
 		boolean isPaladin = false;
 		if((logline.contains(Constants.holyStrikeHit) || 
 			logline.contains(Constants.crusaderStrikeHit) || 
+			logline.contains(Constants.flashOfLightHit) || 			
 			logline.contains(Constants.sealOfCommandHit) || 
 			logline.contains(Constants.judgementOfCommandHit) || 
 			logline.contains(Constants.exorcismHit) )) {

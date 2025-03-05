@@ -49,6 +49,20 @@ public class Warrior extends Melee{
             this.highestExecuteTarget = target;
         }
     }	
+    
+	public int mortalStrikeAmount=0;	
+    public void incrementMortalStrike() {
+        this.mortalStrikeAmount++;
+    }
+	public int highestMortalStrike=0;
+	public String highestMortalStrikeTarget = "";
+    public void updateHighestMortalStrikeAmount(int amount, String target) {
+        if (amount > this.highestMortalStrike) {
+            this.highestMortalStrike = amount;
+            this.highestMortalStrikeTarget = target;
+        }
+    }	
+    
 	
 	public int bloodThirstAmount=0;
     public void incrementBloodThirstAmount() {
@@ -105,6 +119,24 @@ public class Warrior extends Melee{
 	}
 	public void setShieldSlam(int shieldSlam) {
 		this.shieldSlam = shieldSlam;
+	}
+	public int getMortalStrikeAmount() {
+		return mortalStrikeAmount;
+	}
+	public int getHighestMortalStrike() {
+		return highestMortalStrike;
+	}
+	public String getHighestMortalStrikeTarget() {
+		return highestMortalStrikeTarget;
+	}
+	public void setMortalStrikeAmount(int mortalStrikeAmount) {
+		this.mortalStrikeAmount = mortalStrikeAmount;
+	}
+	public void setHighestMortalStrike(int highestMortalStrike) {
+		this.highestMortalStrike = highestMortalStrike;
+	}
+	public void setHighestMortalStrikeTarget(String highestMortalStrikeTarget) {
+		this.highestMortalStrikeTarget = highestMortalStrikeTarget;
 	}
 	
 	
