@@ -13,7 +13,7 @@ public class WarlockUtils {
 
     public static HashMap<String, Warlock> warlockMap = new HashMap<>(); 
 
-    private static Warlock getWarlockByName(String name) {
+    public static Warlock getWarlockByName(String name) {
         return warlockMap.computeIfAbsent(name, k -> new Warlock());
     }
 
@@ -112,18 +112,23 @@ public class WarlockUtils {
 
             strBuf.append("<br><body><table class='classTable' align=\"left\" width='100%'>")
                   .append("<tr style='background-color: ").append(Constants.WARLOCKCOLOR).append(";'>")
-                  .append("<td colspan='17'>"+Constants.WARLOCK+"</td></tr><tr>")
-                  .append("<th>Name</th><th>STrance</th><th>LifeTaps</th><th class=\"toggle-column\" style=\"display: none;\">Mana LifeTap</th>")
+                  .append("<td colspan='19'>"+Constants.WARLOCK+"</td></tr><tr>")
+                  .append("<th>Name</th>")
+      			  .append("<th>Death</th>")
+      			  .append("<th class=\"toggle-column-death\" style=\"display: none;\">DeathCauses</th>")                                                      
+                  .append("<th>STrance</th><th>LifeTaps</th><th class=\"toggle-column\" style=\"display: none;\">Mana LifeTap</th>")
                   .append("<th class=\"toggle-column\" style=\"display: none;\">Mana VampiricTouch</th><th class=\"toggle-column\" style=\"display: none;\">Mana Judgement</th><th class=\"toggle-column\" style=\"display: none;\">Mana BOW</th>")
                   .append("<th>CoE|CoS|CoR</th>")                  
-                  .append("<th>ShadowBolt Hit/Crit</th><th class=\"toggle-column-highlights\">Highest SB</th><th>SoulFire Hit/Crit</th>")
-                  .append("<th class=\"toggle-column-highlights\">Highest SF</th><th>SearingPain Hit/Crit</th><th class=\"toggle-column-highlights\">Highest SP</th>")
-                  .append("<th>Immolate Hit/Crit</th><th>Conflagrate Hit/Crit</th><th class=\"toggle-column-highlights\">Highest Cflgrt</th></tr>");
+                  .append("<th>ShadowBolt Hit/Crit</th><th class=\"toggle-column-highlights\">Max SB</th><th>SoulFire Hit/Crit</th>")
+                  .append("<th class=\"toggle-column-highlights\">Max SF</th><th>SearingPain Hit/Crit</th><th class=\"toggle-column-highlights\">Max SP</th>")
+                  .append("<th>Immolate Hit/Crit</th><th>Conflagrate Hit/Crit</th><th class=\"toggle-column-highlights\">Max Cflgrt</th></tr>");
 
             for (String warlockName : warlocks) {
                 Warlock warlock = warlockMap.get(warlockName);
                     strBuf.append("<tr>")
                           .append("<td>").append(warlockName).append("</td>")
+      					  .append("<td>"+warlock.getDeathCounter()+"</td>")
+      					  .append("<td class=\"toggle-column-death\" style=\"display: none;\">"+Players.getDeathCauses(warlock)+"</td>")                                                    
                           .append("<td>").append(warlock.getShadowtrance()).append("</td>")
                           .append("<td>").append(warlock.getLifeTaps()).append("</td>")
                           .append("<td class=\"toggle-column\" style=\"display: none;\">").append(warlock.getLifeTapMana()).append("</td>")

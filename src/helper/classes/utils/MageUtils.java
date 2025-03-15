@@ -13,7 +13,7 @@ public class MageUtils {
 	
 	public static HashMap<String, Mage> mageMap = new HashMap<>();;
 
-    private static Mage getMageByName(String name) {
+    public static Mage getMageByName(String name) {
         return mageMap.computeIfAbsent(name, k -> new Mage());
     }
 
@@ -109,22 +109,26 @@ public class MageUtils {
 			SortedSet<String> mages =  new TreeSet<>(mageMap.keySet());			
             strBuf.append("<br><body><table class='classTable' align=\"left\" width='100%'>")
                   .append("<tr style='background-color: ").append(Constants.MAGECOLOR).append(";'>")
-                  .append("<td colspan='18'>"+Constants.MAGE+"</td></tr><tr>")
+                  .append("<td colspan='20'>"+Constants.MAGE+"</td></tr><tr>")
                   .append("<th>Name</th>")
+      			  .append("<th>Death</th>")
+      			  .append("<th class=\"toggle-column-death\" style=\"display: none;\">DeathCauses</th>")                  
                   .append("<th class=\"toggle-column\" style=\"display: none;\">Mana VampiricTouch</th><th class=\"toggle-column\" style=\"display: none;\">Mana Judgement</th><th class=\"toggle-column\" style=\"display: none;\">Mana BOW</th>")
-                  .append("<th>FireBlast Hit/Crit</th><th class=\"toggle-column-highlights\">Highest FBlast</th>")
-            	  .append("<th>FireBall Hit/Crit</th><th class=\"toggle-column-highlights\">Highest FBall</th>")
-            	  .append("<th>ArcaneRupture Hit/Crit</th><th class=\"toggle-column-highlights\">Highest Rupture</th>")
-            	  .append("<th>ArcaneSurge Hit/Crit</th><th class=\"toggle-column-highlights\">Highest Surge</th>")
-            	  .append("<th>ArcaneMissles Hit/Crit</th><th class=\"toggle-column-highlights\">Highest Missle</th>")
-            	  .append("<th>PyroBlast Hit/Crit</th><th class=\"toggle-column-highlights\">Highest PBlast</th>")
-            	  .append("<th>Scorch Hit/Crit</th><th class=\"toggle-column-highlights\">Highest Scorch</th>")
+                  .append("<th>FireBlast Hit/Crit</th><th class=\"toggle-column-highlights\">Max FBlast</th>")
+            	  .append("<th>FireBall Hit/Crit</th><th class=\"toggle-column-highlights\">Max FBall</th>")
+            	  .append("<th>ArcaneRupture Hit/Crit</th><th class=\"toggle-column-highlights\">Max Rupture</th>")
+            	  .append("<th>ArcaneSurge Hit/Crit</th><th class=\"toggle-column-highlights\">Max Surge</th>")
+            	  .append("<th>ArcaneMissles Hit/Crit</th><th class=\"toggle-column-highlights\">Max Missle</th>")
+            	  .append("<th>PyroBlast Hit/Crit</th><th class=\"toggle-column-highlights\">Max PBlast</th>")
+            	  .append("<th>Scorch Hit/Crit</th><th class=\"toggle-column-highlights\">Max Scorch</th>")
                   .append("</tr>");
 
             for (String mageName : mages) {
                 Mage mage= mageMap.get(mageName);
                     strBuf.append("<tr>")
                           .append("<td>").append(mageName).append("</td>")
+      					  .append("<td>"+mage.getDeathCounter()+"</td>")
+      					  .append("<td class=\"toggle-column-death\" style=\"display: none;\">"+Players.getDeathCauses(mage)+"</td>")                          
                           .append("<td class=\"toggle-column\" style=\"display: none;\">").append(mage.getManaFromVampiricTouch()).append("</td>")
                           .append("<td class=\"toggle-column\" style=\"display: none;\">").append(mage.getManaFromJudgementOfWisdom()).append("</td>")
                           .append("<td class=\"toggle-column\" style=\"display: none;\">").append(mage.getManaFromBow()).append("</td>")

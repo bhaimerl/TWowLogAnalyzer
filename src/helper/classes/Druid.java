@@ -1,5 +1,7 @@
 package helper.classes;
 
+import org.apache.commons.lang3.StringUtils;
+
 public class Druid extends CasterMelee { 
 	
 	public int faerieFire = 0;
@@ -192,7 +194,7 @@ public class Druid extends CasterMelee {
 	}
 
 	public String getHigheststarFireTarget() {
-		return higheststarFireTarget;
+		return StringUtils.abbreviate(higheststarFireTarget, 15);
 	}
 
 	public int getMoonFireHit() {
@@ -208,7 +210,7 @@ public class Druid extends CasterMelee {
 	}
 
 	public String getHighestmoonFireTarget() {
-		return highestmoonFireTarget;
+		return StringUtils.abbreviate(highestmoonFireTarget,15);
 	}
 
 	public int getWrathHit() {
@@ -224,7 +226,7 @@ public class Druid extends CasterMelee {
 	}
 
 	public String getHighestwrathTarget() {
-		return highestwrathTarget;
+		return StringUtils.abbreviate(highestwrathTarget,15);
 	}
 
 	public int getMaulHit() {
@@ -256,7 +258,7 @@ public class Druid extends CasterMelee {
 	}
 
 	public String getHighestswipeTarget() {
-		return highestswipeTarget;
+		return StringUtils.abbreviate(highestswipeTarget,15);
 	}
 
 	public int getShredHit() {
@@ -272,7 +274,7 @@ public class Druid extends CasterMelee {
 	}
 
 	public String getHighestshredTarget() {
-		return highestshredTarget;
+		return StringUtils.abbreviate(highestshredTarget,15);
 	}
 
 
@@ -423,7 +425,7 @@ public class Druid extends CasterMelee {
 		return highestsHealingTouch;
 	}
 	public String getHighestsHealingTouchTarget() {
-		return highestsHealingTouchTarget;
+		return StringUtils.abbreviate(highestsHealingTouchTarget,15);
 	}
 	public void setHealingTouchHit(int healingTouchHit) {
 		this.healingTouchHit = healingTouchHit;

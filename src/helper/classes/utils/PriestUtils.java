@@ -17,7 +17,7 @@ public class PriestUtils {
 	
 	public static HashMap<String, Priest> priestMap = new HashMap<>();;
 
-    private static Priest getPriestByName(String name) {
+    public static Priest getPriestByName(String name) {
         return priestMap.computeIfAbsent(name, k -> new Priest());
     }
 
@@ -135,8 +135,10 @@ public class PriestUtils {
 			SortedSet<String> priests =  new TreeSet<>(priestMap.keySet());			
             strBuf.append("<br><body><table class='classTable' align=\"left\" width='100%'>")
                   .append("<tr style='background-color: ").append(Constants.PRIESTCOLOR).append(";'>")
-                  .append("<td colspan='26'>"+Constants.PRIEST+"</td></tr><tr>")
+                  .append("<td colspan='28'>"+Constants.PRIEST+"</td></tr><tr>")
                   .append("<th>Name</th>")
+      			  .append("<th>Death</th>")
+      			  .append("<th class=\"toggle-column-death\" style=\"display: none;\">DeathCauses</th>")                  
                   .append("<th class=\"toggle-column\" style=\"display: none;\">Mana VampiricTouch</th><th class=\"toggle-column\" style=\"display: none;\">Mana Judgement</th><th class=\"toggle-column\" style=\"display: none;\">Mana BOW</th>")
       			  .append("<th>Renew</th>")
       			  .append("<th>Epiphany</th>")
@@ -150,11 +152,11 @@ public class PriestUtils {
       			  .append("<th>Resurrection</th>")
       			  .append("<th>Dispell Magic</th>")
       			  .append("<th>T2 Greater Heal procs / complete</th>")
-                  .append("<th>Smite Hit/Crit</th><th class=\"toggle-column-highlights\">Highest Smite</th>")
-                  .append("<th>HolyFire Hit/Crit</th><th class=\"toggle-column-highlights\">Highest HF</th>")
-                  .append("<th>Flash Heal Hit/Crit</th><th class=\"toggle-column-highlights\">Highest FH</th>")
-            	  .append("<th>Greater Heal Hit/Crit</th><th class=\"toggle-column-highlights\">Highest GH</th>")
-            	  .append("<th>MindBlast Hit/Crit</th><th class=\"toggle-column-highlights\">Highest MB</th>")
+                  .append("<th>Smite Hit/Crit</th><th class=\"toggle-column-highlights\">Max Smite</th>")
+                  .append("<th>HolyFire Hit/Crit</th><th class=\"toggle-column-highlights\">Max HF</th>")
+                  .append("<th>Flash Heal Hit/Crit</th><th class=\"toggle-column-highlights\">Max FH</th>")
+            	  .append("<th>Greater Heal Hit/Crit</th><th class=\"toggle-column-highlights\">Max GH</th>")
+            	  .append("<th>MindBlast Hit/Crit</th><th class=\"toggle-column-highlights\">Max MB</th>")
                   .append("</tr>");
 
             for (String priesterName : priests) {
@@ -166,7 +168,9 @@ public class PriestUtils {
                 }
                     strBuf.append("<tr>")
                           .append("<td>").append(priesterName).append("</td>")
-                          .append("<td class=\"toggle-column\" style=\"display: none;\">").append(priest.getManaFromVampiricTouch()).append("</td>")
+      					  .append("<td>"+priest.getDeathCounter()+"</td>")
+      					  .append("<td class=\"toggle-column-death\" style=\"display: none;\">"+Players.getDeathCauses(priest)+"</td>")                                                    
+      					  .append("<td class=\"toggle-column\" style=\"display: none;\">").append(priest.getManaFromVampiricTouch()).append("</td>")
                           .append("<td class=\"toggle-column\" style=\"display: none;\">").append(priest.getManaFromJudgementOfWisdom()).append("</td>")
                           .append("<td class=\"toggle-column\" style=\"display: none;\">").append(priest.getManaFromBow()).append("</td>")
       					  .append("<td>"+priest.getRenew()+"</td>")

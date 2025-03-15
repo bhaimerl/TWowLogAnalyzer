@@ -27,6 +27,7 @@ import helper.Raids.RaidBossMapping;
 import helper.classes.NameClassWrapper;
 import helper.classes.utils.BossUtils;
 import helper.classes.utils.Constants;
+import helper.classes.utils.DeathCalculationUtils;
 import helper.classes.utils.DruidUtils;
 import helper.classes.utils.General;
 import helper.classes.utils.HunterUtils;
@@ -330,7 +331,7 @@ public class MainGui {
 				raids = raids.trim();
 				lblInvalidInputData.setText("parse players...");
 				int tenPercentLogLines = (fileAsArrayList.size() / 100) *11;
-				Date start = General.getStartDate();			
+				Date start = General.getStartDate();
 				for (String string : fileAsArrayList) {
 					BarovUtils.findEntryForFrostUser(string, allPlayers);
 					
@@ -360,8 +361,7 @@ public class MainGui {
 					}						
 					if(btnShaman.getSelection()) {
 						ShamanUtils.findEntryForShaman(string, allPlayers);
-					}						
-					
+					}											
 					if(i%tenPercentLogLines==0) {
 						processBar="..."+j+"0%...";
 						lblInvalidInputData.setText(processBar);
@@ -369,6 +369,8 @@ public class MainGui {
 					}
 					i++;
 				}
+				ArrayList<String> allLogsForDeathCalculation = fileAsArrayList;
+				DeathCalculationUtils.getDeathCause(allLogsForDeathCalculation);
 				warriors = WarriorUtils.getWarriors(); 
 				warlocks = WarlockUtils.getWarlocksHTML(); 
 				rogues = RogueUtils.getRogues(); 
@@ -388,6 +390,7 @@ public class MainGui {
 				
 				String classAbs = "<div style='font-size: 20; font-weight: bold;' >=> Class specific analyze</div>"
 						+ "<button id=\"toggleColumnButton\">Show Mana generation</button>"
+						+ "<button id=\"toggleColumnDeathButton\">Show DeathCauses</button>"
 						+ "<button id=\"toggleColumnHighlightsButton\">Show Highlights</button>";
 				String br = "<br><br>";
 				

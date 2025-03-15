@@ -13,7 +13,7 @@ public class HunterUtils {
 	
 	public static HashMap<String, Hunter> hunterMap = new HashMap<>();;
 
-    private static Hunter getHunterByName(String name) {
+    public static Hunter getHunterByName(String name) {
         return hunterMap.computeIfAbsent(name, k -> new Hunter());
     }
 
@@ -107,17 +107,19 @@ public class HunterUtils {
 			SortedSet<String> hunters =  new TreeSet<>(hunterMap.keySet());			
             strBuf.append("<br><body><table class='classTable' align=\"left\" width='100%'>")
                   .append("<tr style='background-color: ").append(Constants.HUNTERCOLOR).append(";'>")
-                  .append("<td colspan='18'>"+Constants.HUNTER+"</td></tr><tr>")
+                  .append("<td colspan='20'>"+Constants.HUNTER+"</td></tr><tr>")
                   .append("<th>Name</th>")
+      			  .append("<th>Death</th>")
+      			  .append("<th class=\"toggle-column-death\" style=\"display: none;\">DeathCauses</th>")
       			  .append("<th>Windfury Procs</th>")
       			  .append("<th>Flametongue Procs</th>")
                   .append("<th class=\"toggle-column\" style=\"display: none;\">Mana VampiricTouch</th><th class=\"toggle-column\" style=\"display: none;\">Mana Judgement</th><th class=\"toggle-column\" style=\"display: none;\">Mana BOW</th>")
-                  .append("<th>AutoShot Hit/Crit</th><th class=\"toggle-column-highlights\">Highest Auto</th>")
-            	  .append("<th>Steady Hit/Crit</th><th class=\"toggle-column-highlights\">Highest Steady</th>")
-            	  .append("<th>MultiShot Hit/Crit</th><th class=\"toggle-column-highlights\">Highest Multi</th>")
-            	  .append("<th>ArcaneShot Hit/Crit</th><th class=\"toggle-column-highlights\">Highest Arcane</th>")
-            	  .append("<th>ExtraShot Hit/Crit</th><th class=\"toggle-column-highlights\">Highest Extra</th>")
-            	  .append("<th>AimedShot Hit/Crit</th><th class=\"toggle-column-highlights\">Highest Aimed</th>")
+                  .append("<th>AutoShot Hit/Crit</th><th class=\"toggle-column-highlights\">Max Auto</th>")
+            	  .append("<th>Steady Hit/Crit</th><th class=\"toggle-column-highlights\">Max Steady</th>")
+            	  .append("<th>MultiShot Hit/Crit</th><th class=\"toggle-column-highlights\">Max Multi</th>")
+            	  .append("<th>ArcaneShot Hit/Crit</th><th class=\"toggle-column-highlights\">Max Arcane</th>")
+            	  .append("<th>ExtraShot Hit/Crit</th><th class=\"toggle-column-highlights\">Max Extra</th>")
+            	  .append("<th>AimedShot Hit/Crit</th><th class=\"toggle-column-highlights\">Max Aimed</th>")
 //            	  .append("<th>Serpent Sting applied</th>")
                   .append("</tr>");
 
@@ -125,6 +127,8 @@ public class HunterUtils {
                 Hunter hunter= hunterMap.get(huterName);
                     strBuf.append("<tr>")
                           .append("<td>").append(huterName).append("</td>")
+      					  .append("<td>"+hunter.getDeathCounter()+"</td>")
+      					  .append("<td class=\"toggle-column-death\" style=\"display: none;\">"+Players.getDeathCauses(hunter)+"</td>")					                          
       					  .append("<td>"+hunter.getWindFury()+"</td>")
       					  .append("<td>"+hunter.getFlametongue()+"</td>")
                           .append("<td class=\"toggle-column\" style=\"display: none;\">").append(hunter.getManaFromVampiricTouch()).append("</td>")

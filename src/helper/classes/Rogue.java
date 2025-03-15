@@ -1,5 +1,7 @@
 package helper.classes;
 
+import org.apache.commons.lang3.StringUtils;
+
 public class Rogue extends Melee{
 	
 	
@@ -94,7 +96,7 @@ public class Rogue extends Melee{
 		this.highestBackStabAmount = highestBackStabAmount;
 	}
 	public String getHighestBackStabTarget() {
-		return highestBackStabTarget;
+		return StringUtils.abbreviate(highestBackStabTarget,15);
 	}
 	public void setHighestBackStabTarget(String highestBackStabTarget) {
 		this.highestBackStabTarget = highestBackStabTarget;
@@ -118,7 +120,7 @@ public class Rogue extends Melee{
 		this.highestEviscerateAmount = highestEviscerateAmount;
 	}
 	public String getHighestEviscerateTarget() {
-		return highestEviscerateTarget;
+		return StringUtils.abbreviate(highestEviscerateTarget,15);
 	}
 	public void setHighestEviscerateTarget(String highestEviscerateTarget) {
 		this.highestEviscerateTarget = highestEviscerateTarget;
@@ -142,7 +144,7 @@ public class Rogue extends Melee{
 		this.highestSinisterStrikeAmount = highestSinisterStrikeAmount;
 	}
 	public String getHighestSinisterStrikeTarget() {
-		return highestSinisterStrikeTarget;
+		return StringUtils.abbreviate(highestSinisterStrikeTarget,15);
 	}
 	public void setHighestSinisterStrikeTarget(String highestSinisterStrikeTarget) {
 		this.highestSinisterStrikeTarget = highestSinisterStrikeTarget;

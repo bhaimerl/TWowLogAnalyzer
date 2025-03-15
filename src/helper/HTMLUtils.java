@@ -87,10 +87,13 @@ public class HTMLUtils {
 		String jscript = "  <script>\r\n"
 				+ "    const toggleColumnButton = document.getElementById('toggleColumnButton');\r\n"
 				+ "    const toggleColumnHighlightButton = document.getElementById('toggleColumnHighlightsButton');\r\n"
+				+ "    const toggleColumnDeathButton = document.getElementById('toggleColumnDeathButton');\r\n"
 				+ "    const toggleColumns = document.querySelectorAll('.toggle-column');\r\n"
 				+ "    const toggleColumnsHighlight = document.querySelectorAll('.toggle-column-highlights');\r\n"
+				+ "    const toggleColumnsDeath = document.querySelectorAll('.toggle-column-death');\r\n"
 				+ "    let isColumnHidden = true;\r\n"
 				+ "    let isHighlightColumnHidden = true;\r\n"
+				+ "    let isDeathColumnHidden = true;\r\n"
 				+ "\r\n"
 				+ "    toggleColumnButton.addEventListener('click', () => {\r\n"
 				+ "      toggleColumns.forEach(cell => {\r\n"
@@ -111,6 +114,18 @@ public class HTMLUtils {
 				+ "        ? 'Show Highlights' \r\n"
 				+ "        : 'Hide Highlights';\r\n"
 				+ "    });\r\n"
+				
+				+ "    toggleColumnDeathButton.addEventListener('click', () => {\r\n"
+				+ "      toggleColumnsDeath.forEach(cell => {\r\n"
+				+ "        cell.style.minWidth = isDeathColumnHidden ? '500px' : '';\r\n"
+				+ "        cell.style.display = isDeathColumnHidden ? '' : 'none';\r\n"
+				+ "      });\r\n"
+				+ "      isDeathColumnHidden = !isDeathColumnHidden;\r\n"
+				+ "      toggleColumnDeathButton.textContent = isDeathColumnHidden \r\n"
+				+ "        ? 'Show DeathCauses' \r\n"
+				+ "        : 'Hide DeathCauses';\r\n"
+				+ "    });\r\n"
+				
 				
 				+ "  </script>	  \r\n";
 		return jscript;

@@ -1,5 +1,7 @@
 package helper.classes;
 
+import org.apache.commons.lang3.StringUtils;
+
 public class Mage extends Caster {
 
 
@@ -142,7 +144,7 @@ public class Mage extends Caster {
 	}
 
 	public String getHighestFireBlastTarget() {
-		return highestFireBlastTarget;
+		return StringUtils.abbreviate(highestFireBlastTarget,15);
 	}
 
 	public int getArcaneRuptureCrits() {
@@ -158,7 +160,7 @@ public class Mage extends Caster {
 	}
 
 	public String getHighestArcaneRuptureTarget() {
-		return highestArcaneRuptureTarget;
+		return StringUtils.abbreviate(highestArcaneRuptureTarget,15);
 	}
 
 	public int getFireBallCrits() {
@@ -174,7 +176,7 @@ public class Mage extends Caster {
 	}
 
 	public String getHighestFireBallTarget() {
-		return highestFireBallTarget;
+		return StringUtils.abbreviate(highestFireBallTarget,15);
 	}
 
 	public int getArcaneSurgeCrits() {
@@ -190,7 +192,7 @@ public class Mage extends Caster {
 	}
 
 	public String getHighestArcaneSurgeTarget() {
-		return highestArcaneSurgeTarget;
+		return StringUtils.abbreviate(highestArcaneSurgeTarget,15);
 	}
 
 	public int getArcaneMissleCrits() {
@@ -206,7 +208,7 @@ public class Mage extends Caster {
 	}
 
 	public String getHighestArcaneMissleTarget() {
-		return highestArcaneMissleTarget;
+		return StringUtils.abbreviate(highestArcaneMissleTarget,15);
 	}
 
 	public int getPyroBlastCrits() {
@@ -222,7 +224,7 @@ public class Mage extends Caster {
 	}
 
 	public String getHighestPyroBlastTarget() {
-		return highestPyroBlastTarget;
+		return StringUtils.abbreviate(highestPyroBlastTarget,15);
 	}
 
 	public int getScorchCrits() {

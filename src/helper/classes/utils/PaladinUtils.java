@@ -5,16 +5,20 @@ import java.util.HashMap;
 import java.util.SortedSet;
 import java.util.TreeSet;
 import java.util.function.Consumer;
+import java.util.regex.Matcher;
+
+import org.apache.commons.lang3.StringUtils;
 
 import helper.classes.Healer;
 import helper.classes.NameClassWrapper;
 import helper.classes.Paladin;
+import helper.classes.Warrior;
 
 public class PaladinUtils {
 	
 	public static HashMap<String, Paladin> paladinMap = new HashMap<>();;
 
-    private static Paladin getPaladinByName(String name) {
+    public static Paladin getPaladinByName(String name) {
         return paladinMap.computeIfAbsent(name, k -> new Paladin());
     }
 
@@ -37,12 +41,41 @@ public class PaladinUtils {
         }
     }
     
+    
+    private static boolean updatePaladinStatsForBlock(String logline, String playerName) {
+        if (logline.contains("blocked)") && (logline.contains("hits "+playerName) || logline.contains("crits "+playerName))) {
+            Paladin paladin = getPaladinByName(playerName);
+            Matcher matcher = General.patternBlocks.matcher(logline);
+            if (matcher.find()) {
+                String hittedPlayer = matcher.group(1);
+                int incomingDmg = Integer.parseInt(matcher.group(2));
+                int dmgBlocked = Integer.parseInt(matcher.group(3));
+                paladin.incrementBlockedCnt();
+                paladin.addDmgAmountBlocked(dmgBlocked);
+                paladin.addDmgAmountCompleteBeforeBlock(dmgBlocked + incomingDmg);
+                return true;
+            }            
+        }
+        return false;
+    }    
+    
 	public static void findEntryForPaladin(String logline,
 			HashMap<String, ArrayList<NameClassWrapper>> allValidPLayers) {
 		String currentPlayer = General.getPlayerName(logline);
 		if (!General.isPlayerInClassList(allValidPLayers, currentPlayer, Constants.PALADIN)) {
-			return;
+        	currentPlayer = General.getPlayerNameHitted(logline);
+    		if(currentPlayer!=null) {
+    	    	if(!General.isPlayerInClassList(allValidPLayers, currentPlayer, Constants.PALADIN)) {
+    	    		return;
+    	    	}
+    		} else {
+        		return;
+    		}
+
 		}
+    	if(updatePaladinStatsForBlock(logline, currentPlayer)) {
+    		//blocked eintrag geschrieben, nicht mehr machen!
+    	} else {		
 		
 		updatePaladinStats(logline, currentPlayer, Constants.windfury, Paladin::incrementWindFury);
 		updatePaladinStats(logline, currentPlayer, Constants.flametongue, Paladin::incrementFlameTongue);
@@ -110,7 +143,7 @@ public class PaladinUtils {
 				paladin -> paladin.updatehighestHolyLightAmount(
 						General.getAmountAtEnd(Constants.holyLightHit, Constants.holyLightCrit, logline),
 						General.getTarget(Constants.holyLightHit, Constants.holyLightCrit, logline)));
-		
+    	}
 	}
 	
     public static String getPaladinHTML() {
@@ -119,21 +152,24 @@ public class PaladinUtils {
 			SortedSet<String> paladins =  new TreeSet<>(paladinMap.keySet());			
             strBuf.append("<br><body><table class='classTable' align=\"left\" width='100%'>")
                   .append("<tr style='background-color: ").append(Constants.PALADINCOLOR).append(";'>")
-                  .append("<td colspan='24'>"+Constants.PALADIN+"</td></tr><tr>")
+                  .append("<td colspan='27'>"+Constants.PALADIN+"</td></tr><tr>")
                   .append("<th>Name</th>")
+      			  .append("<th>Death</th>")
+      			  .append("<th class=\"toggle-column-death\" style=\"display: none;\">DeathCauses</th>")                  
                   .append("<th class=\"toggle-column\" style=\"display: none;\">Mana VampiricTouch</th><th class=\"toggle-column\" style=\"display: none;\">Mana Judgement</th><th class=\"toggle-column\" style=\"display: none;\">Mana BOW</th>")
-                  .append("<th>Redemption</th>")
+                  .append("<th>Redem.</th>")
                   .append("<th>Cleanse</th>")
-                  .append("<th>Windfury procs</th>")
-                  .append("<th>Flametongue procs</th>")
-                  .append("<th>HolyShock Hit/Crit</th><th class=\"toggle-column-highlights\">Highest Schock</th>")
-                  .append("<th>Flash of Light Hit/Crit</th><th class=\"toggle-column-highlights\">Highest Flash</th>")
-                  .append("<th>Holy Light Hit/Crit</th><th class=\"toggle-column-highlights\">Highest HolyLight</th>")
-                  .append("<th>HolyStrike Hit/Crit</th><th class=\"toggle-column-highlights\">Highest HolyStrike</th>")
-            	  .append("<th>CrusaderStrike Hit/Crit</th><th class=\"toggle-column-highlights\">Highest CrusaderStrike</th>")
-            	  .append("<th>SealOfCommand Hit/Crit</th><th class=\"toggle-column-highlights\">Highest SoC</th>")
-            	  .append("<th>JudgementOfCommand Hit/Crit</th><th class=\"toggle-column-highlights\">Highest JoC</th>")
-            	  .append("<th>Exorcism Hit/Crit</th><th class=\"toggle-column-highlights\">Highest Exorcism</th>")
+                  .append("<th>Wfury</th>")
+                  .append("<th>Flametongue</th>")
+                  .append("<th>Blocks/blocked/%</th>")
+                  .append("<th>Shock Hit/Crit</th><th class=\"toggle-column-highlights\">Max Schock</th>")
+                  .append("<th>FoL Hit/Crit</th><th class=\"toggle-column-highlights\">Max Flash</th>")
+                  .append("<th>HL Hit/Crit</th><th class=\"toggle-column-highlights\">Max HL</th>")
+                  .append("<th>HS Hit/Crit</th><th class=\"toggle-column-highlights\">Max HS</th>")
+            	  .append("<th>CS Hit/Crit</th><th class=\"toggle-column-highlights\">Max CS</th>")
+            	  .append("<th>SoC Hit/Crit</th><th class=\"toggle-column-highlights\">Max SoC</th>")
+            	  .append("<th>JoC Hit/Crit</th><th class=\"toggle-column-highlights\">Max JoC</th>")
+            	  .append("<th>Exor Hit/Crit</th><th class=\"toggle-column-highlights\">Max Exo</th>")
                   .append("</tr>");
 
             for (String palaName : paladins) {
@@ -142,9 +178,13 @@ public class PaladinUtils {
 	                if(	pala.getHolyShockCrit()+pala.getHolyShockHit()>2 || pala.getFlashOfLightHit()+pala.getFlashOfLightCrit()>50) {
 	                	Healer.addHealer(palaName);
 	                }
-                
+				    Double blocked = (double) ((pala.getDmgAmountCompleteBeforeBlock()>0)?(((double)pala.getDmgAmountBlocked()/(double)pala.getDmgAmountCompleteBeforeBlock())*100):0);
+					String blockLine = (blocked>0)?blocked.intValue()+"":"0";
+
                     strBuf.append("<tr>")
                           .append("<td>").append(palaName).append("</td>")
+      					  .append("<td>"+pala.getDeathCounter()+"</td>")
+      					  .append("<td class=\"toggle-column-death\" style=\"display: none;\">"+Players.getDeathCauses(pala)+"</td>")                                                    
                           .append("<td class=\"toggle-column\" style=\"display: none;\">").append(pala.getManaFromVampiricTouch()).append("</td>")
                           .append("<td class=\"toggle-column\" style=\"display: none;\">").append(pala.getManaFromJudgementOfWisdom()).append("</td>")
                           .append("<td class=\"toggle-column\" style=\"display: none;\">").append(pala.getManaFromBow()).append("</td>")
@@ -152,6 +192,7 @@ public class PaladinUtils {
                           .append("<td>").append(pala.getCleanse()/3).append("</td>")
                           .append("<td>").append(pala.getWindFury()).append("</td>") 
                           .append("<td>").append(pala.getFlametongue()).append("</td>")
+      					  .append("<td>"+pala.blockedCnt+" / "+pala.getDmgAmountBlocked()+" / "+blockLine+"%</td>")
 
                           .append("<td>").append(pala.getHolyShockHit()).append(" / ").append(pala.getHolyShockCrit()).append("</td>")
                           .append("<td class=\"toggle-column-highlights\">").append(pala.getHighestHolyShock()).append(" => ").append(pala.getHighestHolyShockTarget()).append("</td>")
@@ -159,8 +200,7 @@ public class PaladinUtils {
                           .append("<td class=\"toggle-column-highlights\">").append(pala.getHighestFlashOfLight()).append(" => ").append(pala.getHighestFlashOfLightTarget()).append("</td>")
                           .append("<td>").append(pala.getHolyLightHit()).append(" / ").append(pala.getHolyLightCrit()).append("</td>")
                           .append("<td class=\"toggle-column-highlights\">").append(pala.getHighestHolyLight()).append(" => ").append(pala.getHighestHolyLightTarget()).append("</td>")
-
-                          
+                        		  
                           .append("<td>").append(pala.getHolyStrikeHit()).append(" / ").append(pala.getHolyStrikeCrit()).append("</td>")
                           .append("<td class=\"toggle-column-highlights\">").append(pala.getHighestHolyStrike()).append(" => ").append(pala.getHighestHolyStrikeTarget()).append("</td>")
                           .append("<td>").append(pala.getCrusaderStrikeHit()).append(" / ").append(pala.getCrusaderStrikeCrit()).append("</td>")

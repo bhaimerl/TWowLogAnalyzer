@@ -33,7 +33,7 @@ public class ShamanUtils {
 	
 	public static HashMap<String, Shaman> shamanMap = new HashMap<>();
 
-    private static Shaman getShamanByName(String name) {
+    public static Shaman getShamanByName(String name) {
         return shamanMap.computeIfAbsent(name, k -> new Shaman());
     }
 
@@ -137,19 +137,21 @@ public class ShamanUtils {
 			SortedSet<String> shamans =  new TreeSet<>(shamanMap.keySet());			
             strBuf.append("<br><body><table class='classTable' align=\"left\" width='100%'>")
                   .append("<tr style='background-color: ").append(Constants.SHAMANCOLOR).append(";'>")
-                  .append("<td colspan='22'>"+Constants.SHAMAN+"</td></tr><tr>")
+                  .append("<td colspan='24'>"+Constants.SHAMAN+"</td></tr><tr>")
                   .append("<th>Name</th>")
+      			  .append("<th>Death</th>")
+      			  .append("<th class=\"toggle-column-death\" style=\"display: none;\">DeathCauses</th>")                                    
                   .append("<th class=\"toggle-column\" style=\"display: none;\">Mana VampiricTouch</th><th class=\"toggle-column\" style=\"display: none;\">Mana Judgement</th><th class=\"toggle-column\" style=\"display: none;\">Mana BOW</th>")
       			  .append("<th>Windfury Procs</th>")
       			  .append("<th>Flametonue Procs</th>")
-                  .append("<th>ChainHeals</th><th class=\"toggle-column-highlights\">Highest CH</th>")
-                  .append("<th>LesserHealingWaves</th><th class=\"toggle-column-highlights\">Highest LHW</th>")
-                  .append("<th>HealingWaves</th><th class=\"toggle-column-highlights\">Highest HW</th>")
-            	  .append("<th>ChainLightening</th><th class=\"toggle-column-highlights\">Highest CL</th>")
-            	  .append("<th>LighningBolts</th><th class=\"toggle-column-highlights\">Highest LB</th>")
-            	  .append("<th>FireNova</th><th class=\"toggle-column-highlights\">Highest FN</th>")
-            	  .append("<th>FrostShock</th><th class=\"toggle-column-highlights\">Highest FS</th>")
-            	  .append("<th>LighningStrike</th><th class=\"toggle-column-highlights\">Highest LS</th>")
+                  .append("<th>ChainHeals</th><th class=\"toggle-column-highlights\">Max CH</th>")
+                  .append("<th>LesserHealingWaves</th><th class=\"toggle-column-highlights\">Max LHW</th>")
+                  .append("<th>HealingWaves</th><th class=\"toggle-column-highlights\">Max HW</th>")
+            	  .append("<th>ChainLightening</th><th class=\"toggle-column-highlights\">Max CL</th>")
+            	  .append("<th>LighningBolts</th><th class=\"toggle-column-highlights\">Max LB</th>")
+            	  .append("<th>FireNova</th><th class=\"toggle-column-highlights\">Max FN</th>")
+            	  .append("<th>FrostShock</th><th class=\"toggle-column-highlights\">Max FS</th>")
+            	  .append("<th>LighningStrike</th><th class=\"toggle-column-highlights\">Max LS</th>")
                   .append("</tr>");
 
             for (String shamanName : shamans) {
@@ -160,6 +162,8 @@ public class ShamanUtils {
                 }
                     strBuf.append("<tr>")
                           .append("<td>").append(shamanName).append("</td>")
+      					  .append("<td>"+shaman.getDeathCounter()+"</td>")
+      					  .append("<td class=\"toggle-column-death\" style=\"display: none;\">"+Players.getDeathCauses(shaman)+"</td>")                                                    
                           .append("<td class=\"toggle-column\" style=\"display: none;\">").append(shaman.getManaFromVampiricTouch()).append("</td>")
                           .append("<td class=\"toggle-column\" style=\"display: none;\">").append(shaman.getManaFromJudgementOfWisdom()).append("</td>")
                           .append("<td class=\"toggle-column\" style=\"display: none;\">").append(shaman.getManaFromBow()).append("</td>")

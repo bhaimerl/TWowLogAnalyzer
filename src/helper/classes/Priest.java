@@ -1,5 +1,7 @@
 package helper.classes;
 
+import org.apache.commons.lang3.StringUtils;
+
 public class Priest extends Caster{ 
 	
 	public int renew = 0;
@@ -182,7 +184,7 @@ public class Priest extends Caster{
 		return highestflashHeal;
 	}
 	public String getHighestflashHealTarget() {
-		return highestflashHealTarget;
+		return StringUtils.abbreviate(highestflashHealTarget,15);
 	}
 	public int getGreaterHealHit() {
 		return greaterHealHit;
@@ -194,7 +196,7 @@ public class Priest extends Caster{
 		return highestgreaterHeal;
 	}
 	public String getHighestgreaterHealTarget() {
-		return highestgreaterHealTarget;
+		return StringUtils.abbreviate(highestgreaterHealTarget,15);
 	}
 	public int getMindBlastHit() {
 		return mindBlastHit;
@@ -206,7 +208,7 @@ public class Priest extends Caster{
 		return highestmindBlast;
 	}
 	public String getHighestmindBlastTarget() {
-		return highestmindBlastTarget;
+		return StringUtils.abbreviate(highestmindBlastTarget,15);
 	}
 	public void setRenew(int renew) {
 		this.renew = renew;
@@ -320,7 +322,7 @@ public class Priest extends Caster{
 		return highestsmite;
 	}
 	public String getHighestsmiteTarget() {
-		return highestsmiteTarget;
+		return StringUtils.abbreviate(highestsmiteTarget,15);
 	}
 	public int getHolyfireHit() {
 		return holyfireHit;
@@ -332,7 +334,7 @@ public class Priest extends Caster{
 		return highestholyfire;
 	}
 	public String getHighestholyfireTarget() {
-		return highestholyfireTarget;
+		return StringUtils.abbreviate(highestholyfireTarget,15);
 	}
 	public void setSmiteHit(int smiteHit) {
 		this.smiteHit = smiteHit;

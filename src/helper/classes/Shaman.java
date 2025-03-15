@@ -1,5 +1,7 @@
 package helper.classes;
 
+import org.apache.commons.lang3.StringUtils;
+
 public class Shaman extends CasterMelee { 
 	
 	
@@ -159,7 +161,7 @@ public class Shaman extends CasterMelee {
 
 
 	public String getHighestChainTarget() {
-		return highestChainTarget;
+		return StringUtils.abbreviate(highestChainTarget,15);
 	}
 
 
@@ -169,7 +171,7 @@ public class Shaman extends CasterMelee {
 
 
 	public String getHighestHealingWaveTarget() {
-		return highestHealingWaveTarget;
+		return StringUtils.abbreviate(highestHealingWaveTarget,15);
 	}
 
 
@@ -179,7 +181,7 @@ public class Shaman extends CasterMelee {
 
 
 	public String getHighestLighningBoltTarget() {
-		return highestLighningBoltTarget;
+		return StringUtils.abbreviate(highestLighningBoltTarget,15);
 	}
 
 
@@ -189,7 +191,7 @@ public class Shaman extends CasterMelee {
 
 
 	public String getHighestFireNovaTarget() {
-		return highestFireNovaTarget;
+		return StringUtils.abbreviate(highestFireNovaTarget,15);
 	}
 
 
@@ -199,7 +201,7 @@ public class Shaman extends CasterMelee {
 
 
 	public String getHighestFrostShockTarget() {
-		return highestFrostShockTarget;
+		return StringUtils.abbreviate(highestFrostShockTarget,15);
 	}
 
 
@@ -209,7 +211,7 @@ public class Shaman extends CasterMelee {
 
 
 	public String getHighestLigningStrikeTarget() {
-		return highestLigningStrikeTarget;
+		return StringUtils.abbreviate(highestLigningStrikeTarget,15);
 	}
 
 
@@ -279,7 +281,7 @@ public class Shaman extends CasterMelee {
 
 
 	public String getHighestLesserHealingWaveTarget() {
-		return highestLesserHealingWaveTarget;
+		return StringUtils.abbreviate(highestLesserHealingWaveTarget,15);
 	}
 
 
@@ -314,7 +316,7 @@ public class Shaman extends CasterMelee {
 
 
 	public String getHighestChainLighteningTarget() {
-		return highestChainLighteningTarget;
+		return StringUtils.abbreviate(highestChainLighteningTarget,15);
 	}
 
 

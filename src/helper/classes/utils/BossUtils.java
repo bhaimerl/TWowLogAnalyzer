@@ -7,7 +7,6 @@ import java.util.Set;
 
 import org.apache.commons.lang3.StringUtils;
 import org.joda.time.DateTime;
-import org.joda.time.DateTimeUtils;
 import org.joda.time.Seconds;
 
 import helper.Raids.Boss;

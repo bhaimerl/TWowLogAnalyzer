@@ -7,11 +7,8 @@ import java.util.Iterator;
 import java.util.Set;
 import java.util.StringTokenizer;
 
-import org.joda.time.DateTime;
-import org.joda.time.DateTimeUtils;
-import org.joda.time.Years;
-
 import helper.classes.NameClassWrapper;
+import helper.classes.Player;
 
 public class Players {
 	
@@ -70,6 +67,16 @@ public class Players {
         return mainGuild;
 	}
 	
+	public static String getClassFromPlayer(String playerName) {
+		String playerClass = null;
+		for (NameClassWrapper nameClassWrapper : uniqueList) {
+			if(nameClassWrapper.getName().equals(playerName)) {
+				playerClass = nameClassWrapper.getPlayerClass();
+			}
+		}
+		return playerClass;
+	}
+	
 	public static boolean isNameAValidPlayerInRaid(String playerName) {
 		for (NameClassWrapper nameClassWrapper : uniqueList) {
 			if(nameClassWrapper.getName().equals(playerName)) {
@@ -82,6 +89,20 @@ public class Players {
 	public static String getYear() {
 		return logYear;
 	}
+	
+	
+	public static String getDeathCauses(Player player) {
+		StringBuffer deathCasues = new StringBuffer();
+		deathCasues.append("");
+		if(player.getDeathCauses().size()>0) {
+			for (String string : player.getDeathCauses()) {
+				deathCasues.append(string+"<br/>");
+			}
+		}
+		return deathCasues.toString();
+	}
+
+	
 	
 	private static void calcYear(String logLine) {
 			StringTokenizer strTok = null;

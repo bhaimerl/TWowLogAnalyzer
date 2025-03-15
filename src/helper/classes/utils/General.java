@@ -13,9 +13,15 @@ import org.joda.time.DateTime;
 
 import helper.classes.Healer;
 import helper.classes.NameClassWrapper;
+import helper.classes.Player;
 import helper.classes.utils.besonderes.BarovUtils;
 
 public class General {
+	public static String regexHitCrit = "(?:hits|crits) (\\w+)";
+	public static Pattern patternHitCrit = Pattern.compile(regexHitCrit);
+    
+	public static String regexBlockLine = "(?:hits|crits) (\\w+) for (\\d+)\\. \\((\\d+) blocked\\)";
+	public static Pattern patternBlocks = Pattern.compile(regexBlockLine);
 	
 	public static ArrayList<String> getLogsFromBossByName(String bossname, ArrayList<String> completeLog) {
 		ArrayList<String> result = new ArrayList<>();
@@ -30,6 +36,20 @@ public class General {
 		}
 		return result;
 	}
+	
+	public static String getPlayerNameHitted(String logline) {
+		String retVal = null;
+    	//3/7 20:03:58.744  Patchwerk 's Hateful Strike hits Kranette for 4790. (298 blocked) (500 absorbed)		
+		if(logline.contains("blocked)") && (logline.contains("hits") || logline.contains("crits")) ) {
+			//ok we have a blocked entry
+			Matcher matcher = General.patternHitCrit.matcher(logline);
+			 if (matcher.find()) {
+                 String hitted = matcher.group(1);
+                 retVal = hitted;
+             }			
+		}
+		return retVal;
+	}    	
 	
 	public static ArrayList<String> getOnlySunderLogs(ArrayList<String> logList) {
 		ArrayList<String> sunderLogs = new ArrayList<>();
@@ -132,7 +152,6 @@ public class General {
 	public static String getStringFromDateTime(DateTime dt) {
 		return Constants.sdf.format(dt.toDate());
 	}
-	
 	public static DateTime getTimeFromLogAsDateTime(String logline) {
 		Date retDate = null;
 		String dayPlusTime = getEntryAtPosition(logline, 0)+" "+getEntryAtPosition(logline, 1);
@@ -170,6 +189,8 @@ public class General {
 		}
 		return playerName;
 	}
+	
+	
 	
 	public static String getPlayerNameFromEndFrom(String logline) {
 		String playerName = null;
@@ -411,7 +432,6 @@ public class General {
 		public static long getDifferenceInSeconds(Date startDate, Date endDate) {
 			return ChronoUnit.SECONDS.between(startDate.toInstant(), endDate.toInstant());
 		}
-		
 		
 		
 		public static String getPlayerClass(HashMap<String, ArrayList<NameClassWrapper>> allPlayers, String playerName) {

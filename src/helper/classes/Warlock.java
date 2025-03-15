@@ -1,5 +1,7 @@
 package helper.classes;
 
+import org.apache.commons.lang3.StringUtils;
+
 public class Warlock extends Caster {
 
     private int shadowtrance;
@@ -37,19 +39,19 @@ public class Warlock extends Caster {
     }
 
     public String getHighestSBTarget() {
-		return highestSBTarget;
+		return StringUtils.abbreviate(highestSBTarget,15);
 	}
 
 	public String getHighestSFTarget() {
-		return highestSFTarget;
+		return StringUtils.abbreviate(highestSFTarget,15);
 	}
 
 	public String getHighestSPTarget() {
-		return highestSPTarget;
+		return StringUtils.abbreviate(highestSPTarget,15);
 	}
 
 	public String getHighestCflgrTarget() {
-		return highestCflgrTarget;
+		return StringUtils.abbreviate(highestCflgrTarget,15);
 	}
 
 	public void incrementShadowtrance() {

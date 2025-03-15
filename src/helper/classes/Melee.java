@@ -1,7 +1,6 @@
 package helper.classes;
 
-public class Melee {
-
+public class Melee extends Player {
 	public int windFury=0;
     public void incrementWindFury() {
         this.windFury++;

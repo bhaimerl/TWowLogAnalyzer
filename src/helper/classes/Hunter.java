@@ -1,5 +1,7 @@
 package helper.classes;
 
+import org.apache.commons.lang3.StringUtils;
+
 public class Hunter extends CasterMelee{ 
 	
 	public int autoShotHit=0;
@@ -125,7 +127,7 @@ public class Hunter extends CasterMelee{
 	}
 
 	public String getHighestAutoShotTarget() {
-		return highestAutoShotTarget;
+		return StringUtils.abbreviate(highestAutoShotTarget,15);		
 	}
 
 	public int getSteadyShotHits() {
@@ -141,7 +143,7 @@ public class Hunter extends CasterMelee{
 	}
 
 	public String getHighestSteadyShotTarget() {
-		return highestSteadyShotTarget;
+		return StringUtils.abbreviate(highestSteadyShotTarget,15);		
 	}
 
 	public int getMultiShotHits() {
@@ -157,7 +159,7 @@ public class Hunter extends CasterMelee{
 	}
 
 	public String getHighestMultiShotTarget() {
-		return highestMultiShotTarget;
+		return StringUtils.abbreviate(highestMultiShotTarget,15);		
 	}
 
 	public int getArcaneShotHits() {
@@ -173,7 +175,7 @@ public class Hunter extends CasterMelee{
 	}
 
 	public String getHighestArcaneShotTarget() {
-		return highestArcaneShotTarget;
+		return StringUtils.abbreviate(highestArcaneShotTarget,15);
 	}
 
 	public int getExtraShotHits() {
@@ -189,7 +191,7 @@ public class Hunter extends CasterMelee{
 	}
 
 	public String getHighestExtraShotTarget() {
-		return highestExtraShotTarget;
+		return StringUtils.abbreviate(highestExtraShotTarget,15);
 	}
 
 	public int getAimedShotHits() {
@@ -205,7 +207,7 @@ public class Hunter extends CasterMelee{
 	}
 
 	public String getHighestAimedShotTarget() {
-		return highestAimedShotTarget;
+		return StringUtils.abbreviate(highestAimedShotTarget,15);
 	}
 
 	public int getSerpentStringAmount() {

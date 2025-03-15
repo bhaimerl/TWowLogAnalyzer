@@ -1,8 +1,8 @@
 package helper.classes;
 
-public class CasterMelee {
-
-	public int manaFromVampiricTouch=0;
+public class CasterMelee extends Player{
+	
+    public int manaFromVampiricTouch=0;
 	public int manaFromJudgementOfWisdom=0;
 	public int manFrombow=0;	
 	

@@ -31,7 +31,7 @@ public class DruidUtils {
 	
 	public static HashMap<String, Druid> druidMap = new HashMap<>();
 
-    private static Druid getDruidByName(String name) {
+    public static Druid getDruidByName(String name) {
         return druidMap.computeIfAbsent(name, k -> new Druid());
     }
 
@@ -138,8 +138,10 @@ public class DruidUtils {
 			SortedSet<String> druids =  new TreeSet<>(druidMap.keySet());			
             strBuf.append("<br><body><table class='classTable' align=\"left\" width='100%'>")
                   .append("<tr style='background-color: ").append(Constants.DRUIDCOLOR).append(";'>")
-                  .append("<td colspan='26'>"+Constants.DRUID+"</td></tr><tr>")
+                  .append("<td colspan='28'>"+Constants.DRUID+"</td></tr><tr>")
                   .append("<th>Name</th>")
+      			  .append("<th>Death</th>")
+      			  .append("<th class=\"toggle-column-death\" style=\"display: none;\">DeathCauses</th>")                  
                   .append("<th class=\"toggle-column\" style=\"display: none;\">Mana VampiricTouch</th><th class=\"toggle-column\" style=\"display: none;\">Mana Judgement</th><th class=\"toggle-column\" style=\"display: none;\">Mana BOW</th>")
       			  .append("<th>Windfury Procs</th>")
       			  .append("<th>Flametonue Procs</th>")
@@ -149,13 +151,13 @@ public class DruidUtils {
       			  .append("<th>Insect Swarm</th>")
       			  .append("<th>Rebirth</th>")
       			  .append("<th>De -Curse/-Poison</th>")
-                  .append("<th>HealingTouch Hit/Crit</th><th class=\"toggle-column-highlights\">Highest HT</th>")
-                  .append("<th>Starfire Hit/Crit</th><th class=\"toggle-column-highlights\">Highest SF</th>")
-            	  .append("<th>Moonfire Hit/Crit</th><th class=\"toggle-column-highlights\">Highest MF</th>")
-            	  .append("<th>Wrath Hit/Crit</th><th class=\"toggle-column-highlights\">Highest Wrath</th>")
-            	  .append("<th>Maul Hit/Crit</th><th class=\"toggle-column-highlights\">Highest Maul</th>")
-            	  .append("<th>Swipe Hit/Crit</th><th class=\"toggle-column-highlights\">Highest Swipe</th>")
-            	  .append("<th>Shred Hit/Crit</th><th class=\"toggle-column-highlights\">Highest Shred</th>")
+                  .append("<th>HealingTouch Hit/Crit</th><th class=\"toggle-column-highlights\">Max HT</th>")
+                  .append("<th>Starfire Hit/Crit</th><th class=\"toggle-column-highlights\">Max SF</th>")
+            	  .append("<th>Moonfire Hit/Crit</th><th class=\"toggle-column-highlights\">Max MF</th>")
+            	  .append("<th>Wrath Hit/Crit</th><th class=\"toggle-column-highlights\">Max Wrath</th>")
+            	  .append("<th>Maul Hit/Crit</th><th class=\"toggle-column-highlights\">Max Maul</th>")
+            	  .append("<th>Swipe Hit/Crit</th><th class=\"toggle-column-highlights\">Max Swipe</th>")
+            	  .append("<th>Shred Hit/Crit</th><th class=\"toggle-column-highlights\">Max Shred</th>")
 //            	  .append("<th>Serpent Sting applied</th>")
                   .append("</tr>");
 
@@ -169,6 +171,8 @@ public class DruidUtils {
                 
                     strBuf.append("<tr>")
                           .append("<td>").append(druidName).append("</td>")
+      					  .append("<td>"+druid.getDeathCounter()+"</td>")
+      					  .append("<td class=\"toggle-column-death\" style=\"display: none;\">"+Players.getDeathCauses(druid)+"</td>")					
                           .append("<td class=\"toggle-column\" style=\"display: none;\">").append(druid.getManaFromVampiricTouch()).append("</td>")
                           .append("<td class=\"toggle-column\" style=\"display: none;\">").append(druid.getManaFromJudgementOfWisdom()).append("</td>")
                           .append("<td class=\"toggle-column\" style=\"display: none;\">").append(druid.getManaFromBow()).append("</td>")

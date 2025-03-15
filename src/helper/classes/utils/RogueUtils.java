@@ -12,7 +12,7 @@ import helper.classes.Rogue;
 public class RogueUtils {
     public static HashMap<String, Rogue> rogueMap = new HashMap<>(); 
 
-    private static Rogue getRogueByName(String name) {
+    public static Rogue getRogueByName(String name) {
         return rogueMap.computeIfAbsent(name, k -> new Rogue());
     }
 
@@ -76,20 +76,22 @@ public class RogueUtils {
 			strBuf.append("<br>");				
 			strBuf.append("<body>");				
 			strBuf.append("<table class='classTable' align=\"left\" width='100%'>");
-			strBuf.append("<tr style='background-color: "+Constants.ROGUECOLOR+";'><td colspan='12'>"+Constants.ROGUE+"</td></tr>");
+			strBuf.append("<tr style='background-color: "+Constants.ROGUECOLOR+";'><td colspan='14'>"+Constants.ROGUE+"</td></tr>");
 			strBuf.append("<tr>");
 			strBuf.append("<th>Name</th>");
+			strBuf.append("<th>Death</th>");
+			strBuf.append("<th class=\"toggle-column-death\" style=\"display: none;\">DeathCauses</th>");			
 			strBuf.append("<th>Windfury Procs</th>");
 			strBuf.append("<th>Crusader Procs</th>");
 			strBuf.append("<th>Flametongue procs</th>");
 			strBuf.append("<th>Slice&Dice procs</th>");
 			strBuf.append("<th>Blade Flurry procs</th>");
 			strBuf.append("<th>Backstab Hit/Crit</th>");
-			strBuf.append("<th class=\"toggle-column-highlights\">Highest BS</th>");
+			strBuf.append("<th class=\"toggle-column-highlights\">Max BS</th>");
 			strBuf.append("<th>Eviscerate Hit/Crit</th>");
-			strBuf.append("<th class=\"toggle-column-highlights\">Highest Evsc</th>");
+			strBuf.append("<th class=\"toggle-column-highlights\">Max Evsc</th>");
 			strBuf.append("<th>SinisterStrike Hit/Crit</th>");
-			strBuf.append("<th class=\"toggle-column-highlights\">Highest SS</th>");
+			strBuf.append("<th class=\"toggle-column-highlights\">Max SS</th>");
 			strBuf.append("</tr>");
 			//Ballertony: [sunders=122, deathWish=18, windFury=236, crusader=74, wrath=264, flametongue=314, flurry=313, enrage=161]
 			//System.out.println("Name | Sunders | Deathwish | WindfuryProcs | CrusaderProcs | extra rage from unbridled wrath | FlametongueProcs | Flurry | Enrage");
@@ -97,6 +99,8 @@ public class RogueUtils {
 				Rogue rogue = rogueMap.get(rogueName);
 					strBuf.append("<tr>");
 					strBuf.append("<td>"+rogueName+"</td>");
+					strBuf.append("<td>"+rogue.getDeathCounter()+"</td>");
+					strBuf.append("<td class=\"toggle-column-death\" style=\"display: none;\">"+Players.getDeathCauses(rogue)+"</td>");                                                    
 					strBuf.append("<td>"+rogue.getWindFury()+"</td>");
 					strBuf.append("<td>"+rogue.getCrusader()+"</td>");
 					strBuf.append("<td>"+rogue.getFlametongue()+"</td>");

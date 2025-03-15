@@ -1,11 +1,37 @@
 package helper.classes;
 
+import org.apache.commons.lang3.StringUtils;
+
 public class Paladin extends CasterMelee {
 	
 	//Holy Strike 
 	//Crusader Strike
 	//Judgement of Command
 	//Seal of Command
+	public int blockedCnt=0;
+    public void incrementBlockedCnt() {
+        this.blockedCnt++;
+    }	
+	public int dmgAmountBlocked=0;
+    public void addDmgAmountBlocked(int dmgAmountBlockedNew) {
+        this.dmgAmountBlocked +=dmgAmountBlockedNew;;
+    }	
+	public int dmgAmountCompleteBeforeBlock=0;
+    public void addDmgAmountCompleteBeforeBlock(int dmgAmountCompleteBeforeBlockNew) {
+        this.dmgAmountCompleteBeforeBlock +=dmgAmountCompleteBeforeBlockNew;;
+    }	
+	public int highestBlock=0;
+	public String highestBlockSource = "";
+    public void updateHighestBlockAmount(int amount, String target) {
+        if (amount > this.highestBlock) {
+            this.highestBlock = amount;
+            this.highestBlockSource = target;
+        }
+    }	
+    
+	
+	
+	
 	public int cleanse = 0;
 	public void incrementCleanse() {
 		this.cleanse++;
@@ -159,7 +185,7 @@ public class Paladin extends CasterMelee {
 
 
 	public String getHighestHolyStrikeTarget() {
-		return highestHolyStrikeTarget;
+		return StringUtils.abbreviate(highestHolyStrikeTarget,15);
 	}
 
 
@@ -169,7 +195,7 @@ public class Paladin extends CasterMelee {
 
 
 	public String getHighestCrusaderStrikeTarget() {
-		return highestCrusaderStrikeTarget;
+		return StringUtils.abbreviate(highestCrusaderStrikeTarget,15);
 	}
 
 
@@ -179,7 +205,7 @@ public class Paladin extends CasterMelee {
 
 
 	public String getHighestJudgementOfCommandTarget() {
-		return highestJudgementOfCommandTarget;
+		return StringUtils.abbreviate(highestJudgementOfCommandTarget,15);
 	}
 
 
@@ -190,7 +216,7 @@ public class Paladin extends CasterMelee {
 
 
 	public String getHighestSealOfCommandTarget() {
-		return highestSealOfCommandTarget;
+		return StringUtils.abbreviate(highestSealOfCommandTarget,15);
 	}
 
 
@@ -305,7 +331,7 @@ public class Paladin extends CasterMelee {
 
 
 	public String getHighestExorcismTarget() {
-		return highestExorcismTarget;
+		return StringUtils.abbreviate(highestExorcismTarget,15);
 	}
 
 
@@ -409,7 +435,7 @@ public class Paladin extends CasterMelee {
 	}
 
 	public String getHighestFlashOfLightTarget() {
-		return highestFlashOfLightTarget;
+		return StringUtils.abbreviate(highestFlashOfLightTarget,15);
 	}
 
 	public int getHolyShockHit() {
@@ -425,7 +451,7 @@ public class Paladin extends CasterMelee {
 	}
 
 	public String getHighestHolyShockTarget() {
-		return highestHolyShockTarget;
+		return StringUtils.abbreviate(highestHolyShockTarget,15);
 	}
 
 	public int getHolyLightHit() {
@@ -441,7 +467,7 @@ public class Paladin extends CasterMelee {
 	}
 
 	public String getHighestHolyLightTarget() {
-		return highestHolyLightTarget;
+		return StringUtils.abbreviate(highestHolyLightTarget, 15);
 	}
 
 	public void setFlashOfLightHit(int flashOfLightHit) {
@@ -490,6 +516,46 @@ public class Paladin extends CasterMelee {
 
 	public void setHighestHolyLightTarget(String highestHolyLightTarget) {
 		this.highestHolyLightTarget = highestHolyLightTarget;
+	}
+
+	public int getBlockedCnt() {
+		return blockedCnt;
+	}
+
+	public int getDmgAmountBlocked() {
+		return dmgAmountBlocked;
+	}
+
+	public int getDmgAmountCompleteBeforeBlock() {
+		return dmgAmountCompleteBeforeBlock;
+	}
+
+	public int getHighestBlock() {
+		return highestBlock;
+	}
+
+	public String getHighestBlockSource() {
+		return highestBlockSource;
+	}
+
+	public void setBlockedCnt(int blockedCnt) {
+		this.blockedCnt = blockedCnt;
+	}
+
+	public void setDmgAmountBlocked(int dmgAmountBlocked) {
+		this.dmgAmountBlocked = dmgAmountBlocked;
+	}
+
+	public void setDmgAmountCompleteBeforeBlock(int dmgAmountCompleteBeforeBlock) {
+		this.dmgAmountCompleteBeforeBlock = dmgAmountCompleteBeforeBlock;
+	}
+
+	public void setHighestBlock(int highestBlock) {
+		this.highestBlock = highestBlock;
+	}
+
+	public void setHighestBlockSource(String highestBlockSource) {
+		this.highestBlockSource = highestBlockSource;
 	}
 	
 	
