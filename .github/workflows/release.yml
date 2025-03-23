@@ -1,0 +1,30 @@
+name: Release JAR on Windows
+
+on:
+  push:
+    tags:
+      - 'v*'  # Startet nur, wenn ein Tag wie "v1.0.0" gepusht wird
+
+jobs:
+  build:
+    runs-on: windows-latest
+
+    steps:
+      - name: Repository auschecken
+        uses: actions/checkout@v3
+
+      - name: Setze JDK 17 (oder andere Version)
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+
+      - name: Build mit Maven
+        run: mvn clean package
+
+      - name: Hochladen des JAR als GitHub Release
+        uses: softprops/action-gh-release@v1
+        with:
+          files: target/*.jar
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
