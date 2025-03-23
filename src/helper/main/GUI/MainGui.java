@@ -363,14 +363,16 @@ public class MainGui {
 						ShamanUtils.findEntryForShaman(string, allPlayers);
 					}											
 					if(i%tenPercentLogLines==0) {
-						processBar="..."+j+"0%...";
+						processBar="...playerstats.."+j+"0%...";
 						lblInvalidInputData.setText(processBar);
 						j++;
 					}
 					i++;
 				}
 				ArrayList<String> allLogsForDeathCalculation = fileAsArrayList;
+				lblInvalidInputData.setText("calculate player deaths....");
 				DeathCalculationUtils.getDeathCause(allLogsForDeathCalculation);
+				lblInvalidInputData.setText("generate player html....");
 				warriors = WarriorUtils.getWarriors(); 
 				warlocks = WarlockUtils.getWarlocksHTML(); 
 				rogues = RogueUtils.getRogues(); 
@@ -381,6 +383,7 @@ public class MainGui {
 				priests = PriestUtils.getPriestHTML();
 				shamans = ShamanUtils.getShamanHTML();
 		    	//loot
+				lblInvalidInputData.setText("generate loot....");
 		    	LootUtils.assignEpicLoot(fileAsArrayList);
 				String loot = LootUtils.getLootAsHTML();
 				

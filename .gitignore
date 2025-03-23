@@ -1,0 +1,6 @@
+/*.classpath
+/*.project
+/bin/helper
+/target
+/.settings/*.prefs
+/bin/org/eclipse/wb/swt/SWTResourceManager.class

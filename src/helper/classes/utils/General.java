@@ -15,6 +15,7 @@ import helper.classes.Healer;
 import helper.classes.NameClassWrapper;
 import helper.classes.Player;
 import helper.classes.utils.besonderes.BarovUtils;
+import helper.classes.utils.besonderes.TradetLoot;
 
 public class General {
 	public static String regexHitCrit = "(?:hits|crits) (\\w+)";
@@ -158,7 +159,7 @@ public class General {
 		try {
 			retDate = Constants.sdf.parse(dayPlusTime);
 		}catch(Exception e) {
-			System.out.println("getTimeFromLogAsSDF() Error in line: "+logline+" "+e);
+			System.out.println("getTimeFromLogAsDateTime() Error in line: "+logline+" "+e);
 		}
 		return new DateTime(retDate);
 	}
@@ -169,7 +170,7 @@ public class General {
 		try {
 			retDate = Constants.sdf.parse(dayPlusTime);
 		}catch(Exception e) {
-			System.out.println("getTimeFromLogAsSDF() Error in line: "+str+" "+e);
+			System.out.println("getDateTimeFromString() Error in line: "+str+" "+e);
 		}
 		return new DateTime(retDate);
 	}	
@@ -409,6 +410,7 @@ public class General {
 			BarovUtils.barovMap = new HashMap<>();
 			LootUtils.playerLootMap = new HashMap<>();
 			LootUtils.lootRessouces = new HashMap<>();
+			LootUtils.tlList = new ArrayList<TradetLoot>();
 			Healer.healerMap = new ArrayList<>();
 		}
 		

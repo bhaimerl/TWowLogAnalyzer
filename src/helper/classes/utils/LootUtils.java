@@ -3,15 +3,17 @@ package helper.classes.utils;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Set;
-import java.util.SortedSet;
-import java.util.TreeSet;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import helper.classes.utils.besonderes.TradetLoot;
 
 public class LootUtils {
 	
 	public static HashMap<String, ArrayList<String>> playerLootMap = new HashMap<>();
 	public static HashMap<String, HashMap<String, Integer>> lootRessouces = new HashMap<>();
+	public static ArrayList<TradetLoot> tlList = new ArrayList<TradetLoot>();
+	
 	
 	public static void addRessourcesLoot(String player, String itemName) {
 		if(lootRessouces.containsKey(player)) {
@@ -64,6 +66,24 @@ public class LootUtils {
 			}
 			
 			
+			//traded loot
+			if(string.contains("LOOT_TRADE:") && string.contains("trades item") && string.contains("to")) {
+				Pattern pattern = Pattern.compile("LOOT_TRADE: \\d{2}\\.\\d{2}\\.\\d{2} \\d{2}:\\d{2}:\\d{2}\\&(?<trader>\\w+) trades item (?<item>.+?) to (?<receiver>\\w+).", Pattern.MULTILINE);
+		        try {
+		            Matcher matcher = pattern.matcher(string);
+		            
+		            while (matcher.find()) {
+		                String trader = matcher.group("trader");
+		                String item = matcher.group("item");
+		                String receiver = matcher.group("receiver");
+		                tlList.add(new TradetLoot(item, trader, receiver));
+		            }
+		        } catch (Exception e) {
+		            System.err.println("Error reading log file: " + e.getMessage());
+		        }			
+			
+			}
+			
 			
 			if(string.contains("LOOT:") && string.contains("receives loot:") && string.contains("cffa335ee")) {
 				//Epic loot found
@@ -85,10 +105,11 @@ public class LootUtils {
 	}
 	
 	public static String getLootAsHTML() {
+		HashMap<String, String> itemLinkMap = new HashMap<String, String>();
         StringBuilder strBuf = new StringBuilder();
         if (!playerLootMap.isEmpty()) {
         	strBuf.append("<br><body><table class='classTable' align=\"left\" width='100%'>")
-                  .append("<tr style='background-color: #a335ee;'>")
+                  .append("<tr style='background-color: #a335ee; color: white; font-weight: bold;'>")
                   .append("<td colspan='2'>LOOT</td></tr><tr>")
                   .append("<th>Name</th>")
                   .append("<th>Item</th>")
@@ -103,28 +124,65 @@ public class LootUtils {
     				for (String currentLoot : playerLoot) {
     					String itemId = General.getEntryAtPosition(currentLoot, 0, "_");
     					String itemName = General.getEntryAtPosition(currentLoot, 1, "_");
-    					strBuf.append(itemName+"&nbsp;&nbsp;<a href='https://database.turtle-wow.org/?item="+itemId+"' target='_new'>https://database.turtle-wow.org/?item="+itemId+"</a><br>");
+    					String itemLink = "https://database.turtle-wow.org/?item="+itemId;
+    					itemLinkMap.put(itemName, itemLink);
+    					strBuf.append(itemName+"&nbsp;&nbsp;<a href='"+itemLink+"' target='_new'>"+itemLink+"</a><br>");
 					}
-       			strBuf.append("</td>");
+       			strBuf.append("</td></tr>");
 //                	  .append("<td>"+playerLootMap.get(string)+"</td>")
 //                	  .append("<td><a href='https://database.turtle-wow.org/?item=' target='_new'>"+playerLootMap.get(string)+"</a></td>");
-//    			strBuf.append("</tr>");    			
-    		}		
-    		Set<String> ressourcesSet = lootRessouces.keySet();
-    		
-    		for (String player : ressourcesSet) {
-    			HashMap<String, Integer> playerRessMap = lootRessouces.get(player);
-    			Set<String> ressourcesSorted = playerRessMap.keySet();
-    			strBuf.append("<tr>");
-    			strBuf.append("<td>"+player+"</td>");
-    			strBuf.append("<td>");
-    				for (String currentRessName : ressourcesSorted) {
-    					strBuf.append(currentRessName+"("+playerRessMap.get(currentRessName)+")<br>");
-					}
-       			strBuf.append("</td>");
     		}		
     		
+    		
+    		
+    		Set<String> ressourcesSet = lootRessouces.keySet();    		
+    		if(ressourcesSet.size()>0) {
+        		for (String player : ressourcesSet) {
+        			HashMap<String, Integer> playerRessMap = lootRessouces.get(player);
+        			Set<String> ressourcesSorted = playerRessMap.keySet();
+        			strBuf.append("<tr>");
+        			strBuf.append("<td>"+player+"</td>");
+        			strBuf.append("<td>");
+        				for (String currentRessName : ressourcesSorted) {
+        					strBuf.append(currentRessName+"("+playerRessMap.get(currentRessName)+")<br>");
+    					}
+           			strBuf.append("</td></tr>");
+        		}	
+    			
+    		}
+			strBuf.append("</table>"); 
+			
+			
+			
+			if(tlList.size()>0) {
+				//traded loot
+	        	strBuf.append("<br><body><table class='classTable' align=\"left\" width='100%'>")
+	            .append("<tr style='background-color: #a335ee; color: white; font-weight: bold;'>")
+	            .append("<td colspan='3'>TradetLoot</td></tr><tr>")
+	            .append("<th width='40%'>Item</th>")
+	            .append("<th width='30%'>From</th>")
+	            .append("<th width='30%'>To</th>")
+	            .append("</tr>");
+	        	for(TradetLoot tl : tlList) {
+        			strBuf.append("<tr>");
+        			String itemLink = "";
+        			if(itemLinkMap.get(tl.getItem())!=null) {
+            			itemLink = itemLinkMap.get(tl.getItem());
+            			itemLink ="&nbsp;&nbsp;<a href='"+itemLink+"' target='_new'>"+itemLink+"</a>";
+        			}
+        			strBuf.append("<td>"+tl.getItem()+itemLink+"</td>");
+        			strBuf.append("<td>"+tl.getGiver()+"</td>");
+        			strBuf.append("<td>"+tl.getReceiver()+"</td>");
+        			strBuf.append("</tr>");
+	        	}
+				strBuf.append("</table>"); 
+				
+			}
+			
         }
+        
 		return strBuf.toString();
 	}
+	
+	
 }

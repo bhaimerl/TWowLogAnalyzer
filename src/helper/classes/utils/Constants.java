@@ -8,7 +8,7 @@ public class Constants {
 	public static SimpleDateFormat onlyTime = new SimpleDateFormat("HH:mm:ss.SSS");
 	
 	  
-	public static final String VERSION = "v0.3.3";
+	public static final String VERSION = "v0.3.4";
 	public static final String LASTCHANGE="BLocks added";
 	
 	
