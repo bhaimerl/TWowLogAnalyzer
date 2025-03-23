@@ -9,9 +9,13 @@ At the moment you better use a clean wowcombatlog, so only with the raid you wan
 if you have a very huge combatlog with a lot of raid over several days, the result would be broken i guess.
 I start afresh log with every raid.
 
+Download the jar (for example TWowLogAnalyzer-0.3.3.jar)file, 
+or grab the whole sources and build it yourself.
+with: maven clean package
+Then after a successfull build you find it in yourFolder called something like: /target/TWowLogAnalyzer-0.3.3-jar-with-dependencies.jar
 
 If you have Java installed (at least java 17) u can run it by doubleclick (if java is connected to open a jar)
-or you hit a cmd shell and enter "java -jar TwowLogAnalyzer.jar"
+or you hit a cmd shell and enter "java -jar NameOfTHeFile.jar"
 
 After this a GUI opens:
 
