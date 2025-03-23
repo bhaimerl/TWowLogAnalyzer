@@ -3,8 +3,12 @@ This tool analyzes your WowCombatLog.txt and extracts some useful informations
 
 You really need to have SuperwowcombatLogger: https://github.com/pepopo978/SuperWowCombatLogger?tab=readme-ov-file
 and also: https://github.com/balakethelock/SuperWoW
-
 Otherwise a lot of useful informations (like sunder armor) will be missing in your log
+
+At the moment you better use a clean wowcombatlog, so only with the raid you wanted to analyze,
+if you have a very huge combatlog with a lot of raid over several days, the result would be broken i guess.
+I start afresh log with every raid.
+
 
 If you have Java installed (at least java 17) u can run it by doubleclick (if java is connected to open a jar)
 or you hit a cmd shell and enter "java -jar TwowLogAnalyzer.jar"
