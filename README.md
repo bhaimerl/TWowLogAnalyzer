@@ -14,6 +14,10 @@ or grab the whole sources and build it yourself.
 with: maven clean package
 Then after a successfull build you find it in yourFolder called something like: /target/TWowLogAnalyzer-0.3.3-jar-with-dependencies.jar
 
+!!!You need to have at least java 17 installed!!!
+
+Java 1.8 what is offered from oracle is not matching!
+
 If you have Java installed (at least java 17) u can run it by doubleclick (if java is connected to open a jar)
 or you hit a cmd shell and enter "java -jar NameOfTHeFile.jar"
 
