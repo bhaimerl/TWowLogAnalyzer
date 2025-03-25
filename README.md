@@ -21,6 +21,13 @@ Java 1.8 what is offered from oracle is not matching!
 YOu could get a free open java here: https://www.openlogic.com/openjdk-downloads
 If you only want to let it run you need a JRE; if you want to change code and build you need a JDK
 
+If you only want to start the tool via doubleclick, download the jre msi installer
+![image](https://github.com/user-attachments/assets/759b39a6-17f1-4e70-8b4d-f781f4ac1967)
+
+And then download my package, unzipp it and double click the TwowLogAnalyzer-versionjar
+
+
+
 If you have Java installed (at least java 17) u can run it by doubleclick (if java is connected to open a jar)
 or you hit a cmd shell and enter "java -jar NameOfTHeFile.jar"
 
