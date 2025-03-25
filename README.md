@@ -18,6 +18,9 @@ Then after a successfull build you find it in yourFolder called something like: 
 
 Java 1.8 what is offered from oracle is not matching!
 
+YOu could get a free open java here: https://www.openlogic.com/openjdk-downloads
+If you only want to let it run you need a JRE; if you want to change code and build you need a JDK
+
 If you have Java installed (at least java 17) u can run it by doubleclick (if java is connected to open a jar)
 or you hit a cmd shell and enter "java -jar NameOfTHeFile.jar"
 
