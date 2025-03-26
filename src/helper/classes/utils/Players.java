@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Set;
 import java.util.StringTokenizer;
 
@@ -46,6 +47,18 @@ public class Players {
 		}
 		return "";
 	}
+	
+
+	public static List<String> allPlayerNamesInRaid() {
+	    List<String> playerNames = new ArrayList<String>();
+	    //Alle spieler
+	    for (NameClassWrapper ncw : Players.uniqueList) {
+			playerNames.add(ncw.name);
+		}
+	    return playerNames;
+	}
+	
+	
 	
 	public static String getMainGuild() {
 		String maxKey = "custom";

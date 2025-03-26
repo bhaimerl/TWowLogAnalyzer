@@ -4,10 +4,13 @@ import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 import java.util.StringTokenizer;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 import org.joda.time.DateTime;
 
@@ -53,13 +56,13 @@ public class General {
 	}    	
 	
 	public static ArrayList<String> getOnlySunderLogs(ArrayList<String> logList) {
-		ArrayList<String> sunderLogs = new ArrayList<>();
+		List<String> sunderLogs = new ArrayList<>();
 		for (String string : logList) {
 			if(string.contains("Sunder Armor")) {
 				sunderLogs.add(string);
 			}
 		}
-		return sunderLogs;
+		return (ArrayList<String>) sunderLogs;
 	}
 	
 	public static ArrayList<String> getLogsUntilPLusTolerance(DateTime endTime, int addToleranceMs, ArrayList<String> completeLogs) {
@@ -72,7 +75,7 @@ public class General {
 				}
 			}
 		}catch(Exception e) {
-			System.out.println("bzumm");
+			System.out.println("getLogsUntilPLusTolerance()"+e.getLocalizedMessage());
 		}
 		return intervallLogs;
 	}
@@ -87,7 +90,7 @@ public class General {
 				}
 			}
 		}catch(Exception e) {
-			System.out.println("bzumm");
+			System.out.println("getLogsBeginningPLusTolerance()"+e.getLocalizedMessage());
 		}
 		return intervallLogs;
 	}
@@ -111,7 +114,7 @@ public class General {
 				}
 			}
 		}catch(Exception e) {
-			System.out.println("bzumm");
+			System.out.println("getLogsWithinIntervallPLusTolerance()"+e.getLocalizedMessage());
 		}
 		return intervallLogs;
 	}
@@ -119,21 +122,6 @@ public class General {
 	public static void bla() {
 		org.joda.time.DateTime dt =new org.joda.time.DateTime();
 	}
-	
-	
-	public static ArrayList<String> getCursesOnBoss(ArrayList<String> logList) {
-		ArrayList<String> sunderLogs = new ArrayList<>();
-		for (String string : logList) {
-			if(string.contains("is afflicted by Curse")) {
-				if(string.contains("Recklessness") || string.contains("Shadow") || string.contains("Elements")) {
-					sunderLogs.add(string);
-				}
-			}
-		}
-		return sunderLogs;
-	}
-	
-	
 	
 	//is afflicted by Sunder Armor (5).
 	public static String getSunderArmorStack(String logline) {
@@ -233,29 +221,51 @@ public class General {
 	}	
 	
 	public static int getAmountGains(String searchString, String logline) {
-		int amount = 0;
-		if(logline!=null) {
-			String date, time, name, gains, value;
-			if(logline.indexOf(searchString)>=0) {
-				StringTokenizer strTok = new StringTokenizer(logline, " ");
-				date = (String) strTok.nextElement(); //Datum
-				time = (String) strTok.nextElement(); //Uhrzeit
-				name = (String) strTok.nextElement();//Name
-				gains = (String) strTok.nextElement();//gains
-				//amount
-				try {
-					//manchmal gibt es komische Eintraege, wie Klarasprudel (Kel'Th..) gains.....
-					while(gains!=null && gains.indexOf("gains")==-1) {
-						gains = (String) strTok.nextElement();
-					}
-					amount+=Integer.parseInt(strTok.nextElement()+"");
-				} catch(Exception e) {
-					System.out.println("Problem bei: "+name+" mit dieser Zeile: "+logline);
-				}
-			}
-		}
-		return amount;
-	}		
+	    int amount = 0;
+
+	    if (logline != null && logline.contains(searchString)) {
+	        // Split the log line into tokens
+	        String[] tokens = logline.split(" ");
+
+	        try {
+	            // Suche nach dem Token "gains" und parsene den Betrag danach
+	            for (int i = 0; i < tokens.length; i++) {
+	                if (tokens[i].equals("gains")) {
+	                    amount += Integer.parseInt(tokens[i + 1]);
+	                    break; // Wir haben den "gains"-Wert gefunden, also abbrechen
+	                }
+	            }
+	        } catch (NumberFormatException e) {
+	            System.out.println("Problem bei der Verarbeitung von: " + logline);
+	        }
+	    }
+	    return amount;
+	}
+	
+//	public static int getAmountGainsAlt(String searchString, String logline) {
+//		int amount = 0;
+//		if(logline!=null) {
+//			String date, time, name, gains, value;
+//			if(logline.indexOf(searchString)>=0) {
+//				StringTokenizer strTok = new StringTokenizer(logline, " ");
+//				date = (String) strTok.nextElement(); //Datum
+//				time = (String) strTok.nextElement(); //Uhrzeit
+//				name = (String) strTok.nextElement();//Name
+//				gains = (String) strTok.nextElement();//gains
+//				//amount
+//				try {
+//					//manchmal gibt es komische Eintraege, wie Klarasprudel (Kel'Th..) gains.....
+//					while(gains!=null && gains.indexOf("gains")==-1) {
+//						gains = (String) strTok.nextElement();
+//					}
+//					amount+=Integer.parseInt(strTok.nextElement()+"");
+//				} catch(Exception e) {
+//					System.out.println("Problem bei: "+name+" mit dieser Zeile: "+logline);
+//				}
+//			}
+//		}
+//		return amount;
+//	}		
 	
 	public static int getAmountAtEnd(String searchString, String logline) {
 		return getAmountAtEnd(searchString, "KANNNICHTDRIN_SEIN", logline);
@@ -275,125 +285,186 @@ public class General {
 		return dmgAmount;
 	}
 	
+	
 	public static int getSuffersDmg(String bossname, String logLine) {
-		int result = 0;
-		if(logLine.contains("Eye of C'Thun")) {
-			logLine = logLine.replace("Eye of C'Thun", "C'Thun");
-		}
-		if(logLine.indexOf(bossname+" suffers")>=0) {
-			StringTokenizer strTok = new StringTokenizer(logLine, " ");
-			String date = (String) strTok.nextElement(); //Datum 
-			String time = (String) strTok.nextElement(); //Uhrzeit
-			String name = (String) strTok.nextElement(); //Name
-			String suffers = (String) strTok.nextElement();//suffers			
-			if(bossname.contains(" ")) {
-				try {
-					while(!strTok.nextToken().contains("suffers")) {
-						continue;
-					}
-				}catch(Exception e) {}
-			}
-			String amount = strTok.nextElement()+"";//amount
-			try {
-				result = Integer.parseInt(amount); //suffersAmount
-			}catch (Exception e) {
-				System.out.println("line: "+logLine+" "+e);
-			}
-		}
-		return result;
-	}
+	    int result = 0;
+	    if (logLine == null || !logLine.contains("suffers")) {
+	        return result; // Frühzeitiger Exit, wenn "suffers" nicht vorhanden
+	    }
 
-	//Patchwerk 's Hateful Strike hits Kranette for 
-	//11/15 21:35:09.309  Patchwerk 's Hateful Strike hits Kranette for 5607. (292 blocked) (500 absorbed)
-	//11/15 21:35:09.309  Lyndrell gains 56 Mana from Lyndrell 's Holy Champion.
-	public static int getAmountAtEnd(String searchString, String searchString1,  String logline) {
-		int amount = 0;
-		if(logline!=null) {
-			String name;
-			//(self damage)  entfernen
-			if(logline.indexOf(searchString)>=0 || logline.indexOf(searchString1)>=0) {
-				logline = logline.replaceFirst("(self damage) ", "");
-				logline = logline.replaceFirst("'s ", "");
-				StringTokenizer strTok = new StringTokenizer(logline, " ");
-				String date = ""+strTok.nextElement(); //Datum
-				String time = ""+strTok.nextElement(); //Uhrzeit
-				name = ""+strTok.nextElement(); //Wer
+	    // Ersetze "Eye of C'Thun" nur, wenn es wirklich vorkommt
+	    logLine = logLine.replace("Eye of C'Thun", "C'Thun");
 
-				String ability="";
-				//alles was nun kommt bis zu hits oder crits ist ability
-				ability = strTok.nextElement()+"";
-				String ability2 = strTok.nextElement()+"";
-				while(ability2.indexOf("crits")==-1 && ability2.indexOf("hits")==-1 && ability2.indexOf("heals")==-1 && ability2.indexOf("critically heals")==-1) {
-					ability = ability+ability2;
-					try {
-						ability2 = strTok.nextElement()+"";
-					}catch(Exception e) {
-						System.out.println("numm");
-					}
-				}
-				String crits = ability2; //hits oder crits
-
-				//wer wurde getroffen
-				String target = strTok.nextElement()+"";
-				String target2 = strTok.nextElement()+"";
-				while(target2.indexOf("for")==-1) {
-					target = target+target2;
-					target2 = strTok.nextElement()+"";
-				}
-				
-				String forEntry = target2;	
-				//amount
-				try {
-					String amnt = strTok.nextElement()+"";
-					String rmvAmount =amnt+"";
-					rmvAmount = rmvAmount.replace(".", "");
-					amount+=Integer.parseInt(rmvAmount);
-				} catch(Exception e) {
-					System.out.println("Problem bei: "+name+" mit dieser Zeile: "+logline);
-					}
-			}
-		}
-		return amount;
+	    // Überprüfe, ob der Bossname im Log vorkommt und "suffers"
+	    if (logLine.contains(bossname + " suffers")) {
+	        String[] tokens = logLine.split(" ");
+	        
+	        // Finde die Stelle, an der der Bossname und "suffers" vorkommen
+	        for (int i = 0; i < tokens.length; i++) {
+	            if (tokens[i].equals(bossname) && i + 1 < tokens.length && tokens[i + 1].equals("suffers")) {
+	                // Nächsten Token nach "suffers" ist der Schadenswert
+	                try {
+	                    result = Integer.parseInt(tokens[i + 2]); // Der Wert nach "suffers"
+	                } catch (NumberFormatException e) {
+	                    System.out.println("Fehler bei der Zahl: " + logLine + " " + e);
+	                }
+	                break; // Wenn wir das gefunden haben, brauchen wir nicht weiter zu suchen
+	            }
+	        }
+	    }
+	    return result;
 	}	
 	
-	//Patchwerk 's Hateful Strike hits Kranette for 
-		//11/15 21:35:09.309  Patchwerk 's Hateful Strike hits Kranette for 5607. (292 blocked) (500 absorbed)
-		//11/15 21:35:09.309  Lyndrell gains 56 Mana from Lyndrell 's Holy Champion.
-		public static String getTarget(String searchString, String searchString1,  String logline) {
-			String targetino = "";
-			if(logline!=null) {
-				String name;
-				//(self damage)  entfernen
-				if(logline.indexOf(searchString)>=0 || logline.indexOf(searchString1)>=0) {
-					logline = logline.replaceFirst("(self damage) ", "");
-					logline = logline.replaceFirst("'s ", "");
-					StringTokenizer strTok = new StringTokenizer(logline, " ");
-					String date = ""+strTok.nextElement(); //Datum
-					String time = ""+strTok.nextElement(); //Uhrzeit
-					name = ""+strTok.nextElement(); //Wer
+	
+	
+	public static int getAmountAtEnd(String searchString, String searchString1, String logline) {
+	    int amount = 0;
 
-					String ability="";
-					//alles was nun kommt bis zu hits oder crits ist ability
-					ability = strTok.nextElement()+"";
-					String ability2 = strTok.nextElement()+"";
-					while(ability2.indexOf("crits")==-1 && ability2.indexOf("hits")==-1 && ability2.indexOf("heals")==-1 && ability2.indexOf("critically heals")==-1) {
-						ability = ability+ability2;
-						ability2 = strTok.nextElement()+"";
-					}
-					String crits = ability2; //hits oder crits
+	    if (logline != null && (logline.contains(searchString) || logline.contains(searchString1))) {
+	        // Entferne 'self damage' und "'s" direkt ohne Regex
+	        logline = logline.replace("self damage ", "").replace("'s ", "");
 
-					//wer wurde getroffen
-					String target = strTok.nextElement()+"";
-					String target2 = strTok.nextElement()+"";
-					while(target2.indexOf("for")==-1) {
-						target = target+target2;
-						target2 = strTok.nextElement()+"";
-					}
-					targetino = target;
-				}
-			}
-			return targetino;
-		}			
+	        // Teile den Logline in Token
+	        String[] tokens = logline.split(" ");
+
+	        try {
+	            String name = tokens[2];  // Der Name steht immer an Index 2
+	            int idx = 3; // Startindex für die Fähigkeitenbezeichnung
+
+	            // Durchlaufen der Tokens, um die Fähigkeit zu extrahieren
+	            String ability = tokens[idx];
+	            idx++;
+	            while (idx < tokens.length && !tokens[idx].matches("hits|crits|heals|critically")) {
+	                ability += " " + tokens[idx];
+	                idx++;
+	            }
+
+	            // Abgleich des Typs (hits, crits, heals)
+	            String crits = tokens[idx];  // hits, crits, heals oder critically heals
+	            idx++;  // Target name kommt danach
+
+	            // Ziel extrahieren
+	            String target = tokens[idx];
+	            idx++;
+	            while (idx < tokens.length && !tokens[idx].equals("for")) {
+	                target += " " + tokens[idx];
+	                idx++;
+	            }
+
+	            // Betrag extrahieren und zu 'amount' hinzufügen
+	            String amountStr = tokens[idx + 1];
+	            amount += Integer.parseInt(amountStr.replace(".", ""));
+	        } catch (Exception e) {
+	            System.out.println("Problem bei der Verarbeitung der Zeile: " + logline);
+	        }
+	    }
+
+	    return amount;
+	}
+//
+//	//Patchwerk 's Hateful Strike hits Kranette for 
+//	//11/15 21:35:09.309  Patchwerk 's Hateful Strike hits Kranette for 5607. (292 blocked) (500 absorbed)
+//	//11/15 21:35:09.309  Lyndrell gains 56 Mana from Lyndrell 's Holy Champion.
+//	public static int getAmountAtEndAlt(String searchString, String searchString1,  String logline) {
+//		int amount = 0;
+//		if(logline!=null) {
+//			String name;
+//			//(self damage)  entfernen
+//			if(logline.indexOf(searchString)>=0 || logline.indexOf(searchString1)>=0) {
+//				logline = logline.replaceFirst("(self damage) ", "");
+//				logline = logline.replaceFirst("'s ", "");
+//				StringTokenizer strTok = new StringTokenizer(logline, " ");
+//				String date = ""+strTok.nextElement(); //Datum
+//				String time = ""+strTok.nextElement(); //Uhrzeit
+//				name = ""+strTok.nextElement(); //Wer
+//
+//				String ability="";
+//				//alles was nun kommt bis zu hits oder crits ist ability
+//				ability = strTok.nextElement()+"";
+//				String ability2 = strTok.nextElement()+"";
+//				while(ability2.indexOf("crits")==-1 && ability2.indexOf("hits")==-1 && ability2.indexOf("heals")==-1 && ability2.indexOf("critically heals")==-1) {
+//					ability = ability+ability2;
+//					try {
+//						ability2 = strTok.nextElement()+"";
+//					}catch(Exception e) {
+//						System.out.println("numm");
+//					}
+//				}
+//				String crits = ability2; //hits oder crits
+//
+//				//wer wurde getroffen
+//				String target = strTok.nextElement()+"";
+//				String target2 = strTok.nextElement()+"";
+//				while(target2.indexOf("for")==-1) {
+//					target = target+target2;
+//					target2 = strTok.nextElement()+"";
+//				}
+//				
+//				String forEntry = target2;	
+//				//amount
+//				try {
+//					String amnt = strTok.nextElement()+"";
+//					String rmvAmount =amnt+"";
+//					rmvAmount = rmvAmount.replace(".", "");
+//					amount+=Integer.parseInt(rmvAmount);
+//				} catch(Exception e) {
+//					System.out.println("Problem bei: "+name+" mit dieser Zeile: "+logline);
+//					}
+//			}
+//		}
+//		return amount;
+//	}	
+	
+	public static String getTarget(String searchString, String searchString1, String logline) {
+	    if (logline != null && (logline.contains(searchString) || logline.contains(searchString1))) {
+	        // Entferne 'self damage' und "'s" direkt ohne Regex
+	        logline = logline.replace("self damage ", "").replace("'s ", "");
+
+	        // Teile die Zeile anhand von Leerzeichen
+	        String[] tokens = logline.split(" ");
+
+	        String target = "";
+	        try {
+	            // Die Zeile wird von links nach rechts analysiert
+	            int idx = 3; // Ab dem Index 3 nach Datum, Uhrzeit und Name
+
+	            // Fähigkeit extrahieren
+	            StringBuilder ability = new StringBuilder(tokens[idx]);
+	            idx++;
+	            Set<String> validAbilities = new HashSet<>();
+	            validAbilities.add("hits");
+	            validAbilities.add("crits");
+	            validAbilities.add("heals");
+	            validAbilities.add("critically heals");
+
+	            // Durchlaufe die Tokens, bis wir auf eines der gültigen Trefferwörter stoßen
+	            while (idx < tokens.length && !validAbilities.contains(tokens[idx])) {
+	                ability.append(" ").append(tokens[idx]);
+	                idx++;
+	            }
+
+	            // Trefferart (hits, crits, heals, critically heals) finden
+	            String crits = tokens[idx];  // hits, crits, heals oder critically heals
+	            idx++;  // Zielname kommt danach
+
+	            // Ziel extrahieren (alles bis "for")
+	            target = tokens[idx];
+	            idx++;
+	            while (idx < tokens.length && !tokens[idx].equals("for")) {
+	                target += " " + tokens[idx];
+	                idx++;
+	            }
+
+	        } catch (Exception e) {
+	            System.out.println("Problem bei der Verarbeitung der Zeile: " + logline);
+	        }
+	        target = target.replaceAll("\\s+", "");
+	        return target;
+	    }
+
+	    return "";
+	}
+	
 		
 		public static void flushAllClasses()  {
 			WarriorUtils.warriorMap = new HashMap<>();
