@@ -24,6 +24,11 @@ If you only want to let it run you need a JRE; if you want to change code and bu
 If you only want to start the tool via doubleclick, download the jre msi installer
 ![image](https://github.com/user-attachments/assets/759b39a6-17f1-4e70-8b4d-f781f4ac1967)
 
+Another alternative is to download a open jdk (>17) from here: 
+https://jdk.java.net/archive/
+Unzip it and configure your path variable, that it will find this downloaded java.
+But if you not familar with those stuff choose the msi installer from openlogic for exampe (as described above)
+
 And then download my package, unzipp it and double click the TwowLogAnalyzer-versionjar
 
 
