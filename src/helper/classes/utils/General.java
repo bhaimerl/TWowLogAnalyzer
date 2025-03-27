@@ -2,6 +2,8 @@ package helper.classes.utils;
 
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -65,35 +67,50 @@ public class General {
 		return (ArrayList<String>) sunderLogs;
 	}
 	
-	public static ArrayList<String> getLogsUntilPLusTolerance(DateTime endTime, int addToleranceMs, ArrayList<String> completeLogs) {
-		ArrayList<String> intervallLogs = new ArrayList<>();
-		try {
-			for (String currentLine : completeLogs) {
-				DateTime currentLineDate = getTimeFromLogAsDateTime(currentLine);
-				if((currentLineDate.isBefore(endTime.plusMillis(addToleranceMs)) )) {
-					intervallLogs.add(currentLine);
-				}
-			}
-		}catch(Exception e) {
-			System.out.println("getLogsUntilPLusTolerance()"+e.getLocalizedMessage());
-		}
-		return intervallLogs;
-	}
+	
+	
 	
 	public static ArrayList<String> getLogsBeginningPLusTolerance(DateTime startTime, int addToleranceMs, ArrayList<String> completeLogs) {
-		ArrayList<String> intervallLogs = new ArrayList<>();
-		try {
-			for (String currentLine : completeLogs) {
-				DateTime currentLineDate = getTimeFromLogAsDateTime(currentLine);
-				if((currentLineDate.isAfter(startTime.plusMillis(addToleranceMs)))) {
-					intervallLogs.add(currentLine);
-				}
-			}
-		}catch(Exception e) {
-			System.out.println("getLogsBeginningPLusTolerance()"+e.getLocalizedMessage());
-		}
-		return intervallLogs;
-	}
+	    ArrayList<String> intervallLogs = new ArrayList<>();
+	    DateTime minStartTime = startTime.plusMillis(addToleranceMs);
+
+	    // Starte binäre Suche für den Startindex
+	    int startIndex = binarySearchLogs(completeLogs, minStartTime);
+
+	    // Falls kein passender Index gefunden wurde, den Index auf die Einfügeposition setzen
+	    if (startIndex < 0) {
+	        startIndex = -(startIndex + 1);
+	    }
+
+	    // Extrahiere alle Logs ab dem Startzeitpunkt
+	    for (int i = startIndex; i < completeLogs.size(); i++) {
+	        intervallLogs.add(completeLogs.get(i));
+	    }
+
+	    return intervallLogs;
+	}	
+	
+	
+	public static ArrayList<String> getLogsUntilPLusTolerance(DateTime endTime, int addToleranceMs, ArrayList<String> completeLogs) {
+	    ArrayList<String> intervallLogs = new ArrayList<>();
+	    DateTime maxEndTime = endTime.plusMillis(addToleranceMs);
+
+	    // Starte binäre Suche für den Startindex
+	    int endIndex = binarySearchLogs(completeLogs, maxEndTime);
+
+	    // Falls kein passender Index gefunden wurde, den Index auf die Einfügeposition setzen
+	    if (endIndex < 0) {
+	        endIndex = -(endIndex + 1);
+	    }
+
+	    // Extrahiere alle Logs, die bis zum Endzeitpunkt reichen
+	    for (int i = 0; i < endIndex; i++) {
+	        intervallLogs.add(completeLogs.get(i));
+	    }
+
+	    return intervallLogs;
+	}	
+	
 	
 	public static String getOnlyTimeFromDateTimeString(String dtstr) {
 		if(dtstr!=null && dtstr.length()>0) {
@@ -104,24 +121,50 @@ public class General {
 	}
 	
 	
-	public static ArrayList<String> getLogsWithinIntervallPLusTolerance(DateTime startTime, DateTime endTime, int addToleranceMs, ArrayList<String> completeLogs) {
-		ArrayList<String> intervallLogs = new ArrayList<>();
-		try {
-			for (String currentLine : completeLogs) {
-				DateTime currentLineDate = getTimeFromLogAsDateTime(currentLine);
-				if((currentLineDate.isAfter(startTime)  && currentLineDate.isBefore(endTime.plusMillis(addToleranceMs)) )) {
-					intervallLogs.add(currentLine);
-				}
-			}
-		}catch(Exception e) {
-			System.out.println("getLogsWithinIntervallPLusTolerance()"+e.getLocalizedMessage());
-		}
-		return intervallLogs;
-	}
 	
-	public static void bla() {
-		org.joda.time.DateTime dt =new org.joda.time.DateTime();
+	
+	//binäre suche
+	public static ArrayList<String> getLogsWithinIntervallPLusTolerance(DateTime startTime, DateTime endTime, int addToleranceMs, ArrayList<String> completeLogs) {
+
+
+	    ArrayList<String> intervallLogs = new ArrayList<>();
+	    DateTime maxEndTime = endTime.plusMillis(addToleranceMs);
+
+	    // Starte die binäre Suche
+	    int startIndex = binarySearchLogs(completeLogs, startTime);
+
+	    // Falls kein exakter Treffer gefunden wurde, korrigiere den Startindex
+	    if (startIndex < 0) {
+	        startIndex = -(startIndex + 1); // Nächstgelegene Einfügeposition
+	    }
+
+	    // Gehe durch die Logs und filtere die relevanten Einträge
+	    for (int i = startIndex; i < completeLogs.size(); i++) {
+	        String currentLine = completeLogs.get(i);
+	        DateTime currentLineDate = getTimeFromLogAsDateTime(currentLine);
+
+	        if (currentLineDate.isAfter(maxEndTime)) {
+	            break; // Keine weiteren Logs mehr nötig
+	        }
+	        if (!currentLineDate.isBefore(startTime)) { // Inklusive Startzeit
+	            intervallLogs.add(currentLine);
+	        }
+	    }
+	    return intervallLogs;
 	}
+
+    private static int binarySearchLogs(ArrayList<String> logs, DateTime targetTime) {
+        return Collections.binarySearch(logs, "", new Comparator<String>() {
+            @Override
+            public int compare(String log, String ignored) {
+                DateTime logTime = getTimeFromLogAsDateTime(log);
+                return logTime.compareTo(targetTime);
+            }
+        });
+    }
+	
+
+	
 	
 	//is afflicted by Sunder Armor (5).
 	public static String getSunderArmorStack(String logline) {

@@ -31,6 +31,7 @@ import helper.classes.utils.DeathCalculationUtils;
 import helper.classes.utils.DruidUtils;
 import helper.classes.utils.General;
 import helper.classes.utils.HunterUtils;
+import helper.classes.utils.LogsUtils;
 import helper.classes.utils.LootUtils;
 import helper.classes.utils.MageUtils;
 import helper.classes.utils.PaladinUtils;
@@ -151,6 +152,9 @@ public class MainGui {
 		        if(f.isFile()) {
 		        	General.flushAllGuild();
 					fileAsArrayList = FileUtils.getFileAsArrayList(choosenFileInclPath);
+					
+					//assure the logs are in correct order! (costs a bit calc time, but its worth it!
+					fileAsArrayList = LogsUtils.getDateTomeSortedLogs(fileAsArrayList);
 					
 					//WarlockShadowTranceCheck.getWarlockShadowTranceLogs(fileAsArrayList);
 					
