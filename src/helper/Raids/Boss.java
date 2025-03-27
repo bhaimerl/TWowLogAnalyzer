@@ -18,6 +18,7 @@ public class Boss implements Comparable<Boss> {
 	public String diedTime="";
 	public String helpedToSunderUntil5="";
 	public String sunderTimes="";
+	public String base64DmgString ="";
 
 	public ArrayList<String> exposedArmorAppliedist = new ArrayList<>();	
 	public ArrayList<String> exposedArmorFadesList = new ArrayList<>();	
@@ -203,4 +204,12 @@ public class Boss implements Comparable<Boss> {
 	public void setExposedArmorFadesList(ArrayList<String> exposedArmorFadesList) {
 		this.exposedArmorFadesList = exposedArmorFadesList;
 	}
+	public String getBase64DmgString() {
+		return base64DmgString;
+	}
+	public void setBase64DmgString(String base64DmgString) {
+		this.base64DmgString = base64DmgString;
+	}
+	
+	
 }

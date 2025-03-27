@@ -72,6 +72,8 @@ public class BossUtils {
 		}
 		Boss boss = new Boss();
 		boss.setName(bossName+suffix);
+		boss.setBase64DmgString(General.getBase64DmgStringForBoss(bossName, bossLogs));
+
 		HashMap<String, Integer> playerParryCount = new HashMap<>(); 
 		HashMap<String, String> playerDeathCause = new HashMap<>();
 		//Nightfall
@@ -224,6 +226,7 @@ public class BossUtils {
 			}
 		}
 		boss.setPlayerDeathCause(playerDeathCause);
+
 		if(boss.getFirstHitDate()!=null && boss.getSunderTimes()!=null) {
 			bossMap.put(bossName+suffix, boss);
 		} 
@@ -331,6 +334,9 @@ public class BossUtils {
 					strBuf.append("<td>"+boss.getNightFallProcs()+" | "+((boss.getNightFallDmg()/100)*10)+"</td>");					
 					strBuf.append("<td>"+General.getOnlyTimeFromDateTimeString(boss.getDiedTime())+"</td>");					
 					strBuf.append("</tr>");
+					strBuf.append("<tr><td colspan='14'>");
+					strBuf.append("<img width='100%' height='auto' src='data:image/png;base64,"+boss.getBase64DmgString()+"'>");
+					strBuf.append("</td></tr>");
 			}
 			strBuf.append("</table>");
 		}

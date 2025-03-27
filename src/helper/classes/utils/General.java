@@ -1,5 +1,9 @@
 package helper.classes.utils;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.StandardOpenOption;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -8,6 +12,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.StringTokenizer;
 import java.util.regex.Matcher;
@@ -18,9 +23,10 @@ import org.joda.time.DateTime;
 
 import helper.classes.Healer;
 import helper.classes.NameClassWrapper;
-import helper.classes.Player;
 import helper.classes.utils.besonderes.BarovUtils;
 import helper.classes.utils.besonderes.TradetLoot;
+import helper.diagrams.BossBarChart;
+import helper.diagrams.PlayerForBar;
 
 public class General {
 	public static String regexHitCrit = "(?:hits|crits) (\\w+)";
@@ -29,19 +35,58 @@ public class General {
 	public static String regexBlockLine = "(?:hits|crits) (\\w+) for (\\d+)\\. \\((\\d+) blocked\\)";
 	public static Pattern patternBlocks = Pattern.compile(regexBlockLine);
 	
-	public static ArrayList<String> getLogsFromBossByName(String bossname, ArrayList<String> completeLog) {
-		ArrayList<String> result = new ArrayList<>();
-		for (String currentLine : completeLog) {
-			if(currentLine.contains(bossname)) {
-				if(!currentLine.contains("Hunter's Mark") && !currentLine.contains("Essence of Sapphiron") && 
-				   !currentLine.contains("LOOT:") &&
-				   !currentLine.contains("Grobbulus casts Bombard Slime") && !currentLine.contains("Grobbulus begins to cast Bombard Slime.")) {
-					result.add(currentLine);
-				}
-			}
-		}
-		return result;
+	
+	public static  ArrayList<String> getLogsFromBossByName(String bossname, ArrayList<String> completeLog) {
+	    ArrayList<String> filteredLogs = completeLog.stream()
+	        .filter(line -> line.contains(bossname) &&
+	                !line.contains("Hunter's Mark") &&
+	                !line.contains("Essence of Sapphiron") &&
+	                !line.contains("LOOT:") &&
+	                !line.contains("Grobbulus casts Bombard Slime") &&
+	                !line.contains("Grobbulus begins to cast Bombard Slime."))
+	        .collect(Collectors.toCollection(ArrayList::new));
+	    return filteredLogs;
 	}
+	
+	
+    public static String getBase64DmgStringForBoss(String bossname, ArrayList<String> bossLogs) {
+        Map<String, Integer> damageMap = new HashMap<>();
+        String escapedBossname = Pattern.quote(bossname);
+        
+        Pattern damagePattern = Pattern.compile("\\d+/\\d+ \\d+:\\d+:\\d+\\.\\d+\\s+(\\w+) (?:'s )?(?:[a-zA-Z ]+ )?(?:hits|crits) " + escapedBossname + " for (\\d+)");
+        Pattern suffersPattern = Pattern.compile("\\d+/\\d+ \\d+:\\d+:\\d+\\.\\d+\\s+" + escapedBossname + " suffers (\\d+) [a-zA-Z]+ damage from (\\w+)");
+        
+        for (String line : bossLogs) {
+            Matcher damageMatcher = damagePattern.matcher(line);
+            Matcher suffersMatcher = suffersPattern.matcher(line);
+            if (damageMatcher.find()) {
+                String player = damageMatcher.group(1);
+                int damage = Integer.parseInt(damageMatcher.group(2));
+                damageMap.put(player, damageMap.getOrDefault(player, 0) + damage);
+            } else if (suffersMatcher.find()) {
+                int damage = Integer.parseInt(suffersMatcher.group(1));
+                String player = suffersMatcher.group(2);
+                damageMap.put(player, damageMap.getOrDefault(player, 0) + damage);
+            }
+        }
+        
+        List<Map.Entry<String, Integer>> sortedDamage = new ArrayList<>(damageMap.entrySet());
+        sortedDamage.sort((a, b) -> Integer.compare(b.getValue(), a.getValue()));
+//        System.out.println("############ "+bossname+" ##############");
+        
+        ArrayList<PlayerForBar> playerForBarChart = new ArrayList<PlayerForBar>();
+        
+        for (Map.Entry<String, Integer> entry : sortedDamage) {
+        	playerForBarChart.add(new PlayerForBar(entry.getKey(), Players.getClassFromPlayer(entry.getKey()), entry.getValue()));
+//            System.out.println(entry.getKey() + " caused " + entry.getValue() + " damage.");
+        }        
+        bossname = bossname.replaceAll(" ", "");
+    	BossBarChart chart = new BossBarChart(bossname, playerForBarChart);
+    	String str = chart.getBase64FromChart();
+    	return str;
+    }
+
+
 	
 	public static String getPlayerNameHitted(String logline) {
 		String retVal = null;
