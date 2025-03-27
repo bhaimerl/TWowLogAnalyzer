@@ -246,22 +246,6 @@ public class BossUtils {
 			strBuf.append("<body>");				
 			strBuf.append("<table id='bossStats' class='classTable' align=\"left\" width='100%'>");
 			strBuf.append("<tr style='background-color: gray;'><td colspan='14'>BossStats</td></tr>");
-			strBuf.append("<tr>");
-			strBuf.append("<th>Name</th>");
-			strBuf.append("<th>FirstHit</th>");
-			strBuf.append("<th>First 5 Sunders</th>");
-			strBuf.append("<th title='Players who initial helped to sunder to 5 Stacks'>First Sunder Appliers</th>");
-			strBuf.append("<th>EArmor applied-fades</th>");
-			strBuf.append("<th>Faerie Fire</th>");
-			strBuf.append("<th>CoE applied-fades</th>");
-			strBuf.append("<th>CoS applied-fades</th>");
-			strBuf.append("<th>CoR applied-fades</th>");
-			strBuf.append("<th>Dispell/Decurse/Cleanse...</th>");
-			strBuf.append("<th title='Every parry by boss is dps loss for us + probably parry haste for boss :) '>Boss Parried >1</th>");			
-			strBuf.append("<th>Player Died</th>");			
-			strBuf.append("<th title='this dmg is additional thanks to nightfall'>Nightfall procs/dmg</th>");			
-			strBuf.append("<th>Boss died</th>");
-			strBuf.append("</tr>");
 			//Ballertony: [sunders=122, deathWish=18, windFury=236, crusader=74, wrath=264, flametongue=314, flurry=313, enrage=161]
 			//System.out.println("Name | Sunders | Deathwish | WindfuryProcs | CrusaderProcs | extra rage from unbridled wrath | FlametongueProcs | Flurry | Enrage");
 			Collections.sort(sortedBosses);
@@ -270,7 +254,24 @@ public class BossUtils {
 			for (Boss boss : sortedBosses) {
 				if(boss.getName()==null) {
 					continue;
-				}
+				}			
+				strBuf.append("<tr>");
+				strBuf.append("<th>Name</th>");
+				strBuf.append("<th>FirstHit</th>");
+				strBuf.append("<th>First 5 Sunders</th>");
+				strBuf.append("<th title='Players who initial helped to sunder to 5 Stacks'>First Sunder Appliers</th>");
+				strBuf.append("<th>EArmor applied-fades</th>");
+				strBuf.append("<th>Faerie Fire</th>");
+				strBuf.append("<th>CoE applied-fades</th>");
+				strBuf.append("<th>CoS applied-fades</th>");
+				strBuf.append("<th>CoR applied-fades</th>");
+				strBuf.append("<th>Dispell/Decurse/Cleanse...</th>");
+				strBuf.append("<th title='Every parry by boss is dps loss for us + probably parry haste for boss :) '>Boss Parried >1</th>");			
+				strBuf.append("<th>Player Died</th>");			
+				strBuf.append("<th title='this dmg is additional thanks to nightfall'>Nightfall procs/dmg</th>");			
+				strBuf.append("<th>Boss died</th>");
+				strBuf.append("</tr>");
+
 					strBuf.append("<tr>");		
 					//wipeOrReset?
 					String bossName = boss.getName();
