@@ -47,8 +47,8 @@ public class DebuffTimelineChart {
         tfc.calcCurseOfShadows(boss.getCurseOfShadowsAppliedList(), boss.getCurseOfShadowsFadedList());
         tfc.calcNightfall(boss.getNightFallAppliedList(), boss.getNightFallFadedList());
         
-        System.out.println("Applied: "+boss.getFaerieFireAppliedist());
-        System.out.println("Applied: "+boss.getFaerieFireFadesList());
+//        System.out.println("Applied: "+boss.getFaerieFireAppliedist());
+//        System.out.println("Applied: "+boss.getFaerieFireFadesList());
         
     	
         TimeSeriesCollection dataset = new TimeSeriesCollection();
