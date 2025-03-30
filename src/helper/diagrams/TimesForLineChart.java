@@ -104,12 +104,14 @@ public class TimesForLineChart {
                     String appliedTime = givenAppliedTimes.get(j);
 
                     // Vergleiche die Zeiten auf der Sekundebene
-                    if (appliedTime.substring(0, 8).equals(fadedTime.substring(0, 8))) {
-                        // Wenn sie übereinstimmen, entferne den Eintrag aus fadedTimes
-                        givenFadedTimes.remove(i);
-                        i--; // Decrement to recheck the current index after removal
-                        break; // Wenn der Eintrag entfernt wurde, abbrechen
-                    }
+                    try {
+                        if (appliedTime.substring(0, 8).equals(fadedTime.substring(0, 8))) {
+                            // Wenn sie übereinstimmen, entferne den Eintrag aus fadedTimes
+                            givenFadedTimes.remove(i);
+                            i--; // Decrement to recheck the current index after removal
+                            break; // Wenn der Eintrag entfernt wurde, abbrechen
+                        }
+                    }catch(Exception e) {System.out.println("cant check debuff fadet time");}
                 }
             }
 
