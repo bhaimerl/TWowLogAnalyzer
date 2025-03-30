@@ -12,11 +12,8 @@ import org.joda.time.Seconds;
 import helper.Raids.Boss;
 import helper.Raids.RaidBossMapping;
 import helper.classes.utils.besonderes.NightFallUtils;
-import helper.diagrams.BossBarChart;
 import helper.diagrams.DebuffTimelineChart;
 import helper.diagrams.DiagrammUtis;
-import helper.diagrams.EventLineChart;
-import helper.diagrams.TimesForLineChart;
 
 public class BossUtils {
 	
@@ -191,6 +188,18 @@ public class BossUtils {
 			if(string.contains("Curse of the Elements fades from "+bossName) ) {
 				boss.getCurseOfElementsFadedList().add(General.getEntryAtPosition(string, 1).substring(0,12));
 			}
+			
+			
+			//Nightfall:
+//		    Spell Vulnerability (1).
+//		    Spell Vulnerability fades from 
+			if(string.contains("Spell Vulnerability (1).") ) {
+				boss.getNightFallAppliedList().add(General.getEntryAtPosition(string, 1).substring(0,12));
+			}
+			if(string.contains("Spell Vulnerability fades from "+bossName) ) {
+				boss.getNightFallFadedList().add(General.getEntryAtPosition(string, 1).substring(0,12));
+			}
+
 
 		}
 		boss.setPlayerParryCount(playerParryCount);
@@ -242,7 +251,7 @@ public class BossUtils {
 		boss.setPlayerDeathCause(playerDeathCause);
 
 		if(boss.getFirstHitDate()!=null && boss.getSunderTimes()!=null) {
-			boss.setBase64DebuffsString(DiagrammUtis.getBase64FromChart(DebuffTimelineChart.createChart(boss), 1200, 110));
+			boss.setBase64DebuffsString(DiagrammUtis.getBase64FromChart(DebuffTimelineChart.createChart(boss), 1200, 250));
 			bossMap.put(bossName+suffix, boss);
 		} 
 	}	

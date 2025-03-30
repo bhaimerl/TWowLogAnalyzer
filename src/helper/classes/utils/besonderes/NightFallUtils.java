@@ -12,8 +12,6 @@ public class NightFallUtils {
     		calcNightfallEffect(bossLogs, boss);
     }
 	
-	
-	
 	public static ArrayList<ArrayList<String>> getAllLogsWithinElementalVulnerability(ArrayList<String> bossLogs) {
 		ArrayList<ArrayList<String>> resultComplete = new ArrayList<>();
 		ArrayList<String> dmgIntervallWIthingSpellVulnera = new ArrayList<>();

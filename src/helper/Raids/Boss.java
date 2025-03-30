@@ -24,6 +24,9 @@ public class Boss implements Comparable<Boss> {
 	public String base64DebuffsString ="";
 
 
+	
+	public ArrayList<String> nightFallAppliedList = new ArrayList<String>();
+	public ArrayList<String> nightFallFadedList = new ArrayList<String>();
 	public ArrayList<String> faerieFireAppliedist = new ArrayList<>();	
 	public ArrayList<String> faerieFireFadesList = new ArrayList<>();	
 	public ArrayList<String> sunderArmorAppliedist = new ArrayList<>();	
@@ -259,6 +262,18 @@ public class Boss implements Comparable<Boss> {
 	}
 	public void setBase64DebuffsString(String base64DebuffsString) {
 		this.base64DebuffsString = base64DebuffsString;
+	}
+	public ArrayList<String> getNightFallAppliedList() {
+		return nightFallAppliedList;
+	}
+	public void setNightFallAppliedList(ArrayList<String> nightFallAppliedList) {
+		this.nightFallAppliedList = nightFallAppliedList;
+	}
+	public ArrayList<String> getNightFallFadedList() {
+		return nightFallFadedList;
+	}
+	public void setNightFallFadedList(ArrayList<String> nightFallFadedList) {
+		this.nightFallFadedList = nightFallFadedList;
 	}
 	
 	

@@ -45,13 +45,15 @@ public class DebuffTimelineChart {
         tfc.calcCurseOfElements(boss.getCurseOfElementsAppliedList(), boss.getCurseOfElementsFadedList());
         tfc.calcCurseOfRecklessness(boss.getCurseOfRecklessnessAppliedList(), boss.getCurseOfRecklessnessFadedList());
         tfc.calcCurseOfShadows(boss.getCurseOfShadowsAppliedList(), boss.getCurseOfShadowsFadedList());
+        tfc.calcNightfall(boss.getNightFallAppliedList(), boss.getNightFallFadedList());
     	
         TimeSeriesCollection dataset = new TimeSeriesCollection();
-        dataset.addSeries(createSeries("Faerie Fire", tfc.getFaerieFireAppliedTimes(), tfc.getFaerieFireFadedTimes(), 5));
-        dataset.addSeries(createSeries("Sunder Armor", tfc.getSunderArmorAppliedTimes(), tfc.getSunderArmorFadedTimes(), 4));
-        dataset.addSeries(createSeries("Curse of Elements", tfc.getCurseOfElementsAppliedTimes(), tfc.getCurseOfElementsFadedTimes(), 3));
-        dataset.addSeries(createSeries("Curse of Reck", tfc.getCurseOfRecklessnessAppliedTimes(), tfc.getCurseOfRecklessnessFadedTimes(), 2));
-        dataset.addSeries(createSeries("Curse of Shadows", tfc.getCurseOfShdowsAppliedTimes(), tfc.getCurseOfShdowsFadedTimes(), 1));
+        dataset.addSeries(createSeries("Faerie Fire", tfc.getFaerieFireAppliedTimes(), tfc.getFaerieFireFadedTimes(), 6));
+        dataset.addSeries(createSeries("Sunder Armor", tfc.getSunderArmorAppliedTimes(), tfc.getSunderArmorFadedTimes(), 5));
+        dataset.addSeries(createSeries("Curse of Elements", tfc.getCurseOfElementsAppliedTimes(), tfc.getCurseOfElementsFadedTimes(), 4));
+        dataset.addSeries(createSeries("Curse of Reck", tfc.getCurseOfRecklessnessAppliedTimes(), tfc.getCurseOfRecklessnessFadedTimes(), 3));
+        dataset.addSeries(createSeries("Curse of Shadows", tfc.getCurseOfShdowsAppliedTimes(), tfc.getCurseOfShdowsFadedTimes(), 2));
+        dataset.addSeries(createSeries("Nightfall", tfc.getNightFallAppliedTimes(), tfc.getNightFallFadedTimes(), 1));
         dataset.addSeries(createSeries("Boss lifetime", new String[]{boss.getFirstHitTimeOnly()}, new String[]{boss.getDiedTime()}, 0));
 
         JFreeChart chart = ChartFactory.createTimeSeriesChart(
@@ -61,7 +63,7 @@ public class DebuffTimelineChart {
         XYLineAndShapeRenderer renderer = new XYLineAndShapeRenderer();
 
         // Set custom Y-axis labels
-        String[] labels = {"Boss Lifetime", "Curse of Shadows", "Curse of Reck", "Curse of Elements", "Sunder Armor", "Faerie Fire"};
+        String[] labels = {"Boss Lifetime", "Nightfall", "Curse of Shadows", "Curse of Reck", "Curse of Elements", "Sunder Armor", "Faerie Fire"};
         SymbolAxis yAxis = new SymbolAxis("", labels);
         yAxis.setTickLabelFont(new Font("Arial", Font.BOLD, 9));
         yAxis.setGridBandsVisible(false); // Optional: Hide background bands
