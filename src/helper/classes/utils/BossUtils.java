@@ -12,6 +12,11 @@ import org.joda.time.Seconds;
 import helper.Raids.Boss;
 import helper.Raids.RaidBossMapping;
 import helper.classes.utils.besonderes.NightFallUtils;
+import helper.diagrams.BossBarChart;
+import helper.diagrams.DebuffTimelineChart;
+import helper.diagrams.DiagrammUtis;
+import helper.diagrams.EventLineChart;
+import helper.diagrams.TimesForLineChart;
 
 public class BossUtils {
 	
@@ -97,6 +102,7 @@ public class BossUtils {
 			String string = sunderlogs.get(i);
 			if(string.contains("is afflicted by Sunder Armor (") || string.contains("gains Sunder Armor (")) {
 				boss.setSunderTimes((boss.getSunderTimes()+" "+General.getEntryAtPosition(string, 1)).trim()+"<br>");
+				boss.getSunderArmorAppliedist().add(General.getEntryAtPosition(string, 1).substring(0,12).trim());
 			}
 			if(string.contains("is afflicted by Sunder Armor (5).") || string.contains("gains Sunder Armor (5).")) {
 				//sunderLogsAppliersUntil5.add(string);
@@ -107,9 +113,14 @@ public class BossUtils {
 		
 		
 		//faerie fire
-		for (String string : bossLogs) {
+		for (String string : bossLogs) { 
 			if(string.contains("is afflicted by Faerie Fire ") || string.contains("gains Faerie Fire ")) {
 				boss.setFaerieFireApplied((boss.getFaerieFireApplied()+" "+General.getEntryAtPosition(string, 1).substring(0,8)).trim()+"<br>");
+				boss.getFaerieFireAppliedist().add(General.getEntryAtPosition(string, 1).substring(0,12).trim());
+			}			
+			//fades 
+			if(string.contains("Faerie Fire (Feral) fades")) {
+				boss.getFaerieFireFadesList().add(General.getEntryAtPosition(string, 1).substring(0,12).trim());				
 			}
 			
 		}
@@ -119,6 +130,8 @@ public class BossUtils {
 			//crits mit Cthun sonderlocke
 			if(string.contains("casts Curse of Shadows on "+bossName) || string.contains("casts Curse of the Elements on "+bossName) || string.contains("casts Curse of Recklessness on "+bossName) || string.contains("hits "+bossName) || string.contains("crits "+bossName) || string.contains("crits Eye of "+bossName) || string.contains("hits Eye of "+bossName)) {
 				boss.setFirstHitTime(General.getEntryAtPosition(string, 0)+" "+General.getEntryAtPosition(string, 1));
+				boss.setFirstHitTimeOnly(General.getEntryAtPosition(string, 1));
+				
 				break;
 			}
 		} 
@@ -126,7 +139,8 @@ public class BossUtils {
 		for (int a=bossLogs.size()-1;a>0;a--) {
 			String currentLine = bossLogs.get(a);
 			if(currentLine.contains(boss.getName()+" dies")) {
-				boss.setDiedTime(General.getEntryAtPosition(currentLine, 0)+" "+General.getEntryAtPosition(currentLine, 1));
+				boss.setDiedTime(General.getEntryAtPosition(currentLine, 1));
+				boss.setSetDiedTimeWithDate(General.getEntryAtPosition(currentLine, 0)+" "+General.getEntryAtPosition(currentLine, 1));
 				break;
 			}
 		}
@@ -147,35 +161,35 @@ public class BossUtils {
 			//Curses applied
 			if(string.contains(bossName+" is afflicted by Curse") || string.contains(bossName+" gains Curse")) {
 				if(string.contains(bossName+" is afflicted by Curse of Recklessness") || string.contains(bossName+" gains Curse of Recklessness")) {
-					boss.getCurseOfRecklessnessAppliedList().add(General.getEntryAtPosition(string, 1).substring(0,8));
+					boss.getCurseOfRecklessnessAppliedList().add(General.getEntryAtPosition(string, 1).substring(0,12));
 				}
 				if(string.contains(bossName+" is afflicted by Curse of Shadow") || string.contains(bossName+" gains Curse of Shadow")) {
-					boss.getCurseOfShadowsAppliedList().add(General.getEntryAtPosition(string, 1).substring(0,8));
+					boss.getCurseOfShadowsAppliedList().add(General.getEntryAtPosition(string, 1).substring(0,12));
 				}
 				if(string.contains(bossName+" is afflicted by Curse of the Elements") || string.contains(bossName+" gains Curse of the Elements")) {
-					boss.getCurseOfElementsAppliedList().add(General.getEntryAtPosition(string, 1).substring(0,8));
+					boss.getCurseOfElementsAppliedList().add(General.getEntryAtPosition(string, 1).substring(0,12));
 				}
 			}
 			
 			
 			if(string.contains(bossName+" is afflicted by Expose Armor (1)")) {
-				boss.getExposedArmorAppliedist().add(General.getEntryAtPosition(string, 1).substring(0,8));
+				boss.getExposedArmorAppliedist().add(General.getEntryAtPosition(string, 1).substring(0,12));
 			}			
 			//Curses fades
 			if(string.contains("Expose Armor fades from "+bossName) ) {
-				boss.getExposedArmorFadesList().add(General.getEntryAtPosition(string, 1).substring(0,8));
+				boss.getExposedArmorFadesList().add(General.getEntryAtPosition(string, 1).substring(0,12));
 			}
 			
 			
 			//Curses fades
 			if(string.contains("Curse of Recklessness fades from "+bossName) ) {
-				boss.getCurseOfRecklessnessFadedList().add(General.getEntryAtPosition(string, 1).substring(0,8));
+				boss.getCurseOfRecklessnessFadedList().add(General.getEntryAtPosition(string, 1).substring(0,12));
 			}
 			if(string.contains("Curse of Shadow fades from "+bossName) ) {
-				boss.getCurseOfShadowsFadedList().add(General.getEntryAtPosition(string, 1).substring(0,8));
+				boss.getCurseOfShadowsFadedList().add(General.getEntryAtPosition(string, 1).substring(0,12));
 			}
 			if(string.contains("Curse of the Elements fades from "+bossName) ) {
-				boss.getCurseOfElementsFadedList().add(General.getEntryAtPosition(string, 1).substring(0,8));
+				boss.getCurseOfElementsFadedList().add(General.getEntryAtPosition(string, 1).substring(0,12));
 			}
 
 		}
@@ -228,9 +242,11 @@ public class BossUtils {
 		boss.setPlayerDeathCause(playerDeathCause);
 
 		if(boss.getFirstHitDate()!=null && boss.getSunderTimes()!=null) {
+			boss.setBase64DebuffsString(DiagrammUtis.getBase64FromChart(DebuffTimelineChart.createChart(boss), 1200, 110));
 			bossMap.put(bossName+suffix, boss);
 		} 
 	}	
+	
 	
 	public static String getBossStatsHTML() {
 		StringBuffer strBuf = new StringBuffer();
@@ -255,7 +271,7 @@ public class BossUtils {
 				if(boss.getName()==null) {
 					continue;
 				}			
-				strBuf.append("<tr>");
+				strBuf.append("<tr>"); 
 				strBuf.append("<th>Name</th>");
 				strBuf.append("<th>FirstHit</th>");
 				strBuf.append("<th>First 5 Sunders</th>");
@@ -278,7 +294,7 @@ public class BossUtils {
 					if(bossName.contains("(") && bossName.contains(")")) {
 						strBuf.append("<td style='color: red;'>"+bossName+"</td>");
 					} else {
-						strBuf.append("<td>"+bossName+"</td>");
+						strBuf.append("<td><b>"+bossName+"</b></td>");
 					}
 					strBuf.append("<td>"+General.getOnlyTimeFromDateTimeString(boss.getFirstHitTime())+"</td>");
 					strBuf.append("<td>"+boss.getSunderTimes()+"</td>");
@@ -288,7 +304,11 @@ public class BossUtils {
 						strBuf.append(exposedEntry+"<br>");
 					}
 					strBuf.append("</td>");
-					strBuf.append("<td>"+boss.getFaerieFireApplied()+"</td>");
+					strBuf.append("<td>");
+					for (String elementsEntry : mergeCursesAppliedAndFades(boss.getFaerieFireAppliedist(), boss.getFaerieFireFadesList())) {
+						strBuf.append(elementsEntry+"<br>");
+					}
+					strBuf.append("</td>");
 					strBuf.append("<td>");
 					for (String elementsEntry : mergeCursesAppliedAndFades(boss.getCurseOfElementsAppliedList(), boss.getCurseOfElementsFadedList())) {
 						strBuf.append(elementsEntry+"<br>");
@@ -333,8 +353,11 @@ public class BossUtils {
 					}
 					strBuf.append("</td>");					
 					strBuf.append("<td>"+boss.getNightFallProcs()+" | "+((boss.getNightFallDmg()/100)*10)+"</td>");					
-					strBuf.append("<td>"+General.getOnlyTimeFromDateTimeString(boss.getDiedTime())+"</td>");					
+					strBuf.append("<td>"+General.getOnlyTimeFromDateTimeString(boss.getSetDiedTimeWithDate())+"</td>");					
 					strBuf.append("</tr>");
+					strBuf.append("<tr><td colspan='14'>");
+					strBuf.append("<img width='100%' height='auto' src='data:image/png;base64,"+boss.getBase64DebuffsString()+"'>");
+					strBuf.append("</td></tr>");
 					strBuf.append("<tr><td colspan='14'>");
 					strBuf.append("<img width='100%' height='auto' src='data:image/png;base64,"+boss.getBase64DmgString()+"'>");
 					strBuf.append("</td></tr>");

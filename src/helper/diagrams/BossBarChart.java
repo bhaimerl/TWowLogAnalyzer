@@ -2,6 +2,7 @@ package helper.diagrams;
 
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.Paint;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -15,6 +16,8 @@ import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.ChartUtils;
 import org.jfree.chart.JFreeChart;
+import org.jfree.chart.axis.CategoryAxis;
+import org.jfree.chart.axis.ValueAxis;
 import org.jfree.chart.plot.CategoryPlot;
 import org.jfree.chart.plot.PlotOrientation;
 import org.jfree.chart.renderer.category.BarRenderer;
@@ -23,6 +26,9 @@ import org.jfree.data.category.DefaultCategoryDataset;
 import helper.classes.utils.Constants;
 
 public class BossBarChart extends JFrame {
+	
+	private int widht = 1200;
+	private int height = 350;
 
     private static final long serialVersionUID = 1L;
     JFreeChart chart = null;
@@ -43,15 +49,16 @@ public class BossBarChart extends JFrame {
                 dataset,
                 PlotOrientation.HORIZONTAL,
                 false,                      // Legende deaktivieren
-                true,
-                true
+                false,
+                false
         );
 
         // Diagramm horizontal drehen
         CategoryPlot plot = chart.getCategoryPlot();
         plot.setOrientation(PlotOrientation.HORIZONTAL);
-        Color myColor = Color.decode(Constants.WARRIORCOLOR);
-
+        
+        
+        
         // Benutzerdefinierten Renderer erstellen, der jedem Balken eine andere Farbe gibt
         BarRenderer renderer = new BarRenderer() {
             // Farben, die du verwenden möchtest:
@@ -65,13 +72,20 @@ public class BossBarChart extends JFrame {
         };
 
         // Setze den benutzerdefinierten Renderer in den Plot
+        renderer.setDefaultItemLabelsVisible(true);
+        CategoryAxis xAxis = plot.getDomainAxis();
+        ValueAxis rangeAxis = plot.getRangeAxis();
+        
+        
+        rangeAxis.setTickLabelFont(new Font("Arial", Font.PLAIN, 9));
+        xAxis.setTickLabelFont(new Font("Arial", Font.PLAIN, 10)); 
+                
         plot.setRenderer(renderer);
 
         // Chart in ein Panel einbetten
         ChartPanel chartPanel = new ChartPanel(chart);
-        chartPanel.setPreferredSize(new Dimension(1200, 600));
+        chartPanel.setPreferredSize(new Dimension(widht, height));
         setContentPane(chartPanel);
-        
         
 //        System.out.println("BILD Base64 "+getBase64FromChart(chart));
 //        
@@ -86,17 +100,7 @@ public class BossBarChart extends JFrame {
     
     
     public String getBase64FromChart() {
-        try (ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream()) {
-            // PNG-Daten in den ByteArrayOutputStream schreiben
-            ChartUtils.writeChartAsPNG(byteArrayOutputStream, chart, 1200, 600);
-
-            // Base64-kodieren und zurückgeben
-            byte[] byteArray = byteArrayOutputStream.toByteArray();
-            return Base64.getEncoder().encodeToString(byteArray);
-        } catch (IOException e) {
-            e.printStackTrace();
-            return null;
-        }
+    	return DiagrammUtis.getBase64FromChart(chart, widht, height);
     }
 
     

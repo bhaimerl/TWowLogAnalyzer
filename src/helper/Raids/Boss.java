@@ -15,11 +15,19 @@ public class Boss implements Comparable<Boss> {
 	
 	public String name;
 	public String firstHitTime;
+	public String firstHitTimeOnly;
 	public String diedTime="";
+	public String setDiedTimeWithDate="";
 	public String helpedToSunderUntil5="";
 	public String sunderTimes="";
 	public String base64DmgString ="";
+	public String base64DebuffsString ="";
 
+
+	public ArrayList<String> faerieFireAppliedist = new ArrayList<>();	
+	public ArrayList<String> faerieFireFadesList = new ArrayList<>();	
+	public ArrayList<String> sunderArmorAppliedist = new ArrayList<>();	
+	public ArrayList<String> sunderArmorFadesList = new ArrayList<>();	
 	public ArrayList<String> exposedArmorAppliedist = new ArrayList<>();	
 	public ArrayList<String> exposedArmorFadesList = new ArrayList<>();	
 	public ArrayList<String> curseOfShadowsAppliedList = new ArrayList<>();;
@@ -210,6 +218,49 @@ public class Boss implements Comparable<Boss> {
 	public void setBase64DmgString(String base64DmgString) {
 		this.base64DmgString = base64DmgString;
 	}
+	public ArrayList<String> getSunderArmorAppliedist() {
+		return sunderArmorAppliedist;
+	}
+	public void setSunderArmorAppliedist(ArrayList<String> sunderArmorAppliedist) {
+		this.sunderArmorAppliedist = sunderArmorAppliedist;
+	}
+	public ArrayList<String> getSunderArmorFadesList() {
+		return sunderArmorFadesList;
+	}
+	public void setSunderArmorFadesList(ArrayList<String> sunderArmorFadesList) {
+		this.sunderArmorFadesList = sunderArmorFadesList;
+	}
+	public ArrayList<String> getFaerieFireAppliedist() {
+		return faerieFireAppliedist;
+	}
+	public void setFaerieFireAppliedist(ArrayList<String> faerieFireAppliedist) {
+		this.faerieFireAppliedist = faerieFireAppliedist;
+	}
+	public ArrayList<String> getFaerieFireFadesList() {
+		return faerieFireFadesList;
+	}
+	public void setFaerieFireFadesList(ArrayList<String> faerieFireFadesList) {
+		this.faerieFireFadesList = faerieFireFadesList;
+	}
+	public String getSetDiedTimeWithDate() {
+		return setDiedTimeWithDate;
+	}
+	public void setSetDiedTimeWithDate(String setDiedTimeWithDate) {
+		this.setDiedTimeWithDate = setDiedTimeWithDate;
+	}
+	public String getFirstHitTimeOnly() {
+		return firstHitTimeOnly;
+	}
+	public void setFirstHitTimeOnly(String firstHitTimeOnly) {
+		this.firstHitTimeOnly = firstHitTimeOnly;
+	}
+	public String getBase64DebuffsString() {
+		return base64DebuffsString;
+	}
+	public void setBase64DebuffsString(String base64DebuffsString) {
+		this.base64DebuffsString = base64DebuffsString;
+	}
+	
 	
 	
 }
