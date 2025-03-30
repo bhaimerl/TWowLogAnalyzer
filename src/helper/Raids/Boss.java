@@ -16,7 +16,9 @@ public class Boss implements Comparable<Boss> {
 	public String name;
 	public String firstHitTime;
 	public String firstHitTimeOnly;
+	
 	public String diedTime="";
+	public String diedTimeOnly="";
 	public String setDiedTimeWithDate="";
 	public String helpedToSunderUntil5="";
 	public String sunderTimes="";
@@ -274,6 +276,12 @@ public class Boss implements Comparable<Boss> {
 	}
 	public void setNightFallFadedList(ArrayList<String> nightFallFadedList) {
 		this.nightFallFadedList = nightFallFadedList;
+	}
+	public String getDiedTimeOnly() {
+		return diedTimeOnly;
+	}
+	public void setDiedTimeOnly(String diedTimeOnly) {
+		this.diedTimeOnly = diedTimeOnly;
 	}
 	
 	

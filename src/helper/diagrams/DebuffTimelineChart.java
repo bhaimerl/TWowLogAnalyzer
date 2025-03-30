@@ -2,16 +2,12 @@ package helper.diagrams;
 
 import java.awt.BasicStroke;
 import java.awt.Font;
-import java.io.File;
-import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import org.jfree.chart.ChartFactory;
-import org.jfree.chart.ChartUtils;
 import org.jfree.chart.JFreeChart;
-import org.jfree.chart.axis.CategoryAxis;
 import org.jfree.chart.axis.DateAxis;
 import org.jfree.chart.axis.SymbolAxis;
 import org.jfree.chart.axis.ValueAxis;
@@ -39,7 +35,9 @@ public class DebuffTimelineChart {
     public static JFreeChart createChart(Boss boss) {
     	
     	
-        TimesForLineChart tfc = new TimesForLineChart(boss.getFirstHitTime(), boss.getDiedTime());
+        TimesForLineChart tfc = new TimesForLineChart(boss.getFirstHitTimeOnly(), boss.getDiedTimeOnly());
+        System.out.println("Start " + boss.getFirstHitTimeOnly());
+        System.out.println("End " + boss.getDiedTimeOnly());
         tfc.calculateFaerieFire(boss.getFaerieFireAppliedist(), boss.getFaerieFireFadesList());
         tfc.calculateSunderArmor(boss.getSunderArmorAppliedist(), boss.getSunderArmorFadesList());
         tfc.calcCurseOfElements(boss.getCurseOfElementsAppliedList(), boss.getCurseOfElementsFadedList());
@@ -58,7 +56,7 @@ public class DebuffTimelineChart {
         dataset.addSeries(createSeries("Curse of Reck", tfc.getCurseOfRecklessnessAppliedTimes(), tfc.getCurseOfRecklessnessFadedTimes(), 3));
         dataset.addSeries(createSeries("Curse of Shadows", tfc.getCurseOfShdowsAppliedTimes(), tfc.getCurseOfShdowsFadedTimes(), 2));
         dataset.addSeries(createSeries("Nightfall", tfc.getNightFallAppliedTimes(), tfc.getNightFallFadedTimes(), 1));
-        dataset.addSeries(createSeries("Boss lifetime", new String[]{boss.getFirstHitTimeOnly()}, new String[]{boss.getDiedTime()}, 0));
+        dataset.addSeries(createSeries("Boss lifetime", new String[]{boss.getFirstHitTimeOnly()}, new String[]{boss.getDiedTimeOnly()}, 0));
 
         JFreeChart chart = ChartFactory.createTimeSeriesChart(
                 "", "", "", dataset, false, true, false); // No legend

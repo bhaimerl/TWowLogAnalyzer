@@ -128,7 +128,6 @@ public class BossUtils {
 			if(string.contains("casts Curse of Shadows on "+bossName) || string.contains("casts Curse of the Elements on "+bossName) || string.contains("casts Curse of Recklessness on "+bossName) || string.contains("hits "+bossName) || string.contains("crits "+bossName) || string.contains("crits Eye of "+bossName) || string.contains("hits Eye of "+bossName)) {
 				boss.setFirstHitTime(General.getEntryAtPosition(string, 0)+" "+General.getEntryAtPosition(string, 1));
 				boss.setFirstHitTimeOnly(General.getEntryAtPosition(string, 1));
-				
 				break;
 			}
 		} 
@@ -136,8 +135,8 @@ public class BossUtils {
 		for (int a=bossLogs.size()-1;a>0;a--) {
 			String currentLine = bossLogs.get(a);
 			if(currentLine.contains(boss.getName()+" dies")) {
-				boss.setDiedTime(General.getEntryAtPosition(currentLine, 1));
-				boss.setSetDiedTimeWithDate(General.getEntryAtPosition(currentLine, 0)+" "+General.getEntryAtPosition(currentLine, 1));
+				boss.setDiedTime(General.getEntryAtPosition(currentLine, 0)+" "+General.getEntryAtPosition(currentLine, 1));
+				boss.setDiedTimeOnly(General.getEntryAtPosition(currentLine, 1));
 				break;
 			}
 		}
