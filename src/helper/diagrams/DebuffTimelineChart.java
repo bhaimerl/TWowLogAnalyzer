@@ -46,6 +46,10 @@ public class DebuffTimelineChart {
         tfc.calcCurseOfRecklessness(boss.getCurseOfRecklessnessAppliedList(), boss.getCurseOfRecklessnessFadedList());
         tfc.calcCurseOfShadows(boss.getCurseOfShadowsAppliedList(), boss.getCurseOfShadowsFadedList());
         tfc.calcNightfall(boss.getNightFallAppliedList(), boss.getNightFallFadedList());
+        
+        System.out.println("Applied: "+boss.getFaerieFireAppliedist());
+        System.out.println("Applied: "+boss.getFaerieFireFadesList());
+        
     	
         TimeSeriesCollection dataset = new TimeSeriesCollection();
         dataset.addSeries(createSeries("Faerie Fire", tfc.getFaerieFireAppliedTimes(), tfc.getFaerieFireFadedTimes(), 6));
@@ -78,7 +82,7 @@ public class DebuffTimelineChart {
 
         plot.setRenderer(renderer);
         DateAxis domainAxis = (DateAxis) plot.getDomainAxis();
-        domainAxis.setDateFormatOverride(new SimpleDateFormat("HH:mm:ss"));
+        domainAxis.setDateFormatOverride(new SimpleDateFormat("HH:mm:ss.SSS"));
         ValueAxis rangeAxis = plot.getRangeAxis();
         
         rangeAxis.setTickLabelFont(new Font("Arial", Font.PLAIN, 9));

@@ -98,20 +98,26 @@ public class TimesForLineChart {
             // Überprüfen, ob ein Eintrag in appliedTarget in fadedTarget existiert und diesen ggf. um 1 ms verschieben
             for (int i = 0; i < givenFadedTimes.size(); i++) {
                 String fadedTime = givenFadedTimes.get(i);
+                
                 // Solange die fadedTime in appliedTimes vorkommt, verschieben
                 for (int j = 0; j < givenAppliedTimes.size(); j++) {
-                    if (givenAppliedTimes.get(j).equals(fadedTime)) {
-                        // Die Applied-Time verschieben
-                        String appliedTime = givenAppliedTimes.get(j);
-                        String adjustedAppliedTime = adjustTimeByMilliseconds(appliedTime, 15);
-                        givenAppliedTimes.set(j, adjustedAppliedTime);
+                    String appliedTime = givenAppliedTimes.get(j);
+
+                    // Vergleiche die Zeiten auf der Sekundebene
+                    if (appliedTime.substring(0, 8).equals(fadedTime.substring(0, 8))) {
+                        // Wenn sie übereinstimmen, entferne den Eintrag aus fadedTimes
+                        givenFadedTimes.remove(i);
+                        i--; // Decrement to recheck the current index after removal
+                        break; // Wenn der Eintrag entfernt wurde, abbrechen
                     }
                 }
             }
 
+            // FadedTimes wird in Array umgewandelt
             fadedTarget = givenFadedTimes.toArray(new String[0]);
         }
 
+        // Geben Sie die AppliedTimes und die geänderten FadedTimes als 2D-Array zurück
         return new String[][]{givenAppliedTimes.toArray(new String[0]), fadedTarget};
     }
 

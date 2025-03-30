@@ -251,7 +251,7 @@ public class BossUtils {
 		boss.setPlayerDeathCause(playerDeathCause);
 
 		if(boss.getFirstHitDate()!=null && boss.getSunderTimes()!=null) {
-			boss.setBase64DebuffsString(DiagrammUtis.getBase64FromChart(DebuffTimelineChart.createChart(boss), 1200, 250));
+			boss.setBase64DebuffsString(DiagrammUtis.getBase64FromChart(DebuffTimelineChart.createChart(boss), 1200, 200));
 			bossMap.put(bossName+suffix, boss);
 		} 
 	}	
