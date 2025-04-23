@@ -84,8 +84,43 @@ public class RaidBossMapping {
 	//Ony
 	public static String onyxia = "Onyxia";
 	
+	//Upper Kara
+	public static String keeperGnarlmoon ="Keeper Gnarlmoon";
+	public static String incantagos ="Ley-Watcher Incantagos";
+	public static String anomlaus = "Anomalus";
+	public static String sanvTasdal = "Sanv Tas'dal";
+
+	public static String chessKing ="King";
+	public static String chessKnight ="Knight";
+	public static String chessRook = "Rook";
+	public static String chessPawn = "Pawn";
+	public static String chessQueen = "Queen";
+	
+	public static String echoOfMedievh ="Echo of Medievh";
+	public static String mephistroth ="Mephistroth";
+	public static String kruul = "Kruul";
+	public static String rupturanTheBroken = "Rupturan the Broken";
+	
+	
 	
 	public static void assign() {
+		ArrayList<String> upperKara = new ArrayList<>();
+		upperKara.add(keeperGnarlmoon);
+		upperKara.add(incantagos);
+		upperKara.add(anomlaus);
+		upperKara.add(sanvTasdal);
+		upperKara.add(chessKing);
+		upperKara.add(chessKnight);
+		upperKara.add(chessRook);
+		upperKara.add(chessPawn);
+		upperKara.add(chessQueen);
+		upperKara.add(echoOfMedievh);
+		upperKara.add(mephistroth);
+		upperKara.add(kruul);
+		upperKara.add(rupturanTheBroken);
+		raidBossMap.put("UpperKara", upperKara);
+
+		
 		ArrayList<String> naxxramas = new ArrayList<>();
 		naxxramas.add(anubRekhan);
 		naxxramas.add(grandWidowFaerlina);

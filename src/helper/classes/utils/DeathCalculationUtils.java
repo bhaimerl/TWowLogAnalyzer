@@ -36,7 +36,7 @@ public class DeathCalculationUtils {
 	                for (int i = logsInInterval.size() - 1; i >= 0; i--) {
 	                    String deathLine = logsInInterval.get(i);
 	                    if ((deathLine.contains(" is killed") || deathLine.contains("hits " + currentPlayer) ||
-	                         deathLine.contains("crits " + currentPlayer) || deathLine.contains("suffers")) &&
+	                         deathLine.contains("crits " + currentPlayer) || deathLine.contains(currentPlayer+" suffers")) &&
 	                        !deathLine.contains(currentPlayer + " dies.")) {
 	                        deathCause = deathLine.substring(18) + " (" + General.getTimeFromLog(deathLine).substring(0, 8) + ")";
 	                        break;

@@ -7,7 +7,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Set;
-import java.util.UUID;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
@@ -18,10 +17,10 @@ import org.eclipse.swt.widgets.FileDialog;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
+import org.eclipse.wb.swt.SWTResourceManager;
 
 import helper.FileUtils;
 import helper.Filter;
-import helper.FtpUpload;
 import helper.HTMLUtils;
 import helper.Raids.RaidBossMapping;
 import helper.classes.NameClassWrapper;
@@ -43,10 +42,6 @@ import helper.classes.utils.ShamanUtils;
 import helper.classes.utils.WarlockUtils;
 import helper.classes.utils.WarriorUtils;
 import helper.classes.utils.besonderes.BarovUtils;
-import helper.classes.utils.besonderes.HealCommUtils;
-import helper.classes.utils.besonderes.WarlockShadowTranceCheck;
-
-import org.eclipse.wb.swt.SWTResourceManager;
 
 public class MainGui {
 
@@ -401,38 +396,44 @@ public class MainGui {
 						+ "<button id=\"toggleColumnHighlightsButton\">Show Highlights</button>";
 				String br = "<br><br>";
 				
-				HTMLUtils.writeFile(HTMLUtils.getAsHTMLString(playersHtml+boss+classAbs+warriors+rogues+druids+paladins+priests+mages+hunters+warlocks+shamans+aq40Stuff+loot, raidName, date, startTime, endTime, raids), true);
 				String guildBasedFileName = RaidLogInfo.getUNiqueFileName(raids, date, startTime, Players.getMainGuild()+".html");
+				String fileNameFinal = HTMLUtils.writeFile(HTMLUtils.getAsHTMLString(playersHtml+boss+classAbs+warriors+rogues+druids+paladins+priests+mages+hunters+warlocks+shamans+aq40Stuff+loot, raidName, date, startTime, endTime, raids), guildBasedFileName);
 				boolean ftpLognSuccess = false;
-				try {
-					if(btnGeneratePublicLink.getSelection()) {
-						lblInvalidInputData.setText("...i will open your browser...to public url");
-						//String uniqueFileName = UUID.randomUUID().toString()+".html";
-						ftpLognSuccess = FtpUpload.fileUpload(passwordField.getText(), Players.getMainGuild(), HTMLUtils.getTmpFileNameInclPath(),guildBasedFileName);
-						if(ftpLognSuccess) {
-							String resulturl = "http://klarasprudel.atwebpages.com/"+Players.getMainGuild()+"/"+guildBasedFileName;
-							System.out.println("URL is: "+resulturl);
-							FileUtils.openWebpage(new URI(resulturl));
-							//lblInvalidInputData.setText("URL: "+resulturl);
-						} else {
-							lblInvalidInputData.setText("..password incorrect, will open local");
-							FileUtils.openWebpage(new URI("file:///"+HTMLUtils.getTmpFileNameInclPath()));
-							//klarasprudel.atwebpages.com/"+fileName						
-						}
-					} else {
-						lblInvalidInputData.setText("...i will open your browser...to local url");
-						FileUtils.openWebpage(new URI("file:///"+HTMLUtils.getTmpFileNameInclPath()));
-						//klarasprudel.atwebpages.com/"+fileName						
-					}
-				} catch (URISyntaxException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}
+				
+				lblInvalidInputData.setText("...i will open your browser...to local url");
+				File file = new File(fileNameFinal);
+				FileUtils.openWebpage(file.toURI());
+				
+//				try {
+//					if(btnGeneratePublicLink.getSelection()) {
+//						lblInvalidInputData.setText("...i will open your browser...to public url");
+//						//String uniqueFileName = UUID.randomUUID().toString()+".html";
+//						ftpLognSuccess = FtpUpload.fileUpload(passwordField.getText(), Players.getMainGuild(), HTMLUtils.getTmpFileNameInclPath(),guildBasedFileName);
+//						if(ftpLognSuccess) {
+//							String resulturl = "http://klarasprudel.atwebpages.com/"+Players.getMainGuild()+"/"+guildBasedFileName;
+//							System.out.println("URL is: "+resulturl);
+//							FileUtils.openWebpage(new URI(resulturl));
+//							//lblInvalidInputData.setText("URL: "+resulturl);
+//						} else {
+//							lblInvalidInputData.setText("..password incorrect, will open local");
+//							FileUtils.openWebpage(new URI("file:///"+HTMLUtils.getTmpFileNameInclPath()));
+//							//klarasprudel.atwebpages.com/"+fileName						
+//						}
+//					} else {
+//						lblInvalidInputData.setText("...i will open your browser...to local url");
+//						FileUtils.openWebpage(new URI("file:///"+HTMLUtils.getTmpFileNameInclPath()));
+//						//klarasprudel.atwebpages.com/"+fileName						
+//					}
+//				} catch (URISyntaxException e1) {
+//					// TODO Auto-generated catch block
+//					e1.printStackTrace();
+//				}
 			}
 		});
 		btnStartAnalyze.setBounds(10, 319, 75, 25);
 		btnStartAnalyze.setText("Start");
 		
+		/*
 		Label lblGenerateLink = new Label(shlTwowLoganalyzer, SWT.NONE);
 		lblGenerateLink.setText("Generate public link");
 		lblGenerateLink.setBounds(10, 282, 116, 15);
@@ -467,6 +468,7 @@ public class MainGui {
 		passwordField.setEnabled(false);
 		passwordField.setEditable(false);
 		passwordField.setBounds(263, 276, 144, 21);
+		*/
 		
 
 	}

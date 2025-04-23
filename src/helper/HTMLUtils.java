@@ -5,6 +5,7 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.lang.constant.Constable;
+import java.net.URISyntaxException;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -29,21 +30,29 @@ public class HTMLUtils {
 		}
 		return fileName;
 	}
-
-	public static void writeFile(String str, boolean tmpFile) {
-		String fileName ="";
-		if(tmpFile) {
-			fileName = getTmpFileNameInclPath();
-		} else {
-			fileName = "C:/development/spielerei/result.html";
-		}
+	
+	
+	private static String getPathToJarDir() {
+		String path = "";
 		try {
-		    BufferedWriter writer = new BufferedWriter(new FileWriter(fileName, StandardCharsets.ISO_8859_1));
+			File jarDir = new File(HTMLUtils.class.getProtectionDomain().getCodeSource().getLocation().toURI()).getParentFile();
+			path = jarDir.getAbsolutePath();
+		} catch (URISyntaxException e) {
+			e.printStackTrace();
+		}
+		return path;
+	}
+
+	public static String writeFile(String str, String fileName) {
+		String finalFileName = (new File(getPathToJarDir(), fileName)).getAbsolutePath();
+		try {
+		    BufferedWriter writer = new BufferedWriter(new FileWriter(finalFileName, StandardCharsets.ISO_8859_1));
 		    writer.write(str);
 		    writer.close();		
 		} catch (Exception e) {
 			System.err.println(e);
 		}
+		return finalFileName;
 	}
 	
 	public static String getAsHTMLString(String given, String raidName, String date, String start, String end, String raids) {

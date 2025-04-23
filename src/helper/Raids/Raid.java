@@ -7,5 +7,6 @@ public enum Raid {
 	BlackwingLayer,
 	UPPERKARA,
 	ONYXIA,
-	EmeraldSanktum
+	EmeraldSanktum,
+	UpperKara
 }

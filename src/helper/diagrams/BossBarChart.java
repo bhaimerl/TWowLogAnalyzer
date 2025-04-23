@@ -118,36 +118,40 @@ public class BossBarChart extends JFrame {
     public Paint[] getColors(ArrayList<PlayerForBar> pfbList) {
     	Paint[] paintArray = new Paint[pfbList.size()];
     	int i=0;
-    	for (PlayerForBar pfb : pfbList) {
-        	if(pfb.getPlayerClass().equals(Constants.WARLOCK)) {
-        		paintArray[i] = Color.decode(Constants.WARLOCKCOLOR);
-        	}
-        	if(pfb.getPlayerClass().equals(Constants.WARRIOR)) {
-        		paintArray[i] = Color.decode(Constants.WARRIORCOLOR);
-        	}
-        	if(pfb.getPlayerClass().equals(Constants.PRIEST)) {
-        		paintArray[i] = Color.decode(Constants.PRIESTCOLOR);
-        	}
-        	if(pfb.getPlayerClass().equals(Constants.PALADIN)) {
-        		paintArray[i] = Color.decode(Constants.PALADINCOLOR);
-        	}
-        	if(pfb.getPlayerClass().equals(Constants.SHAMAN)) {
-        		paintArray[i] = Color.decode(Constants.SHAMANCOLOR);
-        	}
-        	if(pfb.getPlayerClass().equals(Constants.HUNTER)) {
-        		paintArray[i] = Color.decode(Constants.HUNTERCOLOR);
-        	}
-        	if(pfb.getPlayerClass().equals(Constants.DRUID)) {
-        		paintArray[i] = Color.decode(Constants.DRUIDCOLOR);
-        	}
-        	if(pfb.getPlayerClass().equals(Constants.MAGE)) {
-        		paintArray[i] = Color.decode(Constants.MAGECOLOR);
-        	}
-        	if(pfb.getPlayerClass().equals(Constants.ROGUE)) {
-        		paintArray[i] = Color.decode(Constants.ROGUECOLOR);
-        	}
-        	i++;
-		}
+    	try {
+        	for (PlayerForBar pfb : pfbList) {
+            	if(pfb.getPlayerClass().equals(Constants.WARLOCK)) {
+            		paintArray[i] = Color.decode(Constants.WARLOCKCOLOR);
+            	}
+            	if(pfb.getPlayerClass().equals(Constants.WARRIOR)) {
+            		paintArray[i] = Color.decode(Constants.WARRIORCOLOR);
+            	}
+            	if(pfb.getPlayerClass().equals(Constants.PRIEST)) {
+            		paintArray[i] = Color.decode(Constants.PRIESTCOLOR);
+            	}
+            	if(pfb.getPlayerClass().equals(Constants.PALADIN)) {
+            		paintArray[i] = Color.decode(Constants.PALADINCOLOR);
+            	}
+            	if(pfb.getPlayerClass().equals(Constants.SHAMAN)) {
+            		paintArray[i] = Color.decode(Constants.SHAMANCOLOR);
+            	}
+            	if(pfb.getPlayerClass().equals(Constants.HUNTER)) {
+            		paintArray[i] = Color.decode(Constants.HUNTERCOLOR);
+            	}
+            	if(pfb.getPlayerClass().equals(Constants.DRUID)) {
+            		paintArray[i] = Color.decode(Constants.DRUIDCOLOR);
+            	}
+            	if(pfb.getPlayerClass().equals(Constants.MAGE)) {
+            		paintArray[i] = Color.decode(Constants.MAGECOLOR);
+            	}
+            	if(pfb.getPlayerClass().equals(Constants.ROGUE)) {
+            		paintArray[i] = Color.decode(Constants.ROGUECOLOR);
+            	}
+            	i++;
+    		}
+    	}catch(Exception e) {
+    		System.out.println("error during calculation pfbList "+pfbList);
+    	}
     	
     	return paintArray;
     }

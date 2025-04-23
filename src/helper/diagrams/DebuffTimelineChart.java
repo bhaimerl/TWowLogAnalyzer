@@ -4,6 +4,7 @@ import java.awt.BasicStroke;
 import java.awt.Font;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Arrays;
 import java.util.Date;
 
 import org.jfree.chart.ChartFactory;
@@ -34,11 +35,10 @@ public class DebuffTimelineChart {
 
     public static JFreeChart createChart(Boss boss) {
     	
-    	
         TimesForLineChart tfc = new TimesForLineChart(boss.getFirstHitTimeOnly(), boss.getDiedTimeOnly());
         tfc.calculateFaerieFire(boss.getFaerieFireAppliedist(), boss.getFaerieFireFadesList());
-        System.out.println("FairieFire applied: "+boss.getFaerieFireAppliedist());
-        System.out.println("FairieFire faded: "+boss.getFaerieFireFadesList());
+//        System.out.println("FairieFire applied ("+boss.getName()+"): "+Arrays.toString(tfc.getFaerieFireAppliedTimes()));
+//        System.out.println("FairieFire faded: ("+boss.getName()+")"+Arrays.toString(tfc.getFaerieFireFadedTimes()));
         tfc.calculateSunderArmor(boss.getSunderArmorAppliedist(), boss.getSunderArmorFadesList());
         tfc.calcCurseOfElements(boss.getCurseOfElementsAppliedList(), boss.getCurseOfElementsFadedList());
         tfc.calcCurseOfRecklessness(boss.getCurseOfRecklessnessAppliedList(), boss.getCurseOfRecklessnessFadedList());
@@ -132,7 +132,7 @@ public class DebuffTimelineChart {
             }
 
         } catch (ParseException e) {
-            e.printStackTrace();
+        	System.out.println("cant deteckt debuff times, probably wipe?");
         }
 
         return series;
