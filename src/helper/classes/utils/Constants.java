@@ -8,7 +8,7 @@ public class Constants {
 	public static SimpleDateFormat onlyTime = new SimpleDateFormat("HH:mm:ss.SSS");
 	
 	  
-	public static final String VERSION = "v0.3.9.0";
+	public static final String VERSION = "v0.3.9.1";
 	
 	public static final String DRUIDCOLOR = "#FF7D0A";
 	public static final String HUNTERCOLOR = "#A9D271";
