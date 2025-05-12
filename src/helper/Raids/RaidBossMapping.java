@@ -96,7 +96,7 @@ public class RaidBossMapping {
 	public static String chessPawn = "Pawn";
 	public static String chessQueen = "Queen";
 	
-	public static String echoOfMedievh ="Echo of Medievh";
+	public static String echoOfMedivh ="Echo of Medivh";
 	public static String mephistroth ="Mephistroth";
 	public static String kruul = "Kruul";
 	public static String rupturanTheBroken = "Rupturan the Broken";
@@ -114,7 +114,7 @@ public class RaidBossMapping {
 		upperKara.add(chessRook);
 		upperKara.add(chessPawn);
 		upperKara.add(chessQueen);
-		upperKara.add(echoOfMedievh);
+		upperKara.add(echoOfMedivh);
 		upperKara.add(mephistroth);
 		upperKara.add(kruul);
 		upperKara.add(rupturanTheBroken);
