@@ -15,6 +15,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Pattern;
 
 public class FileUtils {
 	
@@ -39,7 +40,13 @@ public class FileUtils {
         try {
             // Alle Zeilen auf einmal laden (schnell für kleine/mittlere Dateien)
             List<String> lines = Files.readAllLines(Path.of(fileNameInclusivePath));
-            return new ArrayList<>(lines); // Direkte Konvertierung in ArrayList
+            
+         // Regex für Datum (M/D oder MM/DD), Zeit (HH:mm:ss.SSS), dann ein Leerzeichen
+            Pattern validLogLinePattern = Pattern.compile("^\\d{1,2}/\\d{1,2} \\d{2}:\\d{2}:\\d{2}\\.\\d{3} .*");
+
+            // Filtere nur gültige Zeilen
+            List<String> validLines = lines.stream().filter(line -> validLogLinePattern.matcher(line).matches()).toList();            
+            return new ArrayList<>(validLines); // Direkte Konvertierung in ArrayList
         } catch (IOException e) {
             e.printStackTrace();
             return new ArrayList<>(); // Falls Fehler, leere Liste zurückgeben
